@@ -1,0 +1,36 @@
+- Estaría mal pensar al celular como una interfaz que tenga en su firma "recibirEvento", así cuando un objeto lo implementa sepa que hacer con ese mensaje?
+• puede necesitar tener comportamiento cuando se vea el tema de la automatización (Celular o APP). Debe ser configurado como manual o automático. (Patrón Strategy).
+
+- Detectamos que PuntoDeVenta y Zona no tienen un comportamiento definido,  más que el conocimiento entre sí y/o con el SEM. Podrían ser interfaces?
+• Son clases. El Inspector puede ser o no una interfaz.
+
+- Asistencia al usuario: se debe utilizar un patrón en específico que aún no vimos?
+•
+
+- Las apps tienen relación con esos patrones?
+•
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- Para la clase Estacionamiento APP podría utilizarse el patrón State en relación al estado del estacionamiento (Iniciado, Finalizado).
+- Para finalizar un estacionamiento medido puede que haya dos tipos de objetos (EstacionamientoEnCurso y EstacionamientoFinalizado).
