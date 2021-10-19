@@ -9,11 +9,18 @@ abstract class EstacionamientoTest {
 
 	protected Estacionamiento estacionamiento;
 	protected LocalTime horaInicio;
+	protected String patente;
 
 	@Test
 	void testUnEstacionamientoTieneUnaHoraDeInicio() {
 		LocalTime horaEsperada = this.horaInicio;
 		assertEquals(horaEsperada, this.estacionamiento.getHoraInicio());
+	}
+	
+	@Test
+	void testUnEstacionamientoPuntualTieneUnaPatenteAsociada() {
+		String patenteEsperada = this.patente;
+		assertEquals(patenteEsperada, this.estacionamiento.getPatente());
 	}
 	
 }

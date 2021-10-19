@@ -2,16 +2,30 @@ package estacionamiento;
 
 import java.time.LocalTime;
 
+import registroDeCompra.RegistroCompraPuntual;
+
 public class EstacionamientoPuntual extends Estacionamiento {
 
-	private String patente;
+	private LocalTime horaFin;
+	private RegistroCompraPuntual registroCompraPuntual;
 
-	public EstacionamientoPuntual(LocalTime horaInicio, String patente) {
-		super(horaInicio);
-		this.patente = patente;
+	public EstacionamientoPuntual(LocalTime horaInicio, LocalTime horaFin, String patente, 
+			RegistroCompraPuntual compraPuntual) {
+		super(horaInicio, patente);
+		this.horaFin = horaFin;
+		this.registroCompraPuntual = compraPuntual;
 	}
 
-	public String getPatente() {
-		return this.patente;
+	public LocalTime getHoraFin() {
+		return this.horaFin;
+	}
+	
+	public RegistroCompraPuntual getRegistroCompraPuntual() {
+		return this.registroCompraPuntual;
+	}
+
+	@Override
+	public Boolean estaVigente() {
+		return null;
 	}
 }
