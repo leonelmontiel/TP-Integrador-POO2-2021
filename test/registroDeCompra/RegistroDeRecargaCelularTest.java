@@ -12,7 +12,7 @@ class RegistroDeRecargaCelularTest extends RegistroDeCompraTest{
 	@BeforeEach
 	void setUp() throws Exception {
 		this.monto = 800f;
-		this.registroDeCompra = new RegistroDeRecargaCelular(this.nroControl, this.fecha, this.hora, this.celular, this.monto);
+		this.registroDeCompra = new RegistroDeRecargaCelular(this.puntoDeVenta, this.nroControl, this.fecha, this.hora, this.celular, this.monto);
 	}
 
 	@Test

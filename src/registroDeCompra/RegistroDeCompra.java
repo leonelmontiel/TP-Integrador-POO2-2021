@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import app.App;
+import puntoDeVenta.PuntoDeVenta;
 
 public abstract class RegistroDeCompra {
 
@@ -11,8 +12,10 @@ public abstract class RegistroDeCompra {
 	private LocalDate fecha;
 	private LocalTime hora;
 	private App celular;
+	private PuntoDeVenta puntoDeVenta;
 
-	public RegistroDeCompra(Integer nroControl, LocalDate fecha, LocalTime hora, App celular) {
+	public RegistroDeCompra(PuntoDeVenta punto, Integer nroControl, LocalDate fecha, LocalTime hora, App celular) {
+		this.puntoDeVenta = punto;
 		this.nroControl = nroControl;
 		this.fecha = fecha;
 		this.hora = hora;
@@ -33,6 +36,10 @@ public abstract class RegistroDeCompra {
 
 	public App getCelular() {
 		return this.celular;
+	}
+
+	public PuntoDeVenta getPuntoDeVenta() {
+		return this.puntoDeVenta;
 	}
 
 }
