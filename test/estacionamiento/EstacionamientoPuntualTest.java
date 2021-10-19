@@ -12,17 +12,18 @@ import registroDeCompra.RegistroCompraPuntual;
 
 class EstacionamientoPuntualTest extends EstacionamientoTest {
 
-	private LocalTime horaFin;
 	private RegistroCompraPuntual compraPuntual;
 	
 	@BeforeEach
 	void setUp() throws Exception {
+		
 		this.horaInicio = LocalTime.of(12, 0);
 		this.horaFin = LocalTime.of(15, 0);
 		this.patente = "AA 325 AA";
 		this.compraPuntual = mock(RegistroCompraPuntual.class);
 		this.estacionamiento = new EstacionamientoPuntual(this.horaInicio, this.horaFin, this.patente, 
 				this.compraPuntual);
+		
 	}
 	
 	@Test
@@ -37,5 +38,4 @@ class EstacionamientoPuntualTest extends EstacionamientoTest {
 		assertEquals(registroEsperado, ((EstacionamientoPuntual) this.estacionamiento).getRegistroCompraPuntual());
 	}
 	
-
 }

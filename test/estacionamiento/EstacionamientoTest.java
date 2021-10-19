@@ -9,6 +9,7 @@ abstract class EstacionamientoTest {
 
 	protected Estacionamiento estacionamiento;
 	protected LocalTime horaInicio;
+	protected LocalTime horaFin;
 	protected String patente;
 
 	@Test
@@ -18,7 +19,7 @@ abstract class EstacionamientoTest {
 	}
 	
 	@Test
-	void testUnEstacionamientoPuntualTieneUnaPatenteAsociada() {
+	void testUnEstacionamientoTieneUnaPatenteAsociada() {
 		String patenteEsperada = this.patente;
 		assertEquals(patenteEsperada, this.estacionamiento.getPatente());
 	}
