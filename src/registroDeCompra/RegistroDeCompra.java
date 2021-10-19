@@ -5,7 +5,7 @@ import java.time.LocalTime;
 
 import app.App;
 
-public class RegistroDeCompra {
+public abstract class RegistroDeCompra {
 
 	private Integer nroControl;
 	private LocalDate fecha;
