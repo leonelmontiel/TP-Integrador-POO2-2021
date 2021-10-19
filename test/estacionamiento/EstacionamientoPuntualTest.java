@@ -23,5 +23,10 @@ class EstacionamientoPuntualTest extends EstacionamientoTest {
 		String patenteEsperada = this.patente;
 		assertEquals(patenteEsperada, ((EstacionamientoPuntual) this.estacionamiento).getPatente());
 	}
+	
+	@Test
+	void testOtroRandom() {
+		
+	}
 
 }
