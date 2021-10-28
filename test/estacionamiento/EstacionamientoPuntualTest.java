@@ -3,6 +3,7 @@ package estacionamiento;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -38,4 +39,22 @@ class EstacionamientoPuntualTest extends EstacionamientoTest {
 		assertEquals(registroEsperado, ((EstacionamientoPuntual) this.estacionamiento).getRegistroCompraPuntual());
 	}
 	
+	@Test
+	void testUnEstacionamientoPuntualEstaVigenteSiEsDelDia() {
+		//setup
+		LocalDate hoy = LocalDate.of(2021, 10, 14);
+		
+		//configuracion de mock
+		when(this.compraPuntual.getFecha()).thenReturn(hoy);
+		
+		assertTrue(this.estacionamiento.estaVigente(hoy));
+		
+		//verify
+		verify(this.compraPuntual, atLeast(1)).getFecha();
+	}
+	
+//	@Test
+//	void testUnEstacionamientoPuntualNoEstaVigente() {
+//		assertFalse(this.estacionamiento.estaVigente());
+//	}
 }
