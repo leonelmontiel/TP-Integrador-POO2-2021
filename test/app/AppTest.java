@@ -1,24 +1,44 @@
 package app;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import sem.SEM;
+
 class AppTest {
 
 	private App app;
+	private Integer numero;
+	private String patente;
+	private SEM sistema = mock(SEM.class);
 
 	@BeforeEach
 	void setUp() throws Exception {
-		this.app = new App(1150625347);
+		//SetUp
+		this.numero = 1150625347;
+		this.patente = "A13F45";
+		this.app = new App(this.numero);
+		
+		// config mocks
 	}
 
 	@Test
 	void testGetNumero() {
-		int numEsperado = 1150625347;
+		//Excercise
 		int numObtenido = this.app.getNumero();
-		assertEquals(numEsperado, numObtenido);
+		//Verify
+		assertEquals(this.numero, numObtenido);
+	}
+	
+	@Test
+	void testIniciarEstacionamiento() {
+		//Excercise
+		this.app.iniciarEstacionamiento(this.patente);
+		//Verify
+		verify(this.sistema, times(1)).iniciarApp(patente, app);
 	}
 
 }
