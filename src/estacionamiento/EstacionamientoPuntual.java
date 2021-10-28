@@ -1,6 +1,7 @@
 package estacionamiento;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import registroDeCompra.RegistroCompraPuntual;
@@ -26,7 +27,17 @@ public class EstacionamientoPuntual extends Estacionamiento {
 	}
 
 	@Override
-	public Boolean estaVigente(LocalDate fechaConsulta) {
+	public Boolean estaVigente(LocalDateTime momentoConsulta) {
+		return this.esFechaDeCompra(momentoConsulta.toLocalDate())
+				&& this.esHoraEnVigencia(momentoConsulta.toLocalTime());
+	}
+	
+	private Boolean esFechaDeCompra(LocalDate fechaConsulta) {
 		return fechaConsulta.equals(this.getRegistroCompraPuntual().getFecha());
+	}
+
+	private Boolean esHoraEnVigencia(LocalTime horaConsulta) {
+		return horaConsulta.isBefore(this.getHoraFin()) 
+				&& horaConsulta.isAfter(this.getHoraInicio());
 	}
 }

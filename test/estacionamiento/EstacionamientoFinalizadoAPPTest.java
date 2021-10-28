@@ -1,9 +1,9 @@
 package estacionamiento;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -51,7 +51,7 @@ class EstacionamientoFinalizadoAPPTest extends EstacionamientoTest {
 	@Test
 	void testEstacionamientoFinalizadoAPPNoEstaVigente() {
 		//setup
-		LocalDate hoy = LocalDate.of(2021, 10, 14);
+		LocalDateTime hoy = LocalDateTime.of(2021, 10, 14, 14, 0);
 
 		assertFalse(this.estacionamiento.estaVigente(hoy));
 	}

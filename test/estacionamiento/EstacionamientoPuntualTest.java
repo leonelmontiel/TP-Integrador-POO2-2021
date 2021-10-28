@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -42,10 +43,11 @@ class EstacionamientoPuntualTest extends EstacionamientoTest {
 	@Test
 	void testUnEstacionamientoPuntualEstaVigenteSiEsDelDia() {
 		//setup
-		LocalDate hoy = LocalDate.of(2021, 10, 14);
+		LocalDateTime hoy = LocalDateTime.of(2021, 10, 14, 14, 0);
+		LocalDate fechaCompra = LocalDate.of(2021, 10, 14); 
 		
 		//configuracion de mock
-		when(this.compraPuntual.getFecha()).thenReturn(hoy);
+		when(this.compraPuntual.getFecha()).thenReturn(fechaCompra);
 		
 		assertTrue(this.estacionamiento.estaVigente(hoy));
 		
@@ -53,8 +55,50 @@ class EstacionamientoPuntualTest extends EstacionamientoTest {
 		verify(this.compraPuntual, atLeast(1)).getFecha();
 	}
 	
-//	@Test
-//	void testUnEstacionamientoPuntualNoEstaVigente() {
-//		assertFalse(this.estacionamiento.estaVigente());
-//	}
+	@Test
+	void testUnEstacionamientoPuntualNoEstaVigenteSiNoSeConsultaElDiaDeSuCompra() {
+		//setup
+		LocalDateTime hoy = LocalDateTime.of(2021, 10, 14, 14, 0);
+		LocalDate otroDia = LocalDate.of(2021, 10, 30);
+		
+		//configuracion de mock
+		when(this.compraPuntual.getFecha()).thenReturn(otroDia);
+		
+		assertFalse(this.estacionamiento.estaVigente(hoy));
+		
+		//verify
+		verify(this.compraPuntual, atLeast(1)).getFecha();
+	}
+
+	@Test
+	void testUnEstacionamientoPuntualEstaVigenteSiSeConsultaDentroDeSuHorarioInicioFin() {
+		//setup
+		LocalDateTime hoy = LocalDateTime.of(2021, 10, 14, 14, 0);
+		LocalDate fechaCompra = LocalDate.of(2021, 10, 14); 
+		
+		//configuracion de mock
+		when(this.compraPuntual.getFecha()).thenReturn(fechaCompra);
+		
+		assertTrue(this.estacionamiento.estaVigente(hoy));
+		
+		//verify
+		verify(this.compraPuntual, atLeast(1)).getFecha();
+	}
+	
+	@Test
+	void testUnEstacionamientoPuntualNoEstaVigenteSiSeConsultaFueraDeSuHorarioInicioFin() {
+		//setup
+		LocalDateTime hoy = LocalDateTime.of(2021, 10, 14, 17, 0);
+		LocalDate fechaCompra = LocalDate.of(2021, 10, 14); 
+		
+		//configuracion de mock
+		when(this.compraPuntual.getFecha()).thenReturn(fechaCompra);
+		
+		assertFalse(this.estacionamiento.estaVigente(hoy));
+		
+		//verify
+		verify(this.compraPuntual, atLeast(1)).getFecha();
+	}
+
+
 }

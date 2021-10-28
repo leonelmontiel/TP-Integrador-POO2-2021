@@ -1,6 +1,6 @@
 package estacionamiento;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import app.APP;
@@ -31,7 +31,7 @@ public class EstacionamientoFinalizadoAPP extends Estacionamiento {
 	}
 
 	@Override
-	public Boolean estaVigente(LocalDate fechaConsulta) {
+	public Boolean estaVigente(LocalDateTime momentoConsulta) {
 		return false;
 	}
 

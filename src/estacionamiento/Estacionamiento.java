@@ -1,6 +1,6 @@
 package estacionamiento;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public abstract class Estacionamiento {
@@ -21,6 +21,6 @@ public abstract class Estacionamiento {
 		return this.patente;
 	}
 	
-	public abstract Boolean estaVigente(LocalDate fechaConsulta);
+	public abstract Boolean estaVigente(LocalDateTime momentoConsulta);
 
 }

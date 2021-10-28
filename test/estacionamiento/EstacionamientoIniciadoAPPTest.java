@@ -3,7 +3,7 @@ package estacionamiento;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ class EstacionamientoIniciadoAPPTest extends EstacionamientoTest {
 	@Test
 	void testEstacionamientoIniciadoAPPEstaVigente() {
 		//setup
-		LocalDate hoy = LocalDate.of(2021, 10, 14);
+		LocalDateTime hoy = LocalDateTime.of(2021, 10, 14, 14, 0);
 		
 		assertTrue(this.estacionamiento.estaVigente(hoy));
 	}
