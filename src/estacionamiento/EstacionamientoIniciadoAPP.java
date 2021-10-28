@@ -20,7 +20,7 @@ public class EstacionamientoIniciadoAPP extends Estacionamiento {
 	
 	public LocalTime getHoraMaxima() {
 		//todo: hay que implementar como se calcula en base al saldo en la app
-		return null;
+		return this.app.getHoraMaxima(this);
 	}
 	
 	@Override

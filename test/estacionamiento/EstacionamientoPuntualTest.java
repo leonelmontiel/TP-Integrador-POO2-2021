@@ -86,7 +86,7 @@ class EstacionamientoPuntualTest extends EstacionamientoTest {
 	}
 	
 	@Test
-	void testUnEstacionamientoPuntualNoEstaVigenteSiSeConsultaFueraDeSuHorarioInicioFin() {
+	void testUnEstacionamientoPuntualNoEstaVigenteSiSeConsultaLuegoDeSuHorarioDeFin() {
 		//setup
 		LocalDateTime hoy = LocalDateTime.of(2021, 10, 14, 17, 0);
 		LocalDate fechaCompra = LocalDate.of(2021, 10, 14); 
@@ -99,6 +99,20 @@ class EstacionamientoPuntualTest extends EstacionamientoTest {
 		//verify
 		verify(this.compraPuntual, atLeast(1)).getFecha();
 	}
-
+	
+	@Test
+	void testUnEstacionamientoPuntualNoEstaVigenteSiSeConsultaAntesDeSuHorarioInicio() {
+		//setup
+		LocalDateTime hoy = LocalDateTime.of(2021, 10, 14, 11, 0);
+		LocalDate fechaCompra = LocalDate.of(2021, 10, 14); 
+		
+		//configuracion de mock
+		when(this.compraPuntual.getFecha()).thenReturn(fechaCompra);
+		
+		assertFalse(this.estacionamiento.estaVigente(hoy));
+		
+		//verify
+		verify(this.compraPuntual, atLeast(1)).getFecha();
+	}
 
 }
