@@ -2,12 +2,12 @@ package app;
 
 import sem.SEM;
 
-public class App {
+public class APP {
 
 	private int numero;
 	private SEM sistema;
 
-	public App(int numero, SEM sistema) {
+	public APP(int numero, SEM sistema) {
 		this.numero = numero;
 		this.sistema = sistema;
 	}
@@ -24,6 +24,11 @@ public class App {
 	public void finalizarEstacionamiento() {
 		// se envía a sí misma para que el sistema la vincule con la patente y así finalice el estacionamiento registrado
 		this.sistema.finalizarApp(this);
+	}
+
+	public Float getSaldo() {
+		// se envía a sí misma para consultar en el registro del SEM cuánto saldo tiene disponible
+		return this.sistema.getSaldoDe(this);
 	}
 
 }

@@ -3,7 +3,7 @@ package registroDeCompra;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import app.App;
+import app.APP;
 import puntoDeVenta.PuntoDeVenta;
 
 public abstract class RegistroDeCompra {
@@ -11,10 +11,10 @@ public abstract class RegistroDeCompra {
 	private Integer nroControl;
 	private LocalDate fecha;
 	private LocalTime hora;
-	private App celular;
+	private APP celular;
 	private PuntoDeVenta puntoDeVenta;
 
-	public RegistroDeCompra(PuntoDeVenta punto, Integer nroControl, LocalDate fecha, LocalTime hora, App celular) {
+	public RegistroDeCompra(PuntoDeVenta punto, Integer nroControl, LocalDate fecha, LocalTime hora, APP celular) {
 		this.puntoDeVenta = punto;
 		this.nroControl = nroControl;
 		this.fecha = fecha;
@@ -34,7 +34,7 @@ public abstract class RegistroDeCompra {
 		return this.hora;
 	}
 
-	public App getCelular() {
+	public APP getCelular() {
 		return this.celular;
 	}
 

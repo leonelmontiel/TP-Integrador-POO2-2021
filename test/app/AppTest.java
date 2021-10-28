@@ -10,7 +10,7 @@ import sem.SEM;
 
 class AppTest {
 
-	private App app;
+	private APP aPP;
 	private Integer numero;
 	private String patente;
 	private SEM sistema;
@@ -22,7 +22,7 @@ class AppTest {
 		this.patente = "A13F45";
 		
 		this.sistema = spy(SEM.class);
-		this.app = new App(this.numero, this.sistema);
+		this.aPP = new APP(this.numero, this.sistema);
 		
 		
 		// config mocks
@@ -31,7 +31,7 @@ class AppTest {
 	@Test
 	void testGetNumero() {
 		//Excercise
-		int numObtenido = this.app.getNumero();
+		int numObtenido = this.aPP.getNumero();
 		//Verify
 		assertEquals(this.numero, numObtenido);
 	}
@@ -39,17 +39,28 @@ class AppTest {
 	@Test
 	void testIniciarEstacionamiento() {
 		//Excercise
-		this.app.iniciarEstacionamiento(this.patente);
+		this.aPP.iniciarEstacionamiento(this.patente);
 		//Verify
-		verify(this.sistema, times(1)).iniciarApp(patente, app);
+		verify(this.sistema, times(1)).iniciarApp(patente, aPP);
 	}
 	
 	@Test
 	void testFinalizarEstacionamiento() {
 		//Excercise
-		this.app.finalizarEstacionamiento();
+		this.aPP.finalizarEstacionamiento();
 		//Verify
-		verify(this.sistema, times(1)).finalizarApp(app);
+		verify(this.sistema, times(1)).finalizarApp(aPP);
 	}
 
+	@Test
+	void testGetSaldo() {
+		//setUp
+		Float saldoDeseado = 580f;
+		when(this.sistema.getSaldoDe(aPP)).thenReturn(saldoDeseado);
+		//Excercice
+		Float saldoObtenido = this.aPP.getSaldo();
+		//Verify
+		assertEquals(saldoDeseado, saldoObtenido);
+		verify(this.sistema, times(1)).getSaldoDe(aPP);
+	}
 }
