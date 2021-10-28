@@ -13,14 +13,17 @@ class AppTest {
 	private App app;
 	private Integer numero;
 	private String patente;
-	private SEM sistema = mock(SEM.class);
+	private SEM sistema;
 
 	@BeforeEach
 	void setUp() throws Exception {
 		//SetUp
 		this.numero = 1150625347;
 		this.patente = "A13F45";
-		this.app = new App(this.numero);
+		
+		this.sistema = spy(SEM.class);
+		this.app = new App(this.numero, this.sistema);
+		
 		
 		// config mocks
 	}
@@ -39,6 +42,14 @@ class AppTest {
 		this.app.iniciarEstacionamiento(this.patente);
 		//Verify
 		verify(this.sistema, times(1)).iniciarApp(patente, app);
+	}
+	
+	@Test
+	void testFinalizarEstacionamiento() {
+		//Excercise
+		this.app.finalizarEstacionamiento();
+		//Verify
+		verify(this.sistema, times(1)).finalizarApp(app);
 	}
 
 }
