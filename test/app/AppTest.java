@@ -41,7 +41,7 @@ class AppTest {
 		//Excercise
 		this.aPP.iniciarEstacionamiento(this.patente);
 		//Verify
-		verify(this.sistema, times(1)).iniciarApp(patente, aPP);
+		verify(this.sistema, times(1)).iniciarEstacionamiento(patente, aPP);
 	}
 	
 	@Test
@@ -49,7 +49,7 @@ class AppTest {
 		//Excercise
 		this.aPP.finalizarEstacionamiento();
 		//Verify
-		verify(this.sistema, times(1)).finalizarApp(aPP);
+		verify(this.sistema, times(1)).finalizarEstacionamiento(aPP);
 	}
 
 	@Test

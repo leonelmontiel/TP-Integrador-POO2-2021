@@ -17,13 +17,16 @@ public class APP {
 	}
 
 	public void iniciarEstacionamiento(String patente) {
+		// EVALUAR SI TIENE SALDO SUFICIENTE PARA LA PRIMERA HORA DE ESTACIONAMIENTO $40
 		// envía la patente para iniciar el estacionamiento y a su vez a la app misma para que el sistema los vincule
-		this.sistema.iniciarApp(patente, this);
+		this.sistema.iniciarEstacionamiento(patente, this);
 	}
 
 	public void finalizarEstacionamiento() {
+		// SI NO TIENE SALDO SUFICIENTE, FINALIZA EL ESTACIONAMIENTO PERO QUEDA SALDO NEGATIVO
+		// SI NO LO FINALIZA, SIGUE ABIERTO HASTA QUE SE CIERRA SOLO A LAS 20H
 		// se envía a sí misma para que el sistema la vincule con la patente y así finalice el estacionamiento registrado
-		this.sistema.finalizarApp(this);
+		this.sistema.finalizarEstacionamiento(this);
 	}
 
 	public Float getSaldo() {

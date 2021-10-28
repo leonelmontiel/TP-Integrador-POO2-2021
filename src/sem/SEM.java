@@ -4,11 +4,11 @@ import app.APP;
 
 public class SEM {
 
-	public void iniciarApp(String patente, APP aPP) {
+	public void iniciarEstacionamiento(String patente, APP aPP) {
 		// asocia la patente con la aplicación y registra el estacionamiento
 	}
 
-	public void finalizarApp(APP aPP) {
+	public void finalizarEstacionamiento(APP aPP) {
 		// usa a la app dada por parámetro para asociarla con la patente y finalizar el estacionamiento registrado (en un map<Patente, APP>)	
 	}
 
