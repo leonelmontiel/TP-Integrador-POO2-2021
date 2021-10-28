@@ -16,7 +16,7 @@ public class RegistroDeCompraPuntual extends RegistroDeCompra {
 	}
 
 	public Integer getHorasCompradas() {
-		return horasCompradas;
+		return this.horasCompradas;
 	}
 
 }

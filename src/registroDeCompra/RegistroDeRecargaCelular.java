@@ -16,7 +16,7 @@ public class RegistroDeRecargaCelular extends RegistroDeCompra {
 	}
 
 	public Float getMontoRecarga() {
-		return montoRecarga;
+		return this.montoRecarga;
 	}
 
 }
