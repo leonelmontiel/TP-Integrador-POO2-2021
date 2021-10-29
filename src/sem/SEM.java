@@ -1,6 +1,9 @@
 package sem;
 
+import java.time.LocalTime;
+
 import app.APP;
+import estacionamiento.Estacionamiento;
 
 public class SEM {
 
@@ -18,6 +21,11 @@ public class SEM {
 	}
 
 	public Float getPrecioXHora() {
+		return null;
+	}
+
+	public LocalTime getHoraMaximaDe(Estacionamiento estacionamiento) {
+		// retorna la hora máxima del estacionamiento dado por parámetro
 		return null;
 	}
 

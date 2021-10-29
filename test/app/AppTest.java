@@ -3,9 +3,12 @@ package app;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.time.LocalTime;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import estacionamiento.Estacionamiento;
 import sem.SEM;
 
 class AppTest {
@@ -14,6 +17,7 @@ class AppTest {
 	private Integer numero;
 	private String patente;
 	private SEM sistema;
+	private Estacionamiento estacionamiento;
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -23,6 +27,8 @@ class AppTest {
 		
 		this.sistema = spy(SEM.class);
 		this.app = new APP(this.numero, this.sistema);
+		
+		this.estacionamiento = mock(Estacionamiento.class);
 		
 		// config mock
 		Float precioXHora = 40f;
@@ -77,6 +83,18 @@ class AppTest {
 		//Verify
 		assertEquals(saldoDeseado, saldoObtenido);
 		verify(this.sistema, times(1)).getSaldoDe(app);
+	}
+	
+	@Test
+	void testGetHoraMaximaDeEstacionamientoDado() {
+		//setUp
+		LocalTime horaMaxEsperada = LocalTime.of(20, 00);
+		when(this.sistema.getHoraMaximaDe(estacionamiento)).thenReturn(horaMaxEsperada);
+		//Excercise
+		LocalTime horaMaxObtenida = this.app.getHoraMaximaDe(estacionamiento);
+		//Verify
+		assertEquals(horaMaxEsperada, horaMaxObtenida);
+		verify(this.sistema, times(1)).getHoraMaximaDe(estacionamiento);
 	}
 	
 }

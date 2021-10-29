@@ -1,5 +1,8 @@
 package app;
 
+import java.time.LocalTime;
+
+import estacionamiento.Estacionamiento;
 import sem.SEM;
 
 public class APP {
@@ -41,6 +44,11 @@ public class APP {
 	public Float getSaldo() {
 		// se envía a sí misma para consultar en el registro del SEM cuánto saldo tiene disponible
 		return this.sistema.getSaldoDe(this);
+	}
+
+	public LocalTime getHoraMaximaDe(Estacionamiento estacionamiento) {
+		// consulta al sistema la hora máxima registrada para el estacionamiento dado
+		return this.sistema.getHoraMaximaDe(estacionamiento);
 	}
 
 }
