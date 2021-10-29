@@ -21,7 +21,7 @@ public class APP {
 
 	public void iniciarEstacionamiento(String patente) {
 		// EVALUAR SI TIENE SALDO SUFICIENTE PARA LA PRIMERA HORA DE ESTACIONAMIENTO $40
-		if (saldoEsMayorAPrecioXPorHora()) {
+		if (saldoEsMayorOIgualAPrecioXPorHora()) {
 			// envía la patente para iniciar el estacionamiento y a su vez a la app misma para que el sistema los vincule
 			this.sistema.iniciarEstacionamiento(patente, this);
 		} else {
@@ -30,7 +30,7 @@ public class APP {
 		
 	}
 
-	public boolean saldoEsMayorAPrecioXPorHora() {
+	public boolean saldoEsMayorOIgualAPrecioXPorHora() {
 		return this.sistema.getSaldoDe(this) >= this.sistema.getPrecioXHora();
 	}
 
