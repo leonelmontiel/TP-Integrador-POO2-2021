@@ -18,8 +18,17 @@ public class APP {
 
 	public void iniciarEstacionamiento(String patente) {
 		// EVALUAR SI TIENE SALDO SUFICIENTE PARA LA PRIMERA HORA DE ESTACIONAMIENTO $40
-		// envía la patente para iniciar el estacionamiento y a su vez a la app misma para que el sistema los vincule
-		this.sistema.iniciarEstacionamiento(patente, this);
+		if (saldoEsMayorAPrecioXPorHora()) {
+			// envía la patente para iniciar el estacionamiento y a su vez a la app misma para que el sistema los vincule
+			this.sistema.iniciarEstacionamiento(patente, this);
+		} else {
+			System.out.println("No tenés saldo suficiente para iniciar este estacionamiento. El precio por hora es: " + "$" + this.sistema.getPrecioXHora());
+		}
+		
+	}
+
+	public boolean saldoEsMayorAPrecioXPorHora() {
+		return this.sistema.getSaldoDe(this) >= this.sistema.getPrecioXHora();
 	}
 
 	public void finalizarEstacionamiento() {

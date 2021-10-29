@@ -17,4 +17,8 @@ public class SEM {
 		return null;
 	}
 
+	public Float getPrecioXHora() {
+		return null;
+	}
+
 }

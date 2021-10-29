@@ -10,7 +10,7 @@ import sem.SEM;
 
 class AppTest {
 
-	private APP aPP;
+	private APP app;
 	private Integer numero;
 	private String patente;
 	private SEM sistema;
@@ -22,45 +22,61 @@ class AppTest {
 		this.patente = "A13F45";
 		
 		this.sistema = spy(SEM.class);
-		this.aPP = new APP(this.numero, this.sistema);
+		this.app = new APP(this.numero, this.sistema);
 		
-		
-		// config mocks
+		// config mock
+		Float precioXHora = 40f;
+		when(this.sistema.getPrecioXHora()).thenReturn(precioXHora);
 	}
 
 	@Test
 	void testGetNumero() {
 		//Excercise
-		int numObtenido = this.aPP.getNumero();
+		int numObtenido = this.app.getNumero();
 		//Verify
 		assertEquals(this.numero, numObtenido);
 	}
 	
 	@Test
-	void testIniciarEstacionamiento() {
+	void testIniciarEstacionamientoOK() {
+		//setUp
+		Float saldoDisponible = 180f;
+		when(this.sistema.getSaldoDe(app)).thenReturn(saldoDisponible);
 		//Excercise
-		this.aPP.iniciarEstacionamiento(this.patente);
+		this.app.iniciarEstacionamiento(this.patente);
 		//Verify
-		verify(this.sistema, times(1)).iniciarEstacionamiento(patente, aPP);
+		verify(this.sistema, times(1)).iniciarEstacionamiento(patente, app);
 	}
 	
 	@Test
 	void testFinalizarEstacionamiento() {
 		//Excercise
-		this.aPP.finalizarEstacionamiento();
+		this.app.finalizarEstacionamiento();
 		//Verify
-		verify(this.sistema, times(1)).finalizarEstacionamiento(aPP);
+		verify(this.sistema, times(1)).finalizarEstacionamiento(app);
 	}
 
+	@Test
+	void testNoTieneSaldoParaIniciarEstacionamiento() {
+		//setUp
+		Float saldoDisponible = 20f;
+		when(this.sistema.getSaldoDe(app)).thenReturn(saldoDisponible);
+		//Excercise
+		this.app.iniciarEstacionamiento(this.patente);
+		//Verify
+		verify(this.sistema, never()).iniciarEstacionamiento(patente, app);
+	}
+	
 	@Test
 	void testGetSaldo() {
 		//setUp
 		Float saldoDeseado = 580f;
-		when(this.sistema.getSaldoDe(aPP)).thenReturn(saldoDeseado);
+		when(this.sistema.getSaldoDe(app)).thenReturn(saldoDeseado);
 		//Excercice
-		Float saldoObtenido = this.aPP.getSaldo();
+		Float saldoObtenido = this.app.getSaldo();
 		//Verify
 		assertEquals(saldoDeseado, saldoObtenido);
-		verify(this.sistema, times(1)).getSaldoDe(aPP);
+		verify(this.sistema, times(1)).getSaldoDe(app);
 	}
+	
 }
