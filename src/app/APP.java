@@ -22,10 +22,10 @@ public class APP {
 	public void iniciarEstacionamiento(String patente) {
 		// EVALUAR SI TIENE SALDO SUFICIENTE PARA LA PRIMERA HORA DE ESTACIONAMIENTO $40
 		if (saldoEsMayorOIgualAPrecioXPorHora()) {
-			// envía la patente para iniciar el estacionamiento y a su vez a la app misma para que el sistema los vincule
+			// envï¿½a la patente para iniciar el estacionamiento y a su vez a la app misma para que el sistema los vincule
 			this.sistema.iniciarEstacionamiento(patente, this);
 		} else {
-			System.out.println("No tenés saldo suficiente para iniciar este estacionamiento. El precio por hora es: " + "$" + this.sistema.getPrecioXHora());
+			System.out.println("No tenï¿½s saldo suficiente para iniciar este estacionamiento. El precio por hora es: " + "$" + this.sistema.getPrecioXHora());
 		}
 		
 	}
@@ -37,18 +37,17 @@ public class APP {
 	public void finalizarEstacionamiento() {
 		// SI NO TIENE SALDO SUFICIENTE, FINALIZA EL ESTACIONAMIENTO PERO QUEDA SALDO NEGATIVO
 		// SI NO LO FINALIZA, SIGUE ABIERTO HASTA QUE SE CIERRA SOLO A LAS 20H
-		// se envía a sí misma para que el sistema la vincule con la patente y así finalice el estacionamiento registrado
+		// se envï¿½a a sï¿½ misma para que el sistema la vincule con la patente y asï¿½ finalice el estacionamiento registrado
 		this.sistema.finalizarEstacionamiento(this);
 	}
 
 	public Float getSaldo() {
-		// se envía a sí misma para consultar en el registro del SEM cuánto saldo tiene disponible
+		// se envï¿½a a sï¿½ misma para consultar en el registro del SEM cuï¿½nto saldo tiene disponible
 		return this.sistema.getSaldoDe(this);
 	}
 
 	public LocalTime getHoraMaximaDe(Estacionamiento estacionamiento) {
-		// consulta al sistema la hora máxima registrada para el estacionamiento dado
+		// consulta al sistema la hora mï¿½xima registrada para el estacionamiento dado
 		return this.sistema.getHoraMaximaDe(estacionamiento);
 	}
-
 }
