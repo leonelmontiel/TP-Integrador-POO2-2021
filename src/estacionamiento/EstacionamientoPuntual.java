@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import app.APP;
 import registroDeCompra.RegistroCompraPuntual;
 
 public class EstacionamientoPuntual extends Estacionamiento {
@@ -33,5 +34,15 @@ public class EstacionamientoPuntual extends Estacionamiento {
 	private Boolean esHoraEnVigencia(LocalTime horaConsulta) {
 		return horaConsulta.isBefore(this.getHoraFin()) 
 				&& horaConsulta.isAfter(this.getHoraInicio());
+	}
+
+	@Override
+	public APP getApp() {
+		return null;
+	}
+
+	@Override
+	public void finalizar() {
+		
 	}
 }
