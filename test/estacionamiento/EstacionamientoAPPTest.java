@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import app.APP;
 
-class EstacionamientoIniciadoAPPTest extends EstacionamientoTest {
+class EstacionamientoAPPTest extends EstacionamientoTest {
 
 	private APP aplicacion;
 	
@@ -21,18 +21,18 @@ class EstacionamientoIniciadoAPPTest extends EstacionamientoTest {
 		this.aplicacion = spy(APP.class);
 		this.patente = "AA 325 AA";
 		this.horaInicio = LocalTime.of(18, 0);
-		this.estacionamiento = new EstacionamientoIniciadoAPP(this.aplicacion, this.horaInicio, this.patente);
+		this.estacionamiento = new EstacionamientoAPP(this.aplicacion, this.horaInicio, this.patente);
 		
 	}
 
 	@Test
 	void testTieneUnaAPPAsociada() {
 		APP aplicacionEsperada = this.aplicacion;
-		assertEquals(aplicacionEsperada, ((EstacionamientoIniciadoAPP) this.estacionamiento).getApp());
+		assertEquals(aplicacionEsperada, ((EstacionamientoAPP) this.estacionamiento).getApp());
 	}
 	
 	@Test
-	void testEstacionamientoIniciadoAPPEstaVigente() {
+	void testEstacionamientoAPPEstaVigente() {
 		//setup
 		LocalDateTime hoy = LocalDateTime.of(2021, 10, 14, 14, 0);
 		
@@ -40,9 +40,19 @@ class EstacionamientoIniciadoAPPTest extends EstacionamientoTest {
 	}
 	
 	@Test
+	void testEstacionamientoAPPNoEstaVigente() {
+		//setup
+		LocalDateTime hoy = LocalDateTime.of(2021, 10, 14, 14, 0);
+		
+		((EstacionamientoAPP) this.estacionamiento).finalizar();
+		
+		assertFalse(this.estacionamiento.estaVigente(hoy));		
+	}
+	
+	@Test
 	void testUnEstacionamientoIniciadoAPPConsultaASuAPPSuHoraMaxima() {
 		
-		((EstacionamientoIniciadoAPP) this.estacionamiento).getHoraMaxima();
+		((EstacionamientoAPP) this.estacionamiento).getHoraMaxima();
 		
 		verify(this.aplicacion, atLeast(1)).getHoraMaxima(this.estacionamiento);
 	}

@@ -5,17 +5,26 @@ import java.time.LocalTime;
 
 import app.APP;
 
-public class EstacionamientoIniciadoAPP extends Estacionamiento {
+public class EstacionamientoAPP extends Estacionamiento {
 
 	private APP app;
 
-	public EstacionamientoIniciadoAPP(APP aplicacion, LocalTime horaInicio, String patente) {
-		super(horaInicio, patente);
+	public EstacionamientoAPP(APP aplicacion, LocalTime horaInicio, String patente) {
+		super(horaInicio, null, patente);
 		this.app = aplicacion;
+	}
+	
+	public void finalizar() {
+		this.setHoraFin(LocalTime.now());
 	}
 
 	public APP getApp() {
 		return this.app;
+	}
+
+	public Float getCosto() {
+		//ver como calcularlo si no esta finalizado
+		return null;
 	}
 	
 	public LocalTime getHoraMaxima() {
@@ -25,7 +34,7 @@ public class EstacionamientoIniciadoAPP extends Estacionamiento {
 	
 	@Override
 	public Boolean estaVigente(LocalDateTime momentoConsulta) {
-		return true;
+		return (this.getHoraFin() == null) ? true : false;
 	}
 
 }

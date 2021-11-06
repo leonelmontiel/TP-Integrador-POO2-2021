@@ -4,24 +4,19 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import app.APP;
 import registroDeCompra.RegistroCompraPuntual;
 
 public class EstacionamientoPuntual extends Estacionamiento {
 
-	private LocalTime horaFin;
 	private RegistroCompraPuntual registroCompraPuntual;
 
 	public EstacionamientoPuntual(LocalTime horaInicio, LocalTime horaFin, String patente, 
 			RegistroCompraPuntual compraPuntual) {
-		super(horaInicio, patente);
-		this.horaFin = horaFin;
+		super(horaInicio, horaFin, patente);
 		this.registroCompraPuntual = compraPuntual;
 	}
 
-	public LocalTime getHoraFin() {
-		return this.horaFin;
-	}
-	
 	public RegistroCompraPuntual getRegistroCompraPuntual() {
 		return this.registroCompraPuntual;
 	}
@@ -39,5 +34,15 @@ public class EstacionamientoPuntual extends Estacionamiento {
 	private Boolean esHoraEnVigencia(LocalTime horaConsulta) {
 		return horaConsulta.isBefore(this.getHoraFin()) 
 				&& horaConsulta.isAfter(this.getHoraInicio());
+	}
+
+	@Override
+	public APP getApp() {
+		return null;
+	}
+
+	@Override
+	public void finalizar() {
+		
 	}
 }
