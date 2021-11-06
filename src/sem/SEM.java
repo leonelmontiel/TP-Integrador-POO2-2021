@@ -1,5 +1,6 @@
 package sem;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -9,6 +10,8 @@ import java.util.Map;
 import app.APP;
 import estacionamiento.Estacionamiento;
 import estacionamiento.EstacionamientoAPP;
+import infraccion.Infraccion;
+import inspector.Inspector;
 
 public class SEM {
 
@@ -17,6 +20,7 @@ public class SEM {
 	private Float precioPorHora;
 	private List<Estacionamiento> estacionamientos;
 	private Map<APP, Float> usuariosAPP;
+	private List<Infraccion> infracciones;
 
 	public SEM(LocalTime horaInicio, LocalTime horaCierre, Float precioPorHora) {
 		this.horaInicio = horaInicio;
@@ -88,6 +92,20 @@ public class SEM {
 		return this.estacionamientos.stream()
 				.filter(estacionamiento -> estacionamiento.getPatente().equals(patente))
 				.anyMatch(estacionamiento -> estacionamiento.estaVigente(momentoConsulta));
+	}
+
+	void setInfracciones(List<Infraccion> infracciones) {
+		this.infracciones = infracciones;
+		
+	}
+
+	public Infraccion registrarInfraccion(String patente, Inspector inspector) {
+		LocalDate fecha = LocalDate.now();
+		LocalTime hora = LocalTime.now();
+		Infraccion infraccion = new Infraccion(patente, inspector, fecha, hora, inspector.getZona());
+		
+		this.infracciones.add(infraccion);
+		return infraccion;
 	}
 
 }

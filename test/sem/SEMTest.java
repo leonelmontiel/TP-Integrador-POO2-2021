@@ -12,6 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import app.APP;
 import estacionamiento.Estacionamiento;
+import infraccion.Infraccion;
+import inspector.Inspector;
 
 class SEMTest {
 
@@ -22,12 +24,14 @@ class SEMTest {
 	
 	private APP app;
 	private Estacionamiento estacionamiento;
+	private Inspector inspector;
 	
 	@BeforeEach
 	void setUp() throws Exception {
 		//mocks
 		this.app = mock(APP.class);
 		this.estacionamiento = mock(Estacionamiento.class);
+		this.inspector = mock(Inspector.class);
 		
 		this.horaInicio = LocalTime.of(7, 0);
 		this.horaCierre = LocalTime.of(20, 0);
@@ -154,6 +158,18 @@ class SEMTest {
 		
 		verify(this.estacionamiento).getPatente();
 		verify(this.estacionamiento).estaVigente(momentoConsulta);
+	}
+	
+	@Test
+	void testRegistrarInfracción() {
+		//setup 		
+		List<Infraccion> infraccionesSpy = spy(new ArrayList<Infraccion>());
+		this.sem.setInfracciones(infraccionesSpy);
+		
+		Infraccion infraccionNueva = this.sem.registrarInfraccion("ABC 123", this.inspector);
+		
+		//verify
+		verify(infraccionesSpy).add(infraccionNueva);
 	}
 	
 }
