@@ -6,11 +6,13 @@ import static org.mockito.Mockito.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import app.APP;
+import entidad.Entidad;
 import estacionamiento.Estacionamiento;
 import infraccion.Infraccion;
 import inspector.Inspector;
@@ -25,6 +27,9 @@ class SEMTest {
 	private APP app;
 	private Estacionamiento estacionamiento;
 	private Inspector inspector;
+	private Estacionamiento otroEstacionamiento;
+	private Entidad entidad;
+	private Entidad otraEntidad;
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -32,6 +37,9 @@ class SEMTest {
 		this.app = mock(APP.class);
 		this.estacionamiento = mock(Estacionamiento.class);
 		this.inspector = mock(Inspector.class);
+		this.otroEstacionamiento = mock(Estacionamiento.class);
+		this.entidad = mock(Entidad.class);
+		this.otraEntidad = mock(Entidad.class);
 		
 		this.horaInicio = LocalTime.of(7, 0);
 		this.horaCierre = LocalTime.of(20, 0);
@@ -170,6 +178,76 @@ class SEMTest {
 		
 		//verify
 		verify(infraccionesSpy).add(infraccionNueva);
+	}
+	
+	@Test
+	void testFinalizarTodosLosEstacionamientos() {
+		//SetUp
+		List<Estacionamiento> listaEstacionamientos = Arrays.asList(this.estacionamiento, this.otroEstacionamiento);
+		this.sem.setEstacionamientos(listaEstacionamientos);
+		
+		//Excercise
+		this.sem.finalizarTodosLosEstacionamientos();		
+		
+		//Verify
+		verify(this.estacionamiento).finalizar();
+		verify(this.otroEstacionamiento).finalizar();
+	}
+	
+	@Test
+	void testSuscribirEntidad() {
+		//setUp
+		List<Entidad> listaEntidadesSpy = spy(new ArrayList<Entidad>());
+		this.sem.setEntidades(listaEntidadesSpy);
+		
+		//Excercise
+		this.sem.suscribir(this.entidad);
+		
+		//Verify
+		verify(listaEntidadesSpy).add(this.entidad);
+	}
+	
+	@Test
+	void testNoPuedeSuscribirEntidadRepetida() {
+		//setUp
+		List<Entidad> listaEntidadesSpy = spy(Arrays.asList(this.entidad));
+		this.sem.setEntidades(listaEntidadesSpy);
+		
+		//Excercise
+		this.sem.suscribir(this.entidad);
+		
+		//Verify
+		verify(listaEntidadesSpy, never()).add(this.entidad);
+	}
+	
+	@Test
+	void testDesuscribirEntidad() {
+		//setUp
+		List<Entidad> listaEntidadesSpy = spy(new ArrayList<Entidad>());
+		this.sem.setEntidades(listaEntidadesSpy);
+		this.sem.suscribir(this.entidad);
+		
+		//Excercise
+		this.sem.desuscribir(this.entidad);
+		
+		//Verify
+		assertFalse(this.sem.estaSuscripto(this.entidad));
+		verify(listaEntidadesSpy).remove(this.entidad);
+	}
+	
+	@Test
+	void testNoPuedeDesuscribirEntidadNoEstabaSuscripta() {
+		//setUp
+		List<Entidad> listaEntidadesSpy = spy(new ArrayList<Entidad>());
+		this.sem.setEntidades(listaEntidadesSpy);
+		
+		//Excercise
+		this.sem.suscribir(this.entidad);
+		this.sem.desuscribir(this.otraEntidad);//intenta desuscribir una entidad que no es la que está en la lista
+		
+		//Verify
+		assertEquals(1, listaEntidadesSpy.size());
+		verify(listaEntidadesSpy).remove(this.otraEntidad); //llama al método pero no surte efecto
 	}
 	
 }

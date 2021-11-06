@@ -46,8 +46,6 @@ class EstacionamientoAPPTest extends EstacionamientoTest {
 		
 		((EstacionamientoAPP) this.estacionamiento).finalizar();
 		
-		System.out.println(this.estacionamiento.getHoraFin());
-		
 		assertFalse(this.estacionamiento.estaVigente(hoy));		
 	}
 	

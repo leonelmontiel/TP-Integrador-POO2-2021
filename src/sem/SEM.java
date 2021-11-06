@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import app.APP;
+import entidad.Entidad;
 import estacionamiento.Estacionamiento;
 import estacionamiento.EstacionamientoAPP;
 import infraccion.Infraccion;
@@ -21,6 +22,7 @@ public class SEM {
 	private List<Estacionamiento> estacionamientos;
 	private Map<APP, Float> usuariosAPP;
 	private List<Infraccion> infracciones;
+	private List<Entidad> entidades;
 
 	public SEM(LocalTime horaInicio, LocalTime horaCierre, Float precioPorHora) {
 		this.horaInicio = horaInicio;
@@ -86,6 +88,7 @@ public class SEM {
 
 	public void registrarEstacionamiento(Estacionamiento estacionamiento) {
 		this.estacionamientos.add(estacionamiento);
+		//notificar
 	}
 
 	public Boolean tieneEstacionamientoVigente(String patente, LocalDateTime momentoConsulta) {
@@ -106,6 +109,31 @@ public class SEM {
 		
 		this.infracciones.add(infraccion);
 		return infraccion;
+	}
+
+	public void finalizarTodosLosEstacionamientos() {
+		this.estacionamientos.stream().forEach(Estacionamiento::finalizar);
+		
+	}
+
+	public void setEntidades(List<Entidad> listaEntidades) {
+		this.entidades = listaEntidades;
+		
+	}
+
+	public void suscribir(Entidad entidad) {
+		if (!estaSuscripto(entidad)) {
+			this.entidades.add(entidad);
+		}	
+		
+	}
+
+	Boolean estaSuscripto(Entidad entidad) {
+		return this.entidades.contains(entidad);
+	}
+
+	public void desuscribir(Entidad entidad) {
+		this.entidades.remove(entidad);		
 	}
 
 }
