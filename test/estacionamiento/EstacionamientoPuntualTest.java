@@ -10,11 +10,11 @@ import java.time.LocalTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import registroDeCompra.RegistroCompraPuntual;
+import registroDeCompra.RegistroDeCompraPuntual;
 
 class EstacionamientoPuntualTest extends EstacionamientoTest {
 
-	private RegistroCompraPuntual compraPuntual;
+	private RegistroDeCompraPuntual compraPuntual;
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -22,7 +22,7 @@ class EstacionamientoPuntualTest extends EstacionamientoTest {
 		this.horaInicio = LocalTime.of(12, 0);
 		this.horaFin = LocalTime.of(15, 0);
 		this.patente = "AA 325 AA";
-		this.compraPuntual = mock(RegistroCompraPuntual.class);
+		this.compraPuntual = mock(RegistroDeCompraPuntual.class);
 		this.estacionamiento = new EstacionamientoPuntual(this.horaInicio, this.horaFin, this.patente, 
 				this.compraPuntual);
 		
@@ -36,7 +36,7 @@ class EstacionamientoPuntualTest extends EstacionamientoTest {
 	
 	@Test
 	void testUnEstacionamientoPuntualTieneUnRegistroDeCompraPuntualAsociado() {
-		RegistroCompraPuntual registroEsperado = this.compraPuntual;
+		RegistroDeCompraPuntual registroEsperado = this.compraPuntual;
 		assertEquals(registroEsperado, ((EstacionamientoPuntual) this.estacionamiento).getRegistroCompraPuntual());
 	}
 	
