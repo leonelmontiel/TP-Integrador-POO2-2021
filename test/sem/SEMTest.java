@@ -250,4 +250,43 @@ class SEMTest {
 		verify(listaEntidadesSpy).remove(this.otraEntidad); //llama al método pero no surte efecto
 	}
 	
+	@Test
+	void testNotificarEstacionamientoIniciado() {
+		//SetUP
+		this.sem.suscribir(this.entidad);
+		this.sem.suscribir(this.otraEntidad);
+		//Excercise
+		Estacionamiento estIniciado = this.sem.iniciarEstacionamiento("ABC 123", this.app);
+		//Verify
+		verify(this.entidad).actualizarEstacionamientoIniciado(this.sem, estIniciado);
+		verify(this.otraEntidad).actualizarEstacionamientoIniciado(this.sem, estIniciado);		
+	}
+	
+	@Test
+	void testNotificarEstacionamientoFinalizado() {
+		//SetUP
+		this.sem.suscribir(this.entidad);
+		this.sem.suscribir(this.otraEntidad);
+		//Excercise
+		Estacionamiento estFinalizado = this.sem.iniciarEstacionamiento("ABC 123", this.app);
+		this.sem.finalizarEstacionamiento(this.app);
+		//Verify
+		verify(this.entidad).actualizarEstacionamientoFinalizado(this.sem, estFinalizado);
+		verify(this.otraEntidad).actualizarEstacionamientoFinalizado(this.sem, estFinalizado);		
+	}
+	
+	/*
+	@Test
+	void testNotificarRecargaDeCelular() {
+		//SetUP
+		this.sem.suscribir(this.entidad);
+		this.sem.suscribir(this.otraEntidad);
+		Float monto = 200f;
+		//Excercise
+		this.sem.recargarSaldo(this.app, monto);
+		//Verify
+		verify(this.entidad).actualizarRecargaDeCelular(this.sem, this.app, monto);
+		verify(this.otraEntidad).actualizarRecargaDeCelular(this.sem, this.app, monto);
+		//IMPLEMENTAR LA NOTIFICACION POR RECARGA DE CELULAR (POSIBLE STRATEGY)
+	}*/
 }

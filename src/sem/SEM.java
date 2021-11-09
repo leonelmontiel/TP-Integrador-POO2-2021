@@ -30,6 +30,8 @@ public class SEM {
 		this.precioPorHora = precioPorHora;
 		this.estacionamientos = new ArrayList<Estacionamiento>();
 		this.usuariosAPP = new HashMap<APP, Float>();
+		this.entidades = new ArrayList<Entidad>();
+		this.infracciones = new ArrayList<Infraccion>();
 	}
 	
 	public List<Estacionamiento> getEstacionamientos() {
@@ -64,9 +66,16 @@ public class SEM {
 	}
 
 	public void finalizarEstacionamiento(APP app) {
-		this.estacionamientos.stream().filter(estacionamiento -> estacionamiento.getApp().equals(app))
-		.filter(estacionamiento -> estacionamiento.estaVigente(LocalDateTime.now())).toList().get(0)
-		.finalizar();
+		Estacionamiento estacionamientoAFinalizar = this.estacionamientos.stream().filter(estacionamiento -> estacionamiento.getApp().equals(app))
+				.filter(estacionamiento -> estacionamiento.estaVigente(LocalDateTime.now())).toList().get(0);
+		
+		estacionamientoAFinalizar.finalizar();
+		
+		this.notificarEstacionamientoFinalizado(this, estacionamientoAFinalizar);
+	}
+
+	private void notificarEstacionamientoFinalizado(SEM sem, Estacionamiento estacionamiento) {
+		this.entidades.stream().forEach(entidad -> entidad.actualizarEstacionamientoFinalizado(this, estacionamiento));		
 	}
 
 	public void regitrarAPP(APP app) {
@@ -88,7 +97,11 @@ public class SEM {
 
 	public void registrarEstacionamiento(Estacionamiento estacionamiento) {
 		this.estacionamientos.add(estacionamiento);
-		//notificar
+		notificarEstacionamientoIniciado(estacionamiento);
+	}
+
+	private void notificarEstacionamientoIniciado(Estacionamiento estacionamiento) {
+		this.entidades.stream().forEach(entidad -> entidad.actualizarEstacionamientoIniciado(this, estacionamiento));
 	}
 
 	public Boolean tieneEstacionamientoVigente(String patente, LocalDateTime momentoConsulta) {
