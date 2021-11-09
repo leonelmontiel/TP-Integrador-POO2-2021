@@ -40,11 +40,11 @@ class AppTest {
 	void testIniciarEstacionamientoOK() {
 		//setUp
 		Float saldoDisponible = 180f;
-		when(this.sistema.getSaldo(app)).thenReturn(saldoDisponible);
+		when(this.sistema.getSaldo(this.app)).thenReturn(saldoDisponible);
 		//Excercise
 		this.app.iniciarEstacionamiento(this.patente);
 		//Verify
-		verify(this.sistema, times(1)).iniciarEstacionamiento(patente, app);
+		verify(this.sistema, times(1)).iniciarEstacionamiento(this.patente, this.app);
 	}
 	
 	@Test
@@ -52,30 +52,30 @@ class AppTest {
 		//Excercise
 		this.app.finalizarEstacionamiento();
 		//Verify
-		verify(this.sistema, times(1)).finalizarEstacionamiento(app);
+		verify(this.sistema, times(1)).finalizarEstacionamiento(this.app);
 	}
 
 	@Test
 	void testNoTieneSaldoParaIniciarEstacionamiento() {
 		//setUp
 		Float saldoDisponible = 20f;
-		when(this.sistema.getSaldo(app)).thenReturn(saldoDisponible);
+		when(this.sistema.getSaldo(this.app)).thenReturn(saldoDisponible);
 		//Excercise
 		this.app.iniciarEstacionamiento(this.patente);
 		//Verify
-		verify(this.sistema, never()).iniciarEstacionamiento(patente, app);
+		verify(this.sistema, never()).iniciarEstacionamiento(this.patente, this.app);
 	}
 	
 	@Test
 	void testGetSaldo() {
 		//setUp
 		Float saldoDeseado = 580f;
-		when(this.sistema.getSaldo(app)).thenReturn(saldoDeseado);
+		when(this.sistema.getSaldo(this.app)).thenReturn(saldoDeseado);
 		//Excercice
 		Float saldoObtenido = this.app.getSaldo();
 		//Verify
 		assertEquals(saldoDeseado, saldoObtenido);
-		verify(this.sistema, times(1)).getSaldo(app);
+		verify(this.sistema, times(1)).getSaldo(this.app);
 	}
 	
 }
