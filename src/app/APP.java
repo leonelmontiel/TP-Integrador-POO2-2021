@@ -9,10 +9,12 @@ public class APP {
 
 	private int numero;
 	private SEM sistema;
+	private EstadoAPP estado;
 
 	public APP(int numero, SEM sistema) {
 		this.numero = numero;
 		this.sistema = sistema;
+		this.estado = new SinEstacionamiento();
 	}
 
 	public int getNumero() {
@@ -20,14 +22,7 @@ public class APP {
 	}
 
 	public void iniciarEstacionamiento(String patente) {
-		// EVALUAR SI TIENE SALDO SUFICIENTE PARA LA PRIMERA HORA DE ESTACIONAMIENTO $40
-		if (saldoEsMayorOIgualAPrecioPorHora()) {
-			// env�a la patente para iniciar el estacionamiento y a su vez a la app misma para que el sistema los vincule
-			this.sistema.iniciarEstacionamiento(patente, this);
-		} else {
-			System.out.println("No ten�s saldo suficiente para iniciar este estacionamiento. El precio por hora es: " + "$" + this.sistema.getPrecioPorHora());
-		}
-		
+		this.estado.iniciarEstacionamiento(this, patente);		
 	}
 
 	public boolean saldoEsMayorOIgualAPrecioPorHora() {
@@ -38,7 +33,7 @@ public class APP {
 		// SI NO TIENE SALDO SUFICIENTE, FINALIZA EL ESTACIONAMIENTO PERO QUEDA SALDO NEGATIVO
 		// SI NO LO FINALIZA, SIGUE ABIERTO HASTA QUE SE CIERRA SOLO A LAS 20H
 		// se env�a a s� misma para que el sistema la vincule con la patente y as� finalice el estacionamiento registrado
-		this.sistema.finalizarEstacionamiento(this);
+		this.estado.finalizarEstacionamiento(this);
 	}
 
 	public Float getSaldo() {
@@ -50,5 +45,21 @@ public class APP {
 		// consulta al sistema la hora m�xima registrada para el estacionamiento dado
 		//this.sistema.getHoraMaxima(estacionamiento);
 		return null;
+	}
+
+	public Boolean tieneEstacionamiento() {
+		return this.estado.tieneEstacionamiento();
+	}
+
+	void finalizarEstacionamientoSeguro() {
+		this.sistema.finalizarEstacionamiento(this);		
+	}
+
+	void setEstado(EstadoAPP nuevoEstado) {
+		this.estado = nuevoEstado;		
+	}
+
+	public void iniciarEstacionamientoSeguro(String patente) {
+		this.sistema.iniciarEstacionamiento(patente, this);		
 	}
 }

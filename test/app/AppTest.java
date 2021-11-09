@@ -46,14 +46,6 @@ class AppTest {
 		//Verify
 		verify(this.sistema, times(1)).iniciarEstacionamiento(this.patente, this.app);
 	}
-	
-	@Test
-	void testFinalizarEstacionamiento() {
-		//Excercise
-		this.app.finalizarEstacionamiento();
-		//Verify
-		verify(this.sistema, times(1)).finalizarEstacionamiento(this.app);
-	}
 
 	@Test
 	void testNoTieneSaldoParaIniciarEstacionamiento() {
@@ -78,4 +70,51 @@ class AppTest {
 		verify(this.sistema, times(1)).getSaldo(this.app);
 	}
 	
+	@Test
+	void testNoTieneEstacioamientoIniciado() {
+		assertFalse(this.app.tieneEstacionamiento());
+	}
+	
+	@Test
+	void testTieneEstacioamientoIniciado() {
+		//Config Mock
+		Float saldoDisponible = 80F;
+		when(this.sistema.getSaldo(this.app)).thenReturn(saldoDisponible);
+		//Excercise
+		this.app.iniciarEstacionamiento(this.patente);
+		//Verify
+		assertTrue(this.app.tieneEstacionamiento());
+	}
+	
+	@Test
+	void testAPPSinEstacioamientoNoLoFinaliza() {
+		//Excercise
+		this.app.finalizarEstacionamiento();
+		//Verify
+		verify(this.sistema, never()).finalizarEstacionamiento(this.app);
+	}
+		
+	@Test
+	void testAPPConEstacionamientoLoFinaliza() {
+		//Config Mock
+		Float saldoDisponible = 80F;
+		when(this.sistema.getSaldo(this.app)).thenReturn(saldoDisponible);
+		//Excercise
+		this.app.iniciarEstacionamiento(this.patente);
+		this.app.finalizarEstacionamiento();
+		//Verify
+		verify(this.sistema, times(1)).finalizarEstacionamiento(this.app);
+	}
+	
+	@Test
+	void testAPPConEstacionamientoNoLoInicia() {
+		//Config Mock
+		Float saldoDisponible = 80F;
+		when(this.sistema.getSaldo(this.app)).thenReturn(saldoDisponible);
+		//Excercise
+		this.app.iniciarEstacionamiento(this.patente);
+		this.app.iniciarEstacionamiento(this.patente);
+		//Verify
+		verify(this.sistema, times(1)).iniciarEstacionamiento(this.patente, this.app);
+	}
 }
