@@ -48,13 +48,5 @@ class EstacionamientoAPPTest extends EstacionamientoTest {
 		
 		assertFalse(this.estacionamiento.estaVigente(hoy));		
 	}
-	
-	@Test
-	void testUnEstacionamientoIniciadoAPPConsultaASuAPPSuHoraMaxima() {
-		
-		((EstacionamientoAPP) this.estacionamiento).getHoraMaxima();
-		
-		verify(this.aplicacion, atLeast(1)).getHoraMaxima(this.estacionamiento);
-	}
 
 }

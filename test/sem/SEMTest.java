@@ -7,7 +7,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,8 +38,8 @@ class SEMTest {
 		//mocks
 		this.app = mock(APP.class);
 		this.estacionamiento = mock(Estacionamiento.class);
-		this.inspector = mock(Inspector.class);
 		this.otroEstacionamiento = mock(Estacionamiento.class);
+		this.inspector = mock(Inspector.class);
 		this.entidad = mock(Entidad.class);
 		this.otraEntidad = mock(Entidad.class);
 		
@@ -71,21 +73,55 @@ class SEMTest {
 	}
 
 	@Test
-	void testIniciarEstacionamiento() {
-		//setup 
+	void testIniciarEstacionamientoYNotificarAlUsuario() {
+		//configuracion de mocks
 		List<Estacionamiento> estacionamientosSpy = spy(new ArrayList<Estacionamiento>());
+		@SuppressWarnings("unchecked")
+		Map<APP, Float> usuariosMock = mock(Map.class);
+		when(usuariosMock.get(this.app)).thenReturn(80f);
+	
+		//setup 
+		this.sem.setUsuariosAPP(usuariosMock);
 		this.sem.setEstacionamientos(estacionamientosSpy);
-		
+
+		//exercise
 		Estacionamiento estacionamientoNuevo = this.sem.iniciarEstacionamiento("abc 123", this.app);
-		
+
 		//verify
 		verify(estacionamientosSpy).add(estacionamientoNuevo);
 	}
 	
 	@Test
-	void testFinalizarEstacionamiento() {
+	void testNotificaAlUsuarioCuandoIniciaElEstacionamientoConInformacionDelMismo() {
+		//configuracion de mocks
+		@SuppressWarnings("unchecked")
+		Map<APP, Float> usuariosMock = mock(Map.class);
+		when(usuariosMock.get(this.app)).thenReturn(80f);
+	
 		//setup 
+		this.sem.setUsuariosAPP(usuariosMock);
+
+		//exercise
+		Estacionamiento estacionamientoNuevo = this.sem.iniciarEstacionamiento("abc 123", this.app);
+		
+		String notificacionEsperada = "Estacionamiento iniciado a las " 
+				+ estacionamientoNuevo.getHoraInicio() +
+				" valido hasta las " + this.sem.getHoraMaxima(estacionamientoNuevo) + " hs.";
+		
+		//verify
+		verify(this.app).notificarAlUsuario(notificacionEsperada);		
+	}
+	
+	@Test
+	void testFinalizarEstacionamiento() {
+		//configuracion de mocks
 		List<Estacionamiento> estacionamientosSpy = spy(new ArrayList<Estacionamiento>());
+		@SuppressWarnings("unchecked")
+		Map<APP, Float> usuariosMock = mock(Map.class);
+		when(usuariosMock.get(this.app)).thenReturn(80f);
+	
+		//setup 
+		this.sem.setUsuariosAPP(usuariosMock);
 		this.sem.setEstacionamientos(estacionamientosSpy);
 		
 		Estacionamiento estacionamientoNuevo = this.sem.iniciarEstacionamiento("abc 123", this.app);
@@ -106,11 +142,16 @@ class SEMTest {
 	
 	@Test
 	void testRegistrarApp() {
+		//setup
+		Map<APP, Float> usuariosSpy = spy(new HashMap<APP, Float>());
+		this.sem.setUsuariosAPP(usuariosSpy);
+		
 		//exercise
 		this.sem.regitrarAPP(this.app);
 	
 		//verify
 		assertTrue(this.sem.tieneRegistradoApp(this.app));
+		verify(usuariosSpy).put(this.app, 0f);
 	}
 	
 	@Test
@@ -135,6 +176,7 @@ class SEMTest {
 		assertEquals(saldoEsperado, this.sem.getSaldo(this.app));
 		
 		this.sem.recargarSaldo(this.app, montoRecarga2);
+		
 		assertEquals(saldoEsperado2, saldoEsperado2);
 	}
 	
@@ -252,11 +294,19 @@ class SEMTest {
 	
 	@Test
 	void testNotificarEstacionamientoIniciado() {
+		//configuracion de mocks
+		@SuppressWarnings("unchecked")
+		Map<APP, Float> usuariosMock = mock(Map.class);
+		when(usuariosMock.get(this.app)).thenReturn(80f);
+		
 		//SetUP
+		this.sem.setUsuariosAPP(usuariosMock);
 		this.sem.suscribir(this.entidad);
 		this.sem.suscribir(this.otraEntidad);
+		
 		//Excercise
 		Estacionamiento estIniciado = this.sem.iniciarEstacionamiento("ABC 123", this.app);
+
 		//Verify
 		verify(this.entidad).actualizarEstacionamientoIniciado(this.sem, estIniciado);
 		verify(this.otraEntidad).actualizarEstacionamientoIniciado(this.sem, estIniciado);		
@@ -264,12 +314,20 @@ class SEMTest {
 	
 	@Test
 	void testNotificarEstacionamientoFinalizado() {
+		//configuracion de mocks
+		@SuppressWarnings("unchecked")
+		Map<APP, Float> usuariosMock = mock(Map.class);
+		when(usuariosMock.get(this.app)).thenReturn(80f);
+
 		//SetUP
+		this.sem.setUsuariosAPP(usuariosMock);
 		this.sem.suscribir(this.entidad);
 		this.sem.suscribir(this.otraEntidad);
+		
 		//Excercise
 		Estacionamiento estFinalizado = this.sem.iniciarEstacionamiento("ABC 123", this.app);
 		this.sem.finalizarEstacionamiento(this.app);
+
 		//Verify
 		verify(this.entidad).actualizarEstacionamientoFinalizado(this.sem, estFinalizado);
 		verify(this.otraEntidad).actualizarEstacionamientoFinalizado(this.sem, estFinalizado);		

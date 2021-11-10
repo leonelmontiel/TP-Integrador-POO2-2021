@@ -50,18 +50,33 @@ public class SEM {
 	void setEstacionamientos(List<Estacionamiento> estacionamientos) {
 		this.estacionamientos = estacionamientos;
 	}
+	
+	void setUsuariosAPP(Map<APP, Float> usuariosAPP) {
+		this.usuariosAPP = usuariosAPP;
+	}
 
 	public Estacionamiento iniciarEstacionamiento(String patente, APP app) {
-		LocalTime horaInicio = LocalTime.now();
 		//las instancias de estacionamiento estan estrictamente vinculadas a la inicializacion de las 
 		//mismas por el sem (principio de dependency inversion)
+		LocalTime horaInicio = LocalTime.now();
 		EstacionamientoAPP nuevoEstacionamiento = new EstacionamientoAPP(app, patente, horaInicio);
+		String notificacion = "Estacionamiento iniciado a las " + nuevoEstacionamiento.getHoraInicio() +
+				" valido hasta las " + this.getHoraMaxima(nuevoEstacionamiento) + " hs.";
 		
 		this.registrarEstacionamiento(nuevoEstacionamiento);
+		app.notificarAlUsuario(notificacion);
 		
 		return nuevoEstacionamiento;
 	}
 
+	LocalTime getHoraMaxima(Estacionamiento estacionamiento) {
+		Integer horasQuePuedeComprar = (int) (this.getSaldo(estacionamiento.getApp()) / 
+				this.precioPorHora);
+		LocalTime potencialHoraFin = estacionamiento.getHoraInicio().plusHours(horasQuePuedeComprar); 
+		
+		return (potencialHoraFin.isAfter(this.horaCierre)) ? this.horaCierre : potencialHoraFin;
+	}
+	
 	public void finalizarEstacionamiento(APP app) {
 		Estacionamiento estacionamientoAFinalizar = this.estacionamientos.stream()
 				.filter(estacionamiento -> estacionamiento.getApp().equals(app) && 
@@ -123,19 +138,16 @@ public class SEM {
 
 	public void finalizarTodosLosEstacionamientos() {
 		this.estacionamientos.stream().forEach(Estacionamiento::finalizar);
-		
 	}
 
 	void setEntidades(List<Entidad> listaEntidades) {
 		this.entidades = listaEntidades;
-		
 	}
 
 	public void suscribir(Entidad entidad) {
 		if (!estaSuscripto(entidad)) {
 			this.entidades.add(entidad);
-		}	
-		
+		}		
 	}
 
 	Boolean estaSuscripto(Entidad entidad) {

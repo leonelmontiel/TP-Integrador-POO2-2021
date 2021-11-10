@@ -1,8 +1,5 @@
 package app;
 
-import java.time.LocalTime;
-
-import estacionamiento.Estacionamiento;
 import sem.SEM;
 
 public class APP implements MovementSensor {
@@ -62,12 +59,6 @@ public class APP implements MovementSensor {
 
 	Boolean saldoEsMayorOIgualAPrecioPorHora() {
 		return this.sistema.getSaldo(this) >= this.sistema.getPrecioPorHora();
-	}
-
-	public LocalTime getHoraMaxima(Estacionamiento estacionamiento) {
-		// consulta al sistema la hora m�xima registrada para el estacionamiento dado
-		//this.sistema.getHoraMaxima(estacionamiento);
-		return null;
 	}
 
 	public Boolean tieneEstacionamiento() {
