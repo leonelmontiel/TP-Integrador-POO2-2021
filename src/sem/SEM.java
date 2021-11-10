@@ -62,8 +62,9 @@ public class SEM {
 	}
 
 	public void finalizarEstacionamiento(APP app) {
-		Estacionamiento estacionamientoAFinalizar = this.estacionamientos.stream().filter(estacionamiento -> estacionamiento.getApp().equals(app))
-				.filter(estacionamiento -> estacionamiento.estaVigente(LocalDateTime.now())).toList().get(0);
+		Estacionamiento estacionamientoAFinalizar = this.estacionamientos.stream()
+				.filter(estacionamiento -> estacionamiento.getApp().equals(app) && 
+						estacionamiento.estaVigente(LocalDateTime.now())).toList().get(0);
 		
 		estacionamientoAFinalizar.finalizar();
 		
@@ -102,16 +103,15 @@ public class SEM {
 
 	public Boolean tieneEstacionamientoVigente(String patente, LocalDateTime momentoConsulta) {
 		return this.estacionamientos.stream()
-				.filter(estacionamiento -> estacionamiento.getPatente().equals(patente))
-				.anyMatch(estacionamiento -> estacionamiento.estaVigente(momentoConsulta));
+				.anyMatch(estacionamiento -> estacionamiento.getPatente().equals(patente) &&
+						estacionamiento.estaVigente(momentoConsulta));
 	}
 
 	void setInfracciones(List<Infraccion> infracciones) {
 		this.infracciones = infracciones;
-		
 	}
 
-	public Infraccion registrarInfraccion(String patente, Inspector inspector) {
+	public Infraccion altaInfraccion(String patente, Inspector inspector) {
 		LocalDate fecha = LocalDate.now();
 		LocalTime hora = LocalTime.now();
 		Infraccion infraccion = new Infraccion(patente, inspector, fecha, hora, inspector.getZona());

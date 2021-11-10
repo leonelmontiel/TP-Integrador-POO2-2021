@@ -174,7 +174,7 @@ class SEMTest {
 		List<Infraccion> infraccionesSpy = spy(new ArrayList<Infraccion>());
 		this.sem.setInfracciones(infraccionesSpy);
 		
-		Infraccion infraccionNueva = this.sem.registrarInfraccion("ABC 123", this.inspector);
+		Infraccion infraccionNueva = this.sem.altaInfraccion("ABC 123", this.inspector);
 		
 		//verify
 		verify(infraccionesSpy).add(infraccionNueva);
