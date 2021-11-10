@@ -23,15 +23,32 @@ public class APP implements MovementSensor {
 	public int getNumero() {
 		return this.numero;
 	}
+	
+	public SEM getSistema() {
+		return this.sistema;
+	}
 
+	public Float getSaldo() {
+		// se env�a a s� misma para consultar en el registro del SEM cu�nto saldo tiene disponible
+		return this.sistema.getSaldo(this);
+	}
+	
+	void setEstado(EstadoAPP nuevoEstado) {
+		this.estado = nuevoEstado;		
+	}
+	
+	void setPantalla(Pantalla pantalla) {
+		this.pantanlla = pantalla;
+	}
+	
+	public void notificarAlUsuario(String mensaje) {
+		this.pantanlla.mostrar(mensaje);
+	}
+	
 	public void iniciarEstacionamiento(String patente) {
 		this.estado.iniciarEstacionamiento(this, patente);		
 	}
-
-	public boolean saldoEsMayorOIgualAPrecioPorHora() {
-		return this.sistema.getSaldo(this) >= this.sistema.getPrecioPorHora();
-	}
-
+	
 	public void finalizarEstacionamiento() {
 		// SI NO TIENE SALDO SUFICIENTE, FINALIZA EL ESTACIONAMIENTO PERO QUEDA SALDO NEGATIVO
 		// SI NO LO FINALIZA, SIGUE ABIERTO HASTA QUE SE CIERRA SOLO A LAS 20H
@@ -39,9 +56,8 @@ public class APP implements MovementSensor {
 		this.estado.finalizarEstacionamiento(this);
 	}
 
-	public Float getSaldo() {
-		// se env�a a s� misma para consultar en el registro del SEM cu�nto saldo tiene disponible
-		return this.sistema.getSaldo(this);
+	public boolean saldoEsMayorOIgualAPrecioPorHora() {
+		return this.sistema.getSaldo(this) >= this.sistema.getPrecioPorHora();
 	}
 
 	public LocalTime getHoraMaxima(Estacionamiento estacionamiento) {
@@ -54,10 +70,6 @@ public class APP implements MovementSensor {
 		return this.estado.tieneEstacionamiento();
 	}
 
-	void setEstado(EstadoAPP nuevoEstado) {
-		this.estado = nuevoEstado;		
-	}
-
 	@Override
 	public void driving() {
 		this.estado.alertaFinEstacionamiento(this);
@@ -68,10 +80,6 @@ public class APP implements MovementSensor {
 		this.estado.alertaInicioEstacionamiento(this);
 	}
 
-	void setPantalla(Pantalla pantalla) {
-		this.pantanlla = pantalla;
-	}
-
 	public void activarAsistenciaAlUsuario() {
 		this.asistenciaAlUsuario = AsistenciaAlUsuario.ACTIVADA;
 	}
@@ -80,19 +88,11 @@ public class APP implements MovementSensor {
 		this.asistenciaAlUsuario = AsistenciaAlUsuario.DESACTIVADA;
 	}
 
-	public SEM getSistema() {
-		return this.sistema;
-	}
-
-	public void alertaInicioEstacionamiento() {
+	void alertaInicioEstacionamiento() {
 		this.asistenciaAlUsuario.alertaInicioEstacionamiento(this);
 	}
 
-	public void alertaFinEstacionamiento() {
+	void alertaFinEstacionamiento() {
 		this.asistenciaAlUsuario.alertaFinEstacionamiento(this);
-	}
-
-	public void notificarAlUsuario(String mensaje) {
-		this.pantanlla.mostrar(mensaje);
 	}
 }

@@ -21,12 +21,12 @@ public enum AsistenciaAlUsuario {
 		
 		@Override
 		void alertaInicioEstacionamiento(APP app) {
-			app.getPantalla().mostrar(ALERTA_INICIO);
+			app.notificarAlUsuario(ALERTA_INICIO);
 		}
 
 		@Override
 		void alertaFinEstacionamiento(APP app) {
-			app.getPantalla().mostrar(ALERTA_FIN);
+			app.notificarAlUsuario(ALERTA_FIN);
 		}
 	};
 
