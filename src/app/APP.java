@@ -5,16 +5,19 @@ import java.time.LocalTime;
 import estacionamiento.Estacionamiento;
 import sem.SEM;
 
-public class APP {
+public class APP implements MovementSensor {
 
 	private int numero;
 	private SEM sistema;
 	private EstadoAPP estado;
+	private AsistenciaAlUsuario asistenciaAlUsuario;
+	private Pantalla pantanlla;
 
 	public APP(int numero, SEM sistema) {
 		this.numero = numero;
 		this.sistema = sistema;
 		this.estado = new SinEstacionamiento();
+		this.asistenciaAlUsuario = AsistenciaAlUsuario.DESACTIVADA;
 	}
 
 	public int getNumero() {
@@ -61,5 +64,40 @@ public class APP {
 
 	void iniciarEstacionamientoSeguro(String patente) {
 		this.sistema.iniciarEstacionamiento(patente, this);		
+	}
+	
+	@Override
+	public void driving() {
+		this.estado.alertaFinEstacionamiento(this);
+	}
+	
+	@Override
+	public void walking() {
+		this.estado.alertaInicioEstacionamiento(this);
+	}
+
+	//esto se utiliza para emular lo que se le muestra al usuario de la app en la pantalla
+	Pantalla getPantalla() {
+		return this.pantanlla;
+	}
+
+	void setPantalla(Pantalla pantalla) {
+		this.pantanlla = pantalla;
+	}
+
+	public AsistenciaAlUsuario getAsistenciaAlUsuario() {
+		return this.asistenciaAlUsuario;
+	}
+
+	public void activarAsistenciaAlUsuario() {
+		this.asistenciaAlUsuario = AsistenciaAlUsuario.ACTIVADA;
+	}
+
+	public void desactivarAsistenciaAlUsuario() {
+		this.asistenciaAlUsuario = AsistenciaAlUsuario.DESACTIVADA;
+	}
+
+	public SEM getSistema() {
+		return this.sistema;
 	}
 }

@@ -13,6 +13,7 @@ class AppTest {
 	private Integer numero;
 	private String patente;
 	private SEM sistema;
+	private Pantalla pantalla;
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -21,6 +22,7 @@ class AppTest {
 		this.patente = "A13F45";
 		
 		this.sistema = mock(SEM.class);
+		this.pantalla = mock(Pantalla.class);
 		this.app = new APP(this.numero, this.sistema);
 		
 		// config mock
@@ -52,10 +54,12 @@ class AppTest {
 		//setUp
 		Float saldoDisponible = 20f;
 		when(this.sistema.getSaldo(this.app)).thenReturn(saldoDisponible);
+		this.app.setPantalla(this.pantalla);
 		//Excercise
 		this.app.iniciarEstacionamiento(this.patente);
 		//Verify
 		verify(this.sistema, never()).iniciarEstacionamiento(this.patente, this.app);
+		verify(this.pantalla).mostrar("No tenes saldo suficiente para iniciar este estacionamiento.");
 	}
 	
 	@Test
@@ -116,5 +120,35 @@ class AppTest {
 		this.app.iniciarEstacionamiento(this.patente);
 		//Verify
 		verify(this.sistema, times(1)).iniciarEstacionamiento(this.patente, this.app);
+	}
+
+	@Test
+	void testAPPInicialmenteNoAvisaSobreCambiosDeMovimiento() {
+		//setup
+		this.app.setPantalla(this.pantalla);
+		//exercise
+		this.app.driving();
+		this.app.walking();
+		
+		//verify
+		verify(this.pantalla, never()).mostrar("Alerta debe iniciar estacionamiento");
+		verify(this.pantalla, never()).mostrar("Alerta debe finalizar estacionamiento");
+	}
+	
+	@Test
+	void testAPPConAsistenciaAlUsuarioActivadaAlertaCambioDeMovimiento() {
+		//setup
+		when(this.sistema.getSaldo(this.app)).thenReturn(80f);
+		this.app.activarAsistenciaAlUsuario();
+		this.app.setPantalla(this.pantalla);
+		
+		//exercise 
+		this.app.walking();
+		this.app.iniciarEstacionamiento(this.patente);
+		this.app.driving();
+		
+		//verify
+		verify(this.pantalla).mostrar("Alerta debe iniciar estacionamiento");
+		verify(this.pantalla).mostrar("Alerta debe finalizar estacionamiento");
 	}
 }

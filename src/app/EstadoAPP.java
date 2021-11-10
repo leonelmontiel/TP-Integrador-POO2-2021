@@ -8,4 +8,8 @@ public abstract class EstadoAPP {
 
 	protected abstract void iniciarEstacionamiento(APP app, String patente);
 
+	protected abstract void alertaInicioEstacionamiento(APP app);
+
+	protected abstract void alertaFinEstacionamiento(APP app);
+
 }

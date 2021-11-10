@@ -19,4 +19,14 @@ public class ConEstacionamiento extends EstadoAPP {
 		// No hace anda porque ya tiene el estacionamiento iniciado		
 	}
 
+	@Override
+	protected void alertaInicioEstacionamiento(APP app) {
+		//no hace nada porque ya tiene un estacionamiento iniciado
+	}
+
+	@Override
+	protected void alertaFinEstacionamiento(APP app) {
+		app.getAsistenciaAlUsuario().alertaFinEstacionamiento(app);
+	}
+
 }
