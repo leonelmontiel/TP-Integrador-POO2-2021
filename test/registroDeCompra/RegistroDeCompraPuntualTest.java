@@ -25,5 +25,11 @@ class RegistroDeCompraPuntualTest extends RegistroDeCompraTest{
 	void testGetHorasCompradas() {
 		assertEquals(this.horasCompradas, ((RegistroDeCompraPuntual) this.registroDeCompra).getHorasCompradas());
 	}
+	
+	@Test
+	void testGetPatente() {
+		String patenteObtenida = ((RegistroDeCompraPuntual) this.registroDeCompra).getPatente();
+		assertEquals(patenteObtenida, this.patente);
+	}
 
 }
