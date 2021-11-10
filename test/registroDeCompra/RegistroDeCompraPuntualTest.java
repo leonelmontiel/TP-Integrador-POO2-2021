@@ -10,13 +10,15 @@ import org.junit.jupiter.api.Test;
 class RegistroDeCompraPuntualTest extends RegistroDeCompraTest{
 
 	private Integer horasCompradas;
+	private String patente;
 
 	@BeforeEach
 	void setUp() throws Exception {
 		this.horasCompradas = 4;
 		this.nroControl = 2000548;
 		this.hora = LocalTime.of(15, 00);
-		this.registroDeCompra = new RegistroDeCompraPuntual(this.puntoDeVenta, this.nroControl, this.fecha, this.hora, this.celular, this.horasCompradas);
+		this.patente = "ABC 123";
+		this.registroDeCompra = new RegistroDeCompraPuntual(this.puntoDeVenta, this.nroControl, this.fecha, this.hora, this.patente, this.horasCompradas);
 	}
 
 	@Test

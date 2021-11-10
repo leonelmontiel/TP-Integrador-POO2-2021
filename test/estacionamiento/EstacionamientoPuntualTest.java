@@ -23,9 +23,10 @@ class EstacionamientoPuntualTest extends EstacionamientoTest {
 		this.horaFin = LocalTime.of(15, 0);
 		this.patente = "AA 325 AA";
 		this.compraPuntual = mock(RegistroDeCompraPuntual.class);
-		this.estacionamiento = new EstacionamientoPuntual(this.horaInicio, this.horaFin, this.patente, 
-				this.compraPuntual);
+		this.estacionamiento = new EstacionamientoPuntual(this.horaInicio, this.horaFin, this.compraPuntual);
 		
+		//configuracion de mock 
+		when(compraPuntual.getPatente()).thenReturn(this.patente);
 	}
 	
 	@Test

@@ -33,10 +33,6 @@ public class SEM {
 		this.entidades = new ArrayList<Entidad>();
 		this.infracciones = new ArrayList<Infraccion>();
 	}
-	
-	public List<Estacionamiento> getEstacionamientos() {
-		return this.estacionamientos;
-	}
 
 	public LocalTime getHoraInicio() {
 		return this.horaInicio;
@@ -58,7 +54,7 @@ public class SEM {
 		LocalTime horaInicio = LocalTime.now();
 		//las instancias de estacionamiento estan estrictamente vinculadas a la inicializacion de las 
 		//mismas por el sem (principio de dependency inversion)
-		EstacionamientoAPP nuevoEstacionamiento = new EstacionamientoAPP(app, horaInicio, patente);
+		EstacionamientoAPP nuevoEstacionamiento = new EstacionamientoAPP(app, patente, horaInicio);
 		
 		this.registrarEstacionamiento(nuevoEstacionamiento);
 		

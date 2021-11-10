@@ -8,10 +8,12 @@ import app.APP;
 public class EstacionamientoAPP extends Estacionamiento {
 
 	private APP app;
+	private String patente;
 
-	public EstacionamientoAPP(APP aplicacion, LocalTime horaInicio, String patente) {
-		super(horaInicio, null, patente);
+	public EstacionamientoAPP(APP aplicacion, String patente, LocalTime horaInicio) {
+		super(horaInicio, null);
 		this.app = aplicacion;
+		this.patente = patente;
 	}
 	
 	public void finalizar() {
@@ -35,6 +37,11 @@ public class EstacionamientoAPP extends Estacionamiento {
 	@Override
 	public Boolean estaVigente(LocalDateTime momentoConsulta) {
 		return (this.getHoraFin() == null) ? true : false;
+	}
+
+	@Override
+	public String getPatente() {
+		return this.patente;
 	}
 
 }

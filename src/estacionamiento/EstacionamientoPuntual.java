@@ -11,9 +11,8 @@ public class EstacionamientoPuntual extends Estacionamiento {
 
 	private RegistroDeCompraPuntual registroCompraPuntual;
 
-	public EstacionamientoPuntual(LocalTime horaInicio, LocalTime horaFin, String patente, 
-			RegistroDeCompraPuntual compraPuntual) {
-		super(horaInicio, horaFin, patente);
+	public EstacionamientoPuntual(LocalTime horaInicio, LocalTime horaFin, RegistroDeCompraPuntual compraPuntual) {
+		super(horaInicio, horaFin);
 		this.registroCompraPuntual = compraPuntual;
 	}
 
@@ -44,5 +43,10 @@ public class EstacionamientoPuntual extends Estacionamiento {
 	@Override
 	public void finalizar() {
 		
+	}
+
+	@Override
+	public String getPatente() {
+		return this.getRegistroCompraPuntual().getPatente();
 	}
 }

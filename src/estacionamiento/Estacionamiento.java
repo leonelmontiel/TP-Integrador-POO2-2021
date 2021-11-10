@@ -9,12 +9,10 @@ public abstract class Estacionamiento {
 
 	private LocalTime horaInicio;
 	private LocalTime horaFin;
-	private String patente;
 
-	public Estacionamiento(LocalTime horaInicio, LocalTime horaFin, String patente) {
+	public Estacionamiento(LocalTime horaInicio, LocalTime horaFin) {
 		this.horaInicio = horaInicio;
 		this.horaFin = horaFin;
-		this.patente = patente;
 	}
 	
 	public LocalTime getHoraInicio() {
@@ -29,9 +27,7 @@ public abstract class Estacionamiento {
 		this.horaFin = horaFin;
 	}
 	
-	public String getPatente() {
-		return this.patente;
-	}
+	public abstract String getPatente();
 	
 	public abstract Boolean estaVigente(LocalDateTime momentoConsulta);
 

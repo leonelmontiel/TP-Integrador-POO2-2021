@@ -8,7 +8,6 @@ import java.time.LocalTime;
 
 import org.junit.jupiter.api.Test;
 
-import app.APP;
 import puntoDeVenta.PuntoDeVenta;
 
 abstract class RegistroDeCompraTest {
@@ -18,8 +17,6 @@ abstract class RegistroDeCompraTest {
 	protected Integer nroControl; // = 2000548
 	protected LocalDate fecha; //= LocalDate.of(2021, 01, 25)
 	protected LocalTime hora; // = LocalTime.of(15, 00)
-	protected APP celular = mock(APP.class); // DOC
-	
 
 	@Test
 	void testGetPuntoDeVenta() {
@@ -39,11 +36,6 @@ abstract class RegistroDeCompraTest {
 	@Test
 	void testGetHora() {		
 		assertEquals(this.hora, this.registroDeCompra.getHora());
-	}
-	
-	@Test
-	void testGetCelular() {
-		assertEquals(this.celular, this.registroDeCompra.getCelular());
 	}
 
 }

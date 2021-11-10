@@ -21,7 +21,7 @@ class EstacionamientoAPPTest extends EstacionamientoTest {
 		this.aplicacion = mock(APP.class);
 		this.patente = "AA 325 AA";
 		this.horaInicio = LocalTime.of(18, 0);
-		this.estacionamiento = new EstacionamientoAPP(this.aplicacion, this.horaInicio, this.patente);
+		this.estacionamiento = new EstacionamientoAPP(this.aplicacion, this.patente, this.horaInicio);
 		
 	}
 
