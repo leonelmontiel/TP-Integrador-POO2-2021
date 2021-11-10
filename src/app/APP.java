@@ -9,12 +9,17 @@ public class APP implements MovementSensor {
 	private Pantalla pantanlla;
 	private EstadoAPP estado;
 	private AsistenciaAlUsuario asistenciaAlUsuario;
+	private ModoAPP modo;
+	//esta patente se inicializa en null porque el modo inicial de la app es manual, se configura al
+	//cambiar de modo o setear una nueva patente
+	private String patente;
 
 	public APP(int numero, SEM sistema) {
 		this.numero = numero;
 		this.sistema = sistema;
 		this.estado = new SinEstacionamiento();
 		this.asistenciaAlUsuario = AsistenciaAlUsuario.DESACTIVADA;
+		this.modo = ModoAPP.MANUAL;
 	}
 
 	public int getNumero() {
@@ -40,6 +45,19 @@ public class APP implements MovementSensor {
 	
 	public AsistenciaAlUsuario getAsistenciaAlUsuario() {
 		return this.asistenciaAlUsuario;
+	}
+	
+	public void activarModoAutomatico(String patente) {
+		this.modo = ModoAPP.AUTOMATICO;
+		this.setPatente(patente);
+	}
+	
+	public void setPatente(String patente) {
+		this.patente = patente;
+	}
+	
+	public String getPatente() {
+		return this.patente;
 	}
 	
 	public void notificarAlUsuario(String mensaje) {
@@ -68,11 +86,13 @@ public class APP implements MovementSensor {
 	@Override
 	public void driving() {
 		this.estado.alertaFinEstacionamiento(this);
+		this.modo.ejecutarFinalizacion(this);
 	}
 	
 	@Override
 	public void walking() {
 		this.estado.alertaInicioEstacionamiento(this);
+		this.modo.ejecutarIniciacion(this);
 	}
 
 	public void activarAsistenciaAlUsuario() {

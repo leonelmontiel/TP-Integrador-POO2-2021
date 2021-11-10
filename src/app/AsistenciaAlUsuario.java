@@ -16,8 +16,8 @@ public enum AsistenciaAlUsuario {
 		
 	}, ACTIVADA{
 		
-		public String ALERTA_INICIO = "Alerta debe iniciar estacionamiento";
-		public String ALERTA_FIN = "Alerta debe finalizar estacionamiento";
+		private String ALERTA_INICIO = "Alerta debe iniciar estacionamiento";
+		private String ALERTA_FIN = "Alerta debe finalizar estacionamiento";
 		
 		@Override
 		void alertaInicioEstacionamiento(APP app) {

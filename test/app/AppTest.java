@@ -123,7 +123,7 @@ class AppTest {
 	}
 
 	@Test
-	void testAPPInicialmenteNoAvisaSobreCambiosDeMovimiento() {
+	void testAPPSinEstacionamientoInicialmenteNoAvisaSobreCambiosDeMovimiento() {
 		//setup
 		this.app.setPantalla(this.pantalla);
 		//exercise
@@ -132,6 +132,19 @@ class AppTest {
 		
 		//verify
 		verify(this.pantalla, never()).mostrar("Alerta debe iniciar estacionamiento");
+		verify(this.pantalla, never()).mostrar("Alerta debe finalizar estacionamiento");
+	}
+	
+	@Test
+	void testAPPConEstacionamientoInicialmenteNoAvisaSobreCambiosDeMovimiento() {
+		//setup
+		this.app.setPantalla(this.pantalla);
+	
+		//exercise
+		this.app.iniciarEstacionamiento(this.patente);
+		this.app.driving();
+		
+		//verify
 		verify(this.pantalla, never()).mostrar("Alerta debe finalizar estacionamiento");
 	}
 	
@@ -151,6 +164,22 @@ class AppTest {
 		verify(this.pantalla).mostrar("Alerta debe iniciar estacionamiento");
 		verify(this.pantalla).mostrar("Alerta debe finalizar estacionamiento");
 	}
+
+	@Test
+	void testAPPConAsistenciaAlUsuarioActivadaAlertaSoloElCambioDeMovimiento() {
+		//setup
+		when(this.sistema.getSaldo(this.app)).thenReturn(80f);
+		this.app.activarAsistenciaAlUsuario();
+		this.app.setPantalla(this.pantalla);
+		
+		//exercise 
+		this.app.walking();
+		this.app.iniciarEstacionamiento(this.patente);
+		this.app.walking();
+		
+		//verify
+		verify(this.pantalla, times(1)).mostrar("Alerta debe iniciar estacionamiento");
+	}
 	
 	@Test
 	void testAPPdesactivaAsistenciaAlUsuario() {
@@ -162,4 +191,41 @@ class AppTest {
 		
 		assertEquals(esperada, this.app.getAsistenciaAlUsuario());
 	}
+	
+	@Test
+	void testAppEnModoAutomaticoIniciaSolaUnEstacionamiento() {
+		//setup
+		when(this.sistema.getSaldo(this.app)).thenReturn(80f);
+		this.app.setPantalla(this.pantalla);
+		
+		//se presupone que al activar el modo automatico se debe configurar la patente que utiliza para
+		//iniciar los estacionamientos
+		this.app.activarModoAutomatico(this.patente);
+		
+		this.app.walking();
+
+		//verify
+		verify(this.sistema).iniciarEstacionamiento(this.patente, this.app);	
+		verify(this.pantalla).mostrar("Se inicio un estacionamiento en forma automatica");
+	}
+	
+	@Test
+	void testAppEnModoAutomaticoFinalizaSolaUnEstacionamiento() {
+		//setup
+		when(this.sistema.getSaldo(this.app)).thenReturn(80f);
+		this.app.setPantalla(this.pantalla);
+		
+		//se presupone que al activar el modo automatico se debe configurar la patente que utiliza para
+		//iniciar los estacionamientos
+		this.app.activarModoAutomatico(this.patente);
+		
+		this.app.walking();
+
+		this.app.driving();
+		
+		//verify
+		verify(this.sistema).finalizarEstacionamiento(this.app);
+		verify(this.pantalla).mostrar("Se finalizo el estacionamiento en forma automatica");
+	}
+
 }
