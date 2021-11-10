@@ -54,18 +54,10 @@ public class APP implements MovementSensor {
 		return this.estado.tieneEstacionamiento();
 	}
 
-	void finalizarEstacionamientoSeguro() {
-		this.sistema.finalizarEstacionamiento(this);		
-	}
-
 	void setEstado(EstadoAPP nuevoEstado) {
 		this.estado = nuevoEstado;		
 	}
 
-	void iniciarEstacionamientoSeguro(String patente) {
-		this.sistema.iniciarEstacionamiento(patente, this);		
-	}
-	
 	@Override
 	public void driving() {
 		this.estado.alertaFinEstacionamiento(this);
@@ -76,17 +68,8 @@ public class APP implements MovementSensor {
 		this.estado.alertaInicioEstacionamiento(this);
 	}
 
-	//esto se utiliza para emular lo que se le muestra al usuario de la app en la pantalla
-	Pantalla getPantalla() {
-		return this.pantanlla;
-	}
-
 	void setPantalla(Pantalla pantalla) {
 		this.pantanlla = pantalla;
-	}
-
-	public AsistenciaAlUsuario getAsistenciaAlUsuario() {
-		return this.asistenciaAlUsuario;
 	}
 
 	public void activarAsistenciaAlUsuario() {
@@ -99,5 +82,17 @@ public class APP implements MovementSensor {
 
 	public SEM getSistema() {
 		return this.sistema;
+	}
+
+	public void alertaInicioEstacionamiento() {
+		this.asistenciaAlUsuario.alertaInicioEstacionamiento(this);
+	}
+
+	public void alertaFinEstacionamiento() {
+		this.asistenciaAlUsuario.alertaFinEstacionamiento(this);
+	}
+
+	public void notificarAlUsuario(String mensaje) {
+		this.pantanlla.mostrar(mensaje);
 	}
 }

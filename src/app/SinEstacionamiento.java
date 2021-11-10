@@ -23,14 +23,14 @@ public class SinEstacionamiento extends EstadoAPP {
 			app.setEstado(nuevoEstado);
 		} else {
 			//notifica al usuario que no dispone de saldo
-			app.getPantalla().mostrar("No tenes saldo suficiente para iniciar este estacionamiento.");
+			app.notificarAlUsuario("No tenes saldo suficiente para iniciar este estacionamiento.");
 		}
 		
 	}
 
 	@Override
 	protected void alertaInicioEstacionamiento(APP app) {
-		app.getAsistenciaAlUsuario().alertaInicioEstacionamiento(app);
+		app.alertaInicioEstacionamiento();
 	}
 
 	@Override

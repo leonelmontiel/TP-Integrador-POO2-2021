@@ -10,7 +10,7 @@ public class ConEstacionamiento extends EstadoAPP {
 	@Override
 	public void finalizarEstacionamiento(APP app) {
 		EstadoAPP nuevoEstado = new SinEstacionamiento();
-		app.finalizarEstacionamientoSeguro();
+		app.getSistema().finalizarEstacionamiento(app);
 		app.setEstado(nuevoEstado);
 	}
 
@@ -26,7 +26,7 @@ public class ConEstacionamiento extends EstadoAPP {
 
 	@Override
 	protected void alertaFinEstacionamiento(APP app) {
-		app.getAsistenciaAlUsuario().alertaFinEstacionamiento(app);
+		app.alertaFinEstacionamiento();
 	}
 
 }
