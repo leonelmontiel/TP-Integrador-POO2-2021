@@ -59,7 +59,7 @@ public class APP {
 		this.estado = nuevoEstado;		
 	}
 
-	public void iniciarEstacionamientoSeguro(String patente) {
+	void iniciarEstacionamientoSeguro(String patente) {
 		this.sistema.iniciarEstacionamiento(patente, this);		
 	}
 }

@@ -15,6 +15,7 @@ import infraccion.Infraccion;
 import inspector.Inspector;
 
 public class SEM {
+	// SE CONTEMPLA LA IMPLEMENTACIÓN DE 3 INTERFACES: IESTACIONAMIENTO, IAPP, IENTIDAD
 
 	private LocalTime horaInicio;
 	private LocalTime horaCierre;
@@ -125,7 +126,7 @@ public class SEM {
 		
 	}
 
-	public void setEntidades(List<Entidad> listaEntidades) {
+	void setEntidades(List<Entidad> listaEntidades) {
 		this.entidades = listaEntidades;
 		
 	}
