@@ -9,9 +9,9 @@ public class APP implements MovementSensor {
 
 	private int numero;
 	private SEM sistema;
+	private Pantalla pantanlla;
 	private EstadoAPP estado;
 	private AsistenciaAlUsuario asistenciaAlUsuario;
-	private Pantalla pantanlla;
 
 	public APP(int numero, SEM sistema) {
 		this.numero = numero;
@@ -33,12 +33,16 @@ public class APP implements MovementSensor {
 		return this.sistema.getSaldo(this);
 	}
 	
+	void setPantalla(Pantalla pantalla) {
+		this.pantanlla = pantalla;
+	}
+	
 	void setEstado(EstadoAPP nuevoEstado) {
 		this.estado = nuevoEstado;		
 	}
 	
-	void setPantalla(Pantalla pantalla) {
-		this.pantanlla = pantalla;
+	public AsistenciaAlUsuario getAsistenciaAlUsuario() {
+		return this.asistenciaAlUsuario;
 	}
 	
 	public void notificarAlUsuario(String mensaje) {
@@ -56,7 +60,7 @@ public class APP implements MovementSensor {
 		this.estado.finalizarEstacionamiento(this);
 	}
 
-	public boolean saldoEsMayorOIgualAPrecioPorHora() {
+	Boolean saldoEsMayorOIgualAPrecioPorHora() {
 		return this.sistema.getSaldo(this) >= this.sistema.getPrecioPorHora();
 	}
 

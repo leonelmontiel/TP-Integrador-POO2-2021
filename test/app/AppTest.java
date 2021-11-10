@@ -151,4 +151,15 @@ class AppTest {
 		verify(this.pantalla).mostrar("Alerta debe iniciar estacionamiento");
 		verify(this.pantalla).mostrar("Alerta debe finalizar estacionamiento");
 	}
+	
+	@Test
+	void testAPPdesactivaAsistenciaAlUsuario() {
+		AsistenciaAlUsuario esperada = AsistenciaAlUsuario.DESACTIVADA;
+		
+		//exercise
+		this.app.activarAsistenciaAlUsuario();
+		this.app.desactivarAsistenciaAlUsuario();
+		
+		assertEquals(esperada, this.app.getAsistenciaAlUsuario());
+	}
 }
