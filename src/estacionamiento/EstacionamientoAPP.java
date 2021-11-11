@@ -29,11 +29,6 @@ public class EstacionamientoAPP extends Estacionamiento {
 		return null;
 	}
 	
-	public LocalTime getHoraMaxima() {
-		//todo: hay que implementar como se calcula en base al saldo en la app
-		return this.app.getHoraMaxima(this);
-	}
-	
 	@Override
 	public Boolean estaVigente(LocalDateTime momentoConsulta) {
 		return (this.getHoraFin() == null) ? true : false;

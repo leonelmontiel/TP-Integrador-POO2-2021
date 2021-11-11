@@ -35,4 +35,8 @@ public abstract class Estacionamiento {
 
 	public abstract void finalizar();
 
+	public Integer getDuracion() {
+		return this.getHoraFin().getHour() - this.getHoraInicio().getHour();
+	}
+
 }

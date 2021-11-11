@@ -50,26 +50,59 @@ public class SEM {
 	void setEstacionamientos(List<Estacionamiento> estacionamientos) {
 		this.estacionamientos = estacionamientos;
 	}
+	
+	void setUsuariosAPP(Map<APP, Float> usuariosAPP) {
+		this.usuariosAPP = usuariosAPP;
+	}
 
 	public Estacionamiento iniciarEstacionamiento(String patente, APP app) {
-		LocalTime horaInicio = LocalTime.now();
 		//las instancias de estacionamiento estan estrictamente vinculadas a la inicializacion de las 
 		//mismas por el sem (principio de dependency inversion)
+		LocalTime horaInicio = LocalTime.now();
 		EstacionamientoAPP nuevoEstacionamiento = new EstacionamientoAPP(app, patente, horaInicio);
+		String notificacion = "Estacionamiento iniciado a las " + nuevoEstacionamiento.getHoraInicio() +
+				" valido hasta las " + this.getHoraMaxima(nuevoEstacionamiento) + " hs.";
 		
 		this.registrarEstacionamiento(nuevoEstacionamiento);
+		app.notificarAlUsuario(notificacion);
 		
 		return nuevoEstacionamiento;
 	}
 
+	LocalTime getHoraMaxima(Estacionamiento estacionamiento) {
+		Integer horasQuePuedeComprar = getHorasQuePuedeComprar(estacionamiento.getApp());
+		LocalTime potencialHoraFin = estacionamiento.getHoraInicio().plusHours(horasQuePuedeComprar); 
+		
+		return (potencialHoraFin.isAfter(this.horaCierre)) ? this.horaCierre : potencialHoraFin;
+	}
+
+	private Integer getHorasQuePuedeComprar(APP app) {
+		return (int) (this.getSaldo(app) / 
+				this.precioPorHora);
+	}
+	
 	public void finalizarEstacionamiento(APP app) {
-		Estacionamiento estacionamientoAFinalizar = this.estacionamientos.stream()
-				.filter(estacionamiento -> estacionamiento.getApp().equals(app) && 
-						estacionamiento.estaVigente(LocalDateTime.now())).toList().get(0);
+		Estacionamiento estacionamientoAFinalizar = this.getEstacionamientosActivos(app).get(0);
 		
 		estacionamientoAFinalizar.finalizar();
+		String notificacion = "Iniciado " + estacionamientoAFinalizar.getHoraInicio() + 
+				" Finalizado " + estacionamientoAFinalizar.getHoraFin() + " con una duracion de " +
+				estacionamientoAFinalizar.getDuracion() + " y un costo de " + 
+				this.calcularCosto(estacionamientoAFinalizar);
+		
+		estacionamientoAFinalizar.getApp().notificarAlUsuario(notificacion);
 		
 		this.notificarEstacionamientoFinalizado(this, estacionamientoAFinalizar);
+	}
+
+	private List<Estacionamiento> getEstacionamientosActivos(APP app) {
+		return this.estacionamientos.stream()
+				.filter(estacionamiento -> estacionamiento.estaVigente(LocalDateTime.now()) && 
+						estacionamiento.getApp().equals(app)).toList();
+	}
+
+	private Float calcularCosto(Estacionamiento estacionamiento) {
+		return estacionamiento.getDuracion() * this.precioPorHora;
 	}
 
 	private void notificarEstacionamientoFinalizado(SEM sem, Estacionamiento estacionamiento) {
@@ -123,19 +156,16 @@ public class SEM {
 
 	public void finalizarTodosLosEstacionamientos() {
 		this.estacionamientos.stream().forEach(Estacionamiento::finalizar);
-		
 	}
 
 	void setEntidades(List<Entidad> listaEntidades) {
 		this.entidades = listaEntidades;
-		
 	}
 
 	public void suscribir(Entidad entidad) {
 		if (!estaSuscripto(entidad)) {
 			this.entidades.add(entidad);
-		}	
-		
+		}		
 	}
 
 	Boolean estaSuscripto(Entidad entidad) {
