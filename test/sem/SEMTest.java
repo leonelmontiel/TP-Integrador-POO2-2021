@@ -132,7 +132,44 @@ class SEMTest {
 		//verify
 		verify(estacionamientosSpy).add(estacionamientoNuevo);
 		assertFalse(estacionamientoNuevo.estaVigente(LocalDateTime.now()));
+	}
+	
+	@Test
+	void testGetHoraMaxima() {
+		//configuracion de mocks
+		when(this.estacionamiento.getHoraInicio()).thenReturn(LocalTime.of(19, 0));
+		when(this.estacionamiento.getApp()).thenReturn(this.app);
+		@SuppressWarnings("unchecked")
+		Map<APP, Float> usuariosMock = mock(Map.class);
+		when(usuariosMock.get(this.app)).thenReturn(80f);
+
+		//setup 
+		LocalTime horaEsperada = this.horaCierre;
+		this.sem.setUsuariosAPP(usuariosMock);
 		
+		//verify
+		assertEquals(horaEsperada, this.sem.getHoraMaxima(this.estacionamiento));
+		verify(this.estacionamiento).getHoraInicio();
+		verify(this.estacionamiento).getApp();
+	}
+	
+	@Test
+	void testGetHoraMaximaAntesDelCierre() {
+		//configuracion de mocks
+		when(this.estacionamiento.getHoraInicio()).thenReturn(LocalTime.of(16, 0));
+		when(this.estacionamiento.getApp()).thenReturn(this.app);
+		@SuppressWarnings("unchecked")
+		Map<APP, Float> usuariosMock = mock(Map.class);
+		when(usuariosMock.get(this.app)).thenReturn(80f);
+
+		//setup 
+		LocalTime horaEsperada = LocalTime.of(18, 0);
+		this.sem.setUsuariosAPP(usuariosMock);
+		
+		//verify
+		assertEquals(horaEsperada, this.sem.getHoraMaxima(this.estacionamiento));
+		verify(this.estacionamiento).getHoraInicio();
+		verify(this.estacionamiento).getApp();
 	}
 
 	@Test
@@ -211,7 +248,7 @@ class SEMTest {
 	}
 	
 	@Test
-	void testRegistrarInfracción() {
+	void testAltaInfracción() {
 		//setup 		
 		List<Infraccion> infraccionesSpy = spy(new ArrayList<Infraccion>());
 		this.sem.setInfracciones(infraccionesSpy);

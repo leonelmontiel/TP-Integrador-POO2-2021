@@ -70,21 +70,39 @@ public class SEM {
 	}
 
 	LocalTime getHoraMaxima(Estacionamiento estacionamiento) {
-		Integer horasQuePuedeComprar = (int) (this.getSaldo(estacionamiento.getApp()) / 
-				this.precioPorHora);
+		Integer horasQuePuedeComprar = getHorasQuePuedeComprar(estacionamiento.getApp());
 		LocalTime potencialHoraFin = estacionamiento.getHoraInicio().plusHours(horasQuePuedeComprar); 
 		
 		return (potencialHoraFin.isAfter(this.horaCierre)) ? this.horaCierre : potencialHoraFin;
 	}
+
+	private Integer getHorasQuePuedeComprar(APP app) {
+		return (int) (this.getSaldo(app) / 
+				this.precioPorHora);
+	}
 	
 	public void finalizarEstacionamiento(APP app) {
-		Estacionamiento estacionamientoAFinalizar = this.estacionamientos.stream()
-				.filter(estacionamiento -> estacionamiento.getApp().equals(app) && 
-						estacionamiento.estaVigente(LocalDateTime.now())).toList().get(0);
+		Estacionamiento estacionamientoAFinalizar = this.getEstacionamientosActivos(app).get(0);
 		
 		estacionamientoAFinalizar.finalizar();
+		String notificacion = "Iniciado " + estacionamientoAFinalizar.getHoraInicio() + 
+				" Finalizado " + estacionamientoAFinalizar.getHoraFin() + " con una duracion de " +
+				estacionamientoAFinalizar.getDuracion() + " y un costo de " + 
+				this.calcularCosto(estacionamientoAFinalizar);
+		
+		estacionamientoAFinalizar.getApp().notificarAlUsuario(notificacion);
 		
 		this.notificarEstacionamientoFinalizado(this, estacionamientoAFinalizar);
+	}
+
+	private List<Estacionamiento> getEstacionamientosActivos(APP app) {
+		return this.estacionamientos.stream()
+				.filter(estacionamiento -> estacionamiento.estaVigente(LocalDateTime.now()) && 
+						estacionamiento.getApp().equals(app)).toList();
+	}
+
+	private Float calcularCosto(Estacionamiento estacionamiento) {
+		return estacionamiento.getDuracion() * this.precioPorHora;
 	}
 
 	private void notificarEstacionamientoFinalizado(SEM sem, Estacionamiento estacionamiento) {
