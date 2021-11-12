@@ -14,8 +14,10 @@ import registroDeCompra.RegistroDeRecargaCelular;
 public class GestorRegistrosImpl implements GestorRegistros {
 
 	private List<RegistroDeCompra> registros;
+	private SistemaCentral sistema;
 	
-	public GestorRegistrosImpl() {
+	public GestorRegistrosImpl(SistemaCentral sistema) {
+		this.sistema = sistema;
 		this.registros = new ArrayList<RegistroDeCompra>();
 	}
 
@@ -29,19 +31,22 @@ public class GestorRegistrosImpl implements GestorRegistros {
 			Integer horasCompradas) {
 		LocalDate hoy = LocalDate.now();
 		LocalTime ahora = LocalTime.now();
-		RegistroDeCompraPuntual registro = new RegistroDeCompraPuntual(puntoDeVenta, nroControlRegistro,
-				hoy, ahora, patente, horasCompradas);
+		RegistroDeCompraPuntual registroCompraPuntual = new RegistroDeCompraPuntual(puntoDeVenta, 
+				nroControlRegistro, hoy, ahora, patente, horasCompradas);
 
-		this.almacenar(registro);
+		this.almacenar(registroCompraPuntual);
+		this.sistema.generarCompraPuntual(registroCompraPuntual);
 	}
 
 	@Override
 	public void generarRecarga(PuntoDeVenta puntoDeVenta, Integer nroControlRegistro, APP app, Float monto) {
 		LocalDate hoy = LocalDate.now();
 		LocalTime ahora = LocalTime.now();
-		RegistroDeRecargaCelular registro = new RegistroDeRecargaCelular(puntoDeVenta, nroControlRegistro, 
-				hoy, ahora, app, monto);
- 		this.almacenar(registro);	
+		RegistroDeRecargaCelular registroDeRecargaCelular = new RegistroDeRecargaCelular(puntoDeVenta, 
+				nroControlRegistro, hoy, ahora, app, monto);
+		
+ 		this.almacenar(registroDeRecargaCelular);	
+ 		this.sistema.generarRecarga(registroDeRecargaCelular);
 	}
 
 }

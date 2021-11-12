@@ -2,15 +2,16 @@ package puntoDeVenta;
 
 import app.APP;
 import app.Pantalla;
+import interfaces.GestorRegistros;
 import interfaces.SistemaCentral;
 
 public class PuntoDeVenta {
 
 	private Integer nroControlRegistro;
-	private SistemaCentral sistema;
+	private GestorRegistros sistema;
 	private Pantalla pantalla;
 
-	public PuntoDeVenta(SistemaCentral sistema) {
+	public PuntoDeVenta(GestorRegistros sistema) {
 		this.sistema = sistema;
 		this.nroControlRegistro = 0;
 	}

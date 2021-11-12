@@ -232,7 +232,8 @@ public class SEM implements GestorAPP, GestorEstacionamiento, GestorInfracciones
 		LocalTime ahora = LocalTime.now();
 		RegistroDeRecargaCelular registro = new RegistroDeRecargaCelular(puntoDeVenta, nroControlRegistro, 
 				hoy, ahora, app, monto);
- 		this.almacenar(registro);		
+ 		
+		this.almacenar(registro);		
 	}
 
 }

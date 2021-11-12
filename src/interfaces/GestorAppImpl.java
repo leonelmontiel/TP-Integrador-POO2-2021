@@ -86,4 +86,9 @@ public class GestorAppImpl implements GestorAPP {
 		return (int) (this.getSaldo(app) / 
 				this.sistema.getPrecioPorHora());
 	}
+
+	@Override
+	public Boolean tieneSaldoSuficiente(APP app) {
+		return this.getSaldo(app) >= this.sistema.getPrecioPorHora();
+	}
 }

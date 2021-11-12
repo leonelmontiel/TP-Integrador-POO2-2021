@@ -15,7 +15,7 @@ public class SinEstacionamiento extends EstadoAPP {
 	@Override
 	protected void iniciarEstacionamiento(APP app, String patente) {
 		// EVALUAR SI TIENE SALDO SUFICIENTE PARA LA PRIMERA HORA DE ESTACIONAMIENTO $40
-		if (app.saldoEsMayorOIgualAPrecioPorHora()) {
+		if (app.tieneSaldoSuficiente()) {
 			EstadoAPP nuevoEstado = new ConEstacionamiento();
 			// env�a la patente para iniciar el estacionamiento y a su vez a la app misma para que 
 			//el sistema los vincule

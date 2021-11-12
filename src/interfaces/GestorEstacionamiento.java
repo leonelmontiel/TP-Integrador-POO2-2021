@@ -9,10 +9,10 @@ public interface GestorEstacionamiento {
 
 	Boolean tieneEstacionamientoVigente(String patente, LocalDateTime momentoConsulta);
 
+	Float getCosto(Estacionamiento estacionamiento);
+	
+	void registrarEstacionamiento(Estacionamiento estacionamiento);
+
 	void generarEstacionamiento(RegistroDeCompraPuntual registroDeCompraPuntual);
-
-	Float getCosto(Estacionamiento estacionamientoAFinalizar);
-
-	void notificarEstacionamientoFinalizado(GestorAppImpl gestorAppImpl, Estacionamiento estacionamientoAFinalizar);
 
 }
