@@ -11,10 +11,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import app.APP;
 import entidad.Entidad;
 import estacionamiento.Estacionamiento;
-import puntoDeVenta.PuntoDeVenta;
 import registroDeCompra.RegistroDeCompra;
 import registroDeCompra.RegistroDeCompraPuntual;
 import registroDeCompra.RegistroDeRecargaCelular;
@@ -30,11 +28,8 @@ class SistemaCentralTest {
 	
 	private Estacionamiento estacionamiento;
 	private RegistroDeCompra registro;
-	private PuntoDeVenta puntoDeVenta;
-	private APP app;
 	private Entidad entidad;
 	private Entidad otraEntidad;
-	private GestorRegistros gestorRegistros;
 	private GestorEstacionamiento gestorEstacionamiento;
 	private GestorAPP gestorAPP;
 	
@@ -89,7 +84,7 @@ class SistemaCentralTest {
 	void testGenerarRecarga() {
 		//configuracion de mocks
 		this.gestorAPP = mock(GestorAPP.class);
-		this.registro = mock(RegistroDeCompra.class);
+		this.registro = mock(RegistroDeRecargaCelular.class);
 
 		//setup
 		this.sistema.setGestorAPP(this.gestorAPP);
@@ -104,7 +99,7 @@ class SistemaCentralTest {
 	@Test
 	void testGenerarCompraPuntual() {
 		//configuracion de mocks
-		this.registro = mock(RegistroDeCompra.class);
+		this.registro = mock(RegistroDeCompraPuntual.class);
 		this.gestorEstacionamiento = mock(GestorEstacionamiento.class);
 		
 		//setup
@@ -114,7 +109,7 @@ class SistemaCentralTest {
 		this.sistema.generarCompraPuntual((RegistroDeCompraPuntual) this.registro);
 		
 		//verify
-		verify(this.gestorEstacionamiento).generarEstacionamiento((RegistroDeCompraPuntual) this.registro);;
+		verify(this.gestorEstacionamiento).generarEstacionamiento((RegistroDeCompraPuntual) this.registro);
 	}
 	
 	@Test

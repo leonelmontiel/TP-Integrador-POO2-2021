@@ -4,10 +4,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import app.APP;
 import entidad.Entidad;
 import estacionamiento.Estacionamiento;
-import puntoDeVenta.PuntoDeVenta;
 import registroDeCompra.RegistroDeCompraPuntual;
 import registroDeCompra.RegistroDeRecargaCelular;
 import zona.Zona;
@@ -86,16 +84,16 @@ public class SistemaCentral {
 		}				
 	}
 	
-	public void notificarEstacionamientoIniciado(Estacionamiento estacionamiento) {
+	void notificarEstacionamientoIniciado(Estacionamiento estacionamiento) {
 		this.entidades.stream().forEach(entidad -> entidad.actualizarEstacionamientoIniciado(this, estacionamiento));
 	}
 
-	public void notificarEstacionamientoFinalizado(Estacionamiento estacionamiento) {
+	void notificarEstacionamientoFinalizado(Estacionamiento estacionamiento) {
 		this.entidades.stream().forEach(entidad -> entidad.actualizarEstacionamientoFinalizado(this, estacionamiento));
 	}
 
-	public void notificarRecargaDeCredito(RegistroDeRecargaCelular registroDeRecargaCelular) {
-		this.entidades.stream().forEach(ent -> ent.actualizarRecargaDeCredito(this, registroDeRecargaCelular));
+	void notificarRecargaDeCredito(RegistroDeRecargaCelular registroDeRecargaCelular) {
+		this.entidades.stream().forEach(entidad -> entidad.actualizarRecargaDeCredito(this, registroDeRecargaCelular));
 	}
 	
 }

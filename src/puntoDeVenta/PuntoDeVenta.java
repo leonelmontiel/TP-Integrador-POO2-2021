@@ -3,7 +3,6 @@ package puntoDeVenta;
 import app.APP;
 import app.Pantalla;
 import interfaces.GestorRegistros;
-import interfaces.SistemaCentral;
 
 public class PuntoDeVenta {
 

@@ -15,8 +15,7 @@ class RegistroDeRecargaCelularTest extends RegistroDeCompraTest{
 
 	private Float monto;
 	private APP celular;
-	private SEM sem;
-
+	
 	@BeforeEach
 	void setUp() throws Exception {
 		this.nroControl = 5001448;
@@ -24,7 +23,7 @@ class RegistroDeRecargaCelularTest extends RegistroDeCompraTest{
 		this.monto = 800f;
 		this.celular = mock(APP.class);
 		this.registroDeCompra = new RegistroDeRecargaCelular(this.puntoDeVenta, this.nroControl, this.fecha, this.hora, this.celular, this.monto);
-		this.sem = mock(SEM.class);
+		mock(SEM.class);
 	}
 
 	@Test
@@ -35,14 +34,6 @@ class RegistroDeRecargaCelularTest extends RegistroDeCompraTest{
 	@Test
 	void testGetCelular() {
 		assertEquals(this.celular, ((RegistroDeRecargaCelular) this.registroDeCompra).getApp());
-	}
-	
-	@Test
-	void testGenerarAccion() {
-		//Exercise
-		this.registroDeCompra.generarAccion(this.sem);
-		//Verify
-		verify(this.sem).recargarSaldo((RegistroDeRecargaCelular) this.registroDeCompra);
 	}
 
 }

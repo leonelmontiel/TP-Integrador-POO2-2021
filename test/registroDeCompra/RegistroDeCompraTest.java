@@ -1,7 +1,7 @@
 package registroDeCompra;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -9,7 +9,6 @@ import java.time.LocalTime;
 import org.junit.jupiter.api.Test;
 
 import puntoDeVenta.PuntoDeVenta;
-import sem.SEM;
 
 abstract class RegistroDeCompraTest {
 	

@@ -7,29 +7,28 @@ import org.junit.jupiter.api.Test;
 
 import app.APP;
 import app.Pantalla;
-import registroDeCompra.RegistroDeCompra;
-import sem.SEM;
+import interfaces.GestorRegistros;
 
 class PuntoDeVentaTest {
 	
 	PuntoDeVenta punto;
-	SEM sem;
+	GestorRegistros gestorRegistros;
 	APP app;
 
 	@BeforeEach
 	void setUp() throws Exception {
-		this.sem = mock(SEM.class);
+		this.gestorRegistros = mock(GestorRegistros.class);
 		this.app = mock(APP.class);
-		this.punto = new PuntoDeVenta(this.sem);
+		this.punto = new PuntoDeVenta(this.gestorRegistros);
 	}
 
 	@Test
 	void testGenerarRecarga80Pesos() {
 		//SetUP
 		Float monto = 80f;
-		RegistroDeCompra registro = this.punto.generarRecarga(this.app, monto);
+		this.punto.generarRecarga(this.app, monto);
 		//Verify
-		verify(this.sem).almacenar(registro);
+		verify(this.gestorRegistros).generarRecarga(this.punto, 1, this.app, monto);
 	}
 	
 	@Test
@@ -37,9 +36,10 @@ class PuntoDeVentaTest {
 		//SetUP
 		String patente = "AB 123 CD";
 		Integer horasCompradas = 2;
-		RegistroDeCompra registro = this.punto.generarCompraPuntual(patente, horasCompradas);
+		this.punto.generarCompraPuntual(patente, horasCompradas);
 		//Verify
-		verify(this.sem).almacenar(registro);
+		verify(this.gestorRegistros).generarCompraPuntual(this.punto, 1, patente,
+				horasCompradas);
 	}
 	
 	@Test
