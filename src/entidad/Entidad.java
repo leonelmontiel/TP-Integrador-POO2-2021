@@ -1,6 +1,7 @@
 package entidad;
 
 import estacionamiento.Estacionamiento;
+import interfaces.SistemaCentral;
 import registroDeCompra.RegistroDeRecargaCelular;
 import sem.SEM;
 
@@ -8,8 +9,8 @@ public interface Entidad {
 
 	void actualizarEstacionamientoIniciado(SEM sem, Estacionamiento estIniciado);
 
-	void actualizarEstacionamientoFinalizado(SEM sem, Estacionamiento estFinalizado);
+	void actualizarEstacionamientoFinalizado(SistemaCentral sistemaCentral, Estacionamiento estFinalizado);
 
-	void actualizarRecargaDeCredito(SEM sem, RegistroDeRecargaCelular registro);
+	void actualizarRecargaDeCredito(SistemaCentral sistemaCentral, RegistroDeRecargaCelular registro);
 
 }

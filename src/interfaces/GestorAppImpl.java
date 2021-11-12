@@ -18,12 +18,7 @@ public class GestorAppImpl implements GestorAPP {
 	public void recargarSaldo(RegistroDeRecargaCelular registroDeRecargaCelular) {
 		Float nuevoSaldo = getNuevoSaldo(registroDeRecargaCelular); 
 		this.usuariosAPP.replace(registroDeRecargaCelular.getApp(), nuevoSaldo);
-		this.notificarRecargaDeCredito(registroDeRecargaCelular);
-	}
-
-	private void notificarRecargaDeCredito(RegistroDeRecargaCelular registroDeRecargaCelular) {
-		//pensar una colaboracion con el administrador
-		//this.entidades.stream().forEach(ent -> ent.actualizarRecargaDeCredito(this, registro));
+		this.sistema.notificarRecargaDeCredito(registroDeRecargaCelular);
 	}
 
 	private float getNuevoSaldo(RegistroDeRecargaCelular registroDeRecargaCelular) {

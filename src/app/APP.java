@@ -75,9 +75,9 @@ public class APP implements MovementSensor {
 		this.estado.finalizarEstacionamiento(this);
 	}
 
-	Boolean saldoEsMayorOIgualAPrecioPorHora() {
-		return this.sistema.getSaldo(this) >= this.sistema.getPrecioPorHora();
-	}
+//	Boolean saldoEsMayorOIgualAPrecioPorHora() {
+//		return this.sistema.getSaldo(this) >= this.sistema.getPrecioPorHora();
+//	}
 
 	public Boolean tieneEstacionamiento() {
 		return this.estado.tieneEstacionamiento();
