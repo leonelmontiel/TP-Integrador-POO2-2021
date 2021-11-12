@@ -2,8 +2,8 @@ package registroDeCompra;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-
 import puntoDeVenta.PuntoDeVenta;
+import sem.SEM;
 
 public class RegistroDeCompraPuntual extends RegistroDeCompra {
 
@@ -22,6 +22,15 @@ public class RegistroDeCompraPuntual extends RegistroDeCompra {
 
 	public String getPatente() {
 		return this.patente;
+	}
+
+	@Override
+	public void generarAccion(SEM sem) {
+		sem.generarEstacionamiento(this);
+	}
+
+	public void notificarCompraExitosa() {
+		this.getPuntoDeVenta().notificarCompraExitosa();
 	}
 
 }

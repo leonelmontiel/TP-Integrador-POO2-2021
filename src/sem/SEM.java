@@ -11,8 +11,12 @@ import app.APP;
 import entidad.Entidad;
 import estacionamiento.Estacionamiento;
 import estacionamiento.EstacionamientoAPP;
+import estacionamiento.EstacionamientoPuntual;
 import infraccion.Infraccion;
 import inspector.Inspector;
+import registroDeCompra.RegistroDeCompra;
+import registroDeCompra.RegistroDeCompraPuntual;
+import registroDeCompra.RegistroDeRecargaCelular;
 
 public class SEM {
 	// SE CONTEMPLA LA IMPLEMENTACIÓN DE 3 INTERFACES: IESTACIONAMIENTO, IAPP, IENTIDAD
@@ -24,6 +28,7 @@ public class SEM {
 	private Map<APP, Float> usuariosAPP;
 	private List<Infraccion> infracciones;
 	private List<Entidad> entidades;
+	private List<RegistroDeCompra> registros;
 
 	public SEM(LocalTime horaInicio, LocalTime horaCierre, Float precioPorHora) {
 		this.horaInicio = horaInicio;
@@ -33,6 +38,7 @@ public class SEM {
 		this.usuariosAPP = new HashMap<APP, Float>();
 		this.entidades = new ArrayList<Entidad>();
 		this.infracciones = new ArrayList<Infraccion>();
+		this.registros = new ArrayList<RegistroDeCompra>();
 	}
 
 	public LocalTime getHoraInicio() {
@@ -85,14 +91,22 @@ public class SEM {
 		Estacionamiento estacionamientoAFinalizar = this.getEstacionamientosActivos(app).get(0);
 		
 		estacionamientoAFinalizar.finalizar();
+		Float costo = this.getCosto(estacionamientoAFinalizar);
+		
 		String notificacion = "Iniciado " + estacionamientoAFinalizar.getHoraInicio() + 
 				" Finalizado " + estacionamientoAFinalizar.getHoraFin() + " con una duracion de " +
 				estacionamientoAFinalizar.getDuracion() + " y un costo de " + 
-				this.calcularCosto(estacionamientoAFinalizar);
+				costo;
 		
-		estacionamientoAFinalizar.getApp().notificarAlUsuario(notificacion);
+		this.decrementarSaldo(app, costo);
+		app.notificarAlUsuario(notificacion);
 		
 		this.notificarEstacionamientoFinalizado(this, estacionamientoAFinalizar);
+	}
+
+	private void decrementarSaldo(APP app, Float costo) {
+		Float nuevoSaldo = this.usuariosAPP.get(app) - costo;
+		this.usuariosAPP.replace(app, nuevoSaldo);
 	}
 
 	private List<Estacionamiento> getEstacionamientosActivos(APP app) {
@@ -101,7 +115,7 @@ public class SEM {
 						estacionamiento.getApp().equals(app)).toList();
 	}
 
-	private Float calcularCosto(Estacionamiento estacionamiento) {
+	private Float getCosto(Estacionamiento estacionamiento) {
 		return estacionamiento.getDuracion() * this.precioPorHora;
 	}
 
@@ -121,9 +135,14 @@ public class SEM {
 		return this.usuariosAPP.get(app);
 	}
 
-	public void recargarSaldo(APP app, Float montoRecarga) {
-		Float nuevoSaldo = this.getSaldo(app) + montoRecarga; 
-		this.usuariosAPP.replace(app, nuevoSaldo);
+	public void recargarSaldo(RegistroDeRecargaCelular registro) {
+		Float nuevoSaldo = this.getSaldo(registro.getApp()) + registro.getMontoRecarga(); 
+		this.usuariosAPP.replace(registro.getApp(), nuevoSaldo);
+		notificarRecargaDeCredito(registro);
+	}
+
+	private void notificarRecargaDeCredito(RegistroDeRecargaCelular registro) {
+		this.entidades.stream().forEach(ent -> ent.actualizarRecargaDeCredito(this, registro));
 	}
 
 	public void registrarEstacionamiento(Estacionamiento estacionamiento) {
@@ -174,6 +193,26 @@ public class SEM {
 
 	public void desuscribir(Entidad entidad) {
 		this.entidades.remove(entidad);		
+	}
+
+	public void almacenar(RegistroDeCompra registro) {
+		/* Se optó por esta delegación de responsabilidad en las subclases de RegistroDeCompra, para que polimórficamente resuelvan los efectos
+		 * que generan al ser registrados por el sem  */
+		registro.generarAccion(this);
+		this.registros.add(registro);
+	}
+
+	public void generarEstacionamiento(RegistroDeCompraPuntual registroDeCompraPuntual) {
+		LocalTime horaInicio = registroDeCompraPuntual.getHora();
+		LocalTime horaFin = horaInicio.plusHours(registroDeCompraPuntual.getHorasCompradas());
+		Estacionamiento estacionamiento = new EstacionamientoPuntual(horaInicio, horaFin, registroDeCompraPuntual);
+		
+		this.registrarEstacionamiento(estacionamiento);
+		registroDeCompraPuntual.notificarCompraExitosa();
+	}
+
+	void setRegistros(List<RegistroDeCompra> registros) {
+		this.registros = registros;		
 	}
 
 }

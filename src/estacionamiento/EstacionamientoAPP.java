@@ -23,11 +23,6 @@ public class EstacionamientoAPP extends Estacionamiento {
 	public APP getApp() {
 		return this.app;
 	}
-
-	public Float getCosto() {
-		//ver como calcularlo si no esta finalizado
-		return null;
-	}
 	
 	@Override
 	public Boolean estaVigente(LocalDateTime momentoConsulta) {

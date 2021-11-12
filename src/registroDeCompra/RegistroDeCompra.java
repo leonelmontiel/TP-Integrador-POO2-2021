@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import puntoDeVenta.PuntoDeVenta;
+import sem.SEM;
 
 public abstract class RegistroDeCompra {
 
@@ -27,6 +28,7 @@ public abstract class RegistroDeCompra {
 		return this.fecha;
 	}
 
+	// se asume que en el momento de compra se realiza tanto la recarga de celular como el inicio del estacionamiento comprado
 	public LocalTime getHora() {
 		return this.hora;
 	}
@@ -34,5 +36,7 @@ public abstract class RegistroDeCompra {
 	public PuntoDeVenta getPuntoDeVenta() {
 		return this.puntoDeVenta;
 	}
+
+	public abstract void generarAccion(SEM sem);
 
 }

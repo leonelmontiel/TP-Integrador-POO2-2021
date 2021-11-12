@@ -18,6 +18,9 @@ import entidad.Entidad;
 import estacionamiento.Estacionamiento;
 import infraccion.Infraccion;
 import inspector.Inspector;
+import registroDeCompra.RegistroDeCompra;
+import registroDeCompra.RegistroDeCompraPuntual;
+import registroDeCompra.RegistroDeRecargaCelular;
 
 class SEMTest {
 
@@ -32,6 +35,7 @@ class SEMTest {
 	private Estacionamiento otroEstacionamiento;
 	private Entidad entidad;
 	private Entidad otraEntidad;
+	private RegistroDeCompra registro;
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -199,7 +203,7 @@ class SEMTest {
 		
 		assertEquals(saldoEsperado, this.sem.getSaldo(this.app));
 	}
-	
+	/*
 	@Test
 	void testRecargarSaldo() {
 		//sutup
@@ -215,7 +219,7 @@ class SEMTest {
 		this.sem.recargarSaldo(this.app, montoRecarga2);
 		
 		assertEquals(saldoEsperado2, saldoEsperado2);
-	}
+	}*/
 	
 	@Test
 	void testRegistrarEstacionamiento() {
@@ -370,18 +374,50 @@ class SEMTest {
 		verify(this.otraEntidad).actualizarEstacionamientoFinalizado(this.sem, estFinalizado);		
 	}
 	
-	/*
+	
 	@Test
 	void testNotificarRecargaDeCelular() {
+		//Config Mock
+		Float monto = 80f;
+		this.registro = mock(RegistroDeRecargaCelular.class);
+		when(((RegistroDeRecargaCelular) this.registro).getApp()).thenReturn(this.app);
+		when(((RegistroDeRecargaCelular) this.registro).getMontoRecarga()).thenReturn(monto);
+		@SuppressWarnings("unchecked")
+		Map<APP, Float> usuariosMock = mock(Map.class);
+		when(usuariosMock.get(this.app)).thenReturn(80f);
+
 		//SetUP
+		this.sem.setUsuariosAPP(usuariosMock);
 		this.sem.suscribir(this.entidad);
 		this.sem.suscribir(this.otraEntidad);
-		Float monto = 200f;
 		//Excercise
-		this.sem.recargarSaldo(this.app, monto);
+		this.sem.recargarSaldo((RegistroDeRecargaCelular) this.registro);
 		//Verify
-		verify(this.entidad).actualizarRecargaDeCelular(this.sem, this.app, monto);
-		verify(this.otraEntidad).actualizarRecargaDeCelular(this.sem, this.app, monto);
+		verify(this.entidad).actualizarRecargaDeCredito(this.sem, (RegistroDeRecargaCelular) this.registro);
+		verify(this.otraEntidad).actualizarRecargaDeCredito(this.sem, (RegistroDeRecargaCelular) this.registro);
 		//IMPLEMENTAR LA NOTIFICACION POR RECARGA DE CELULAR (POSIBLE STRATEGY)
-	}*/
+	}
+	
+	@Test
+	void testAlmacenarRegistro() {
+		//Config Mock y Spy
+		this.registro = mock(RegistroDeCompra.class);
+		List<RegistroDeCompra> registrosSpy = spy(new ArrayList<RegistroDeCompra>());
+		this.sem.setRegistros(registrosSpy);
+		//Exercise
+		this.sem.almacenar(this.registro);
+		//Verify
+		verify(registrosSpy).add(this.registro);		
+	}
+	
+	@Test
+	void testGenerarEstacionamiento() {
+		//Config Mock
+		this.registro = mock(RegistroDeCompraPuntual.class);
+		when(this.registro.getHora()).thenReturn(this.horaInicio);
+		//Exercise
+		this.sem.generarEstacionamiento((RegistroDeCompraPuntual) this.registro);
+		//Verify
+		((RegistroDeCompraPuntual) verify(this.registro)).notificarCompraExitosa();
+	}
 }

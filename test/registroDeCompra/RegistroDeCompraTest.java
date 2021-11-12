@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import org.junit.jupiter.api.Test;
 
 import puntoDeVenta.PuntoDeVenta;
+import sem.SEM;
 
 abstract class RegistroDeCompraTest {
 	
