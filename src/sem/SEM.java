@@ -14,12 +14,16 @@ import estacionamiento.EstacionamientoAPP;
 import estacionamiento.EstacionamientoPuntual;
 import infraccion.Infraccion;
 import inspector.Inspector;
+import interfaces.GestorAPP;
+import interfaces.GestorEstacionamiento;
+import interfaces.GestorInfracciones;
+import interfaces.GestorRegistros;
+import puntoDeVenta.PuntoDeVenta;
 import registroDeCompra.RegistroDeCompra;
 import registroDeCompra.RegistroDeCompraPuntual;
 import registroDeCompra.RegistroDeRecargaCelular;
 
-public class SEM {
-	// SE CONTEMPLA LA IMPLEMENTACIÓN DE 3 INTERFACES: IESTACIONAMIENTO, IAPP, IENTIDAD
+public class SEM implements GestorAPP, GestorEstacionamiento, GestorInfracciones, GestorRegistros {
 
 	private LocalTime horaInicio;
 	private LocalTime horaCierre;
@@ -61,7 +65,7 @@ public class SEM {
 		this.usuariosAPP = usuariosAPP;
 	}
 
-	public Estacionamiento iniciarEstacionamiento(String patente, APP app) {
+	public void iniciarEstacionamiento(String patente, APP app) {
 		//las instancias de estacionamiento estan estrictamente vinculadas a la inicializacion de las 
 		//mismas por el sem (principio de dependency inversion)
 		LocalTime horaInicio = LocalTime.now();
@@ -71,8 +75,6 @@ public class SEM {
 		
 		this.registrarEstacionamiento(nuevoEstacionamiento);
 		app.notificarAlUsuario(notificacion);
-		
-		return nuevoEstacionamiento;
 	}
 
 	LocalTime getHoraMaxima(Estacionamiento estacionamiento) {
@@ -164,13 +166,12 @@ public class SEM {
 		this.infracciones = infracciones;
 	}
 
-	public Infraccion altaInfraccion(String patente, Inspector inspector) {
+	public void altaInfraccion(String patente, Inspector inspector) {
 		LocalDate fecha = LocalDate.now();
 		LocalTime hora = LocalTime.now();
 		Infraccion infraccion = new Infraccion(patente, inspector, fecha, hora, inspector.getZona());
 		
 		this.infracciones.add(infraccion);
-		return infraccion;
 	}
 
 	public void finalizarTodosLosEstacionamientos() {
@@ -198,7 +199,6 @@ public class SEM {
 	public void almacenar(RegistroDeCompra registro) {
 		/* Se optó por esta delegación de responsabilidad en las subclases de RegistroDeCompra, para que polimórficamente resuelvan los efectos
 		 * que generan al ser registrados por el sem  */
-		registro.generarAccion(this);
 		this.registros.add(registro);
 	}
 
@@ -213,6 +213,26 @@ public class SEM {
 
 	void setRegistros(List<RegistroDeCompra> registros) {
 		this.registros = registros;		
+	}
+
+	@Override
+	public void generarCompraPuntual(PuntoDeVenta puntoDeVenta, Integer nroControlRegistro, 
+			String patente, Integer horasCompradas) {
+		LocalDate hoy = LocalDate.now();
+		LocalTime ahora = LocalTime.now();
+		RegistroDeCompraPuntual registro = new RegistroDeCompraPuntual(puntoDeVenta, nroControlRegistro,
+				hoy, ahora, patente, horasCompradas);
+
+		this.almacenar(registro);
+	}
+
+	@Override
+	public void generarRecarga(PuntoDeVenta puntoDeVenta, Integer nroControlRegistro, APP app, Float monto) {
+		LocalDate hoy = LocalDate.now();
+		LocalTime ahora = LocalTime.now();
+		RegistroDeRecargaCelular registro = new RegistroDeRecargaCelular(puntoDeVenta, nroControlRegistro, 
+				hoy, ahora, app, monto);
+ 		this.almacenar(registro);		
 	}
 
 }

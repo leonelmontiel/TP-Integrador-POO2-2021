@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import puntoDeVenta.PuntoDeVenta;
-import sem.SEM;
 
 public abstract class RegistroDeCompra {
 
@@ -36,7 +35,5 @@ public abstract class RegistroDeCompra {
 	public PuntoDeVenta getPuntoDeVenta() {
 		return this.puntoDeVenta;
 	}
-
-	public abstract void generarAccion(SEM sem);
 
 }

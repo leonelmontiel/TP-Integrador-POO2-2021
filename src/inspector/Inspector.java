@@ -2,20 +2,20 @@ package inspector;
 
 import java.time.LocalDateTime;
 
-import sem.SEM;
+import interfaces.GestorInfracciones;
 import zona.Zona;
 
 public class Inspector {
 
-	private SEM sistema;
+	private GestorInfracciones sistema;
 	private Zona zona;	
 
-	public Inspector(SEM sem, Zona zona) {
-		this.sistema = sem;
+	public Inspector(GestorInfracciones sistema, Zona zona) {
+		this.sistema = sistema;
 		this.zona = zona;
 	}
 	
-	public SEM getSistema() {
+	public GestorInfracciones getSistema() {
 		return this.sistema;
 	}
 

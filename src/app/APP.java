@@ -1,12 +1,12 @@
 package app;
 
-import sem.SEM;
+import interfaces.GestorAPP;
 
 public class APP implements MovementSensor {
 
 	private int numero;
-	private SEM sistema;
-	private Pantalla pantanlla;
+	private GestorAPP sistema;
+	private Pantalla pantalla;
 	private EstadoAPP estado;
 	private AsistenciaAlUsuario asistenciaAlUsuario;
 	private ModoAPP modo;
@@ -14,7 +14,7 @@ public class APP implements MovementSensor {
 	//cambiar de modo o setear una nueva patente
 	private String patente;
 
-	public APP(int numero, SEM sistema) {
+	public APP(int numero, GestorAPP sistema) {
 		this.numero = numero;
 		this.sistema = sistema;
 		this.estado = new SinEstacionamiento();
@@ -26,7 +26,7 @@ public class APP implements MovementSensor {
 		return this.numero;
 	}
 	
-	public SEM getSistema() {
+	public GestorAPP getSistema() {
 		return this.sistema;
 	}
 
@@ -36,7 +36,7 @@ public class APP implements MovementSensor {
 	}
 	
 	void setPantalla(Pantalla pantalla) {
-		this.pantanlla = pantalla;
+		this.pantalla = pantalla;
 	}
 	
 	void setEstado(EstadoAPP nuevoEstado) {
@@ -61,7 +61,7 @@ public class APP implements MovementSensor {
 	}
 	
 	public void notificarAlUsuario(String mensaje) {
-		this.pantanlla.mostrar(mensaje);
+		this.pantalla.mostrar(mensaje);
 	}
 	
 	public void iniciarEstacionamiento(String patente) {

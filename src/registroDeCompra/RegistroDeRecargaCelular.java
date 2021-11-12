@@ -5,7 +5,6 @@ import java.time.LocalTime;
 
 import app.APP;
 import puntoDeVenta.PuntoDeVenta;
-import sem.SEM;
 
 public class RegistroDeRecargaCelular extends RegistroDeCompra {
 
@@ -24,11 +23,6 @@ public class RegistroDeRecargaCelular extends RegistroDeCompra {
 
 	public APP getApp() {
 		return this.app;
-	}
-
-	@Override
-	public void generarAccion(SEM sem) {
-		sem.recargarSaldo(this);
 	}
 
 }
