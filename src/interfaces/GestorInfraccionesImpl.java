@@ -19,6 +19,19 @@ public class GestorInfraccionesImpl implements GestorInfracciones {
 		this.infracciones = new ArrayList<Infraccion>();
 	}
 	
+	public List<Infraccion> getInfracciones(){
+		return this.infracciones;
+	}
+	
+	void setInfracciones(List<Infraccion> infracciones) {
+		this.infracciones = infracciones;
+	}
+	
+	public Boolean tieneInfracciones(String patente) {
+		return !this.infracciones.stream()
+				.filter(infraccion -> infraccion.getPatente().equals(patente)).toList().isEmpty();
+	}
+	
 	@Override
 	public Boolean tieneEstacionamientoVigente(String patente, LocalDateTime momentoConsulta) {
 		return this.gestorEstacionamiento.tieneEstacionamientoVigente(patente, momentoConsulta);

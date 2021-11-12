@@ -65,24 +65,24 @@ public class SEM implements GestorAPP, GestorEstacionamiento, GestorInfracciones
 		this.usuariosAPP = usuariosAPP;
 	}
 
-	public void iniciarEstacionamiento(String patente, APP app) {
-		//las instancias de estacionamiento estan estrictamente vinculadas a la inicializacion de las 
-		//mismas por el sem (principio de dependency inversion)
-		LocalTime horaInicio = LocalTime.now();
-		EstacionamientoAPP nuevoEstacionamiento = new EstacionamientoAPP(app, patente, horaInicio);
-		String notificacion = "Estacionamiento iniciado a las " + nuevoEstacionamiento.getHoraInicio() +
-				" valido hasta las " + this.getHoraMaxima(nuevoEstacionamiento) + " hs.";
-		
-		this.registrarEstacionamiento(nuevoEstacionamiento);
-		app.notificarAlUsuario(notificacion);
-	}
+//	public void iniciarEstacionamiento(String patente, APP app) {
+//		//las instancias de estacionamiento estan estrictamente vinculadas a la inicializacion de las 
+//		//mismas por el sem (principio de dependency inversion)
+//		LocalTime horaInicio = LocalTime.now();
+//		EstacionamientoAPP nuevoEstacionamiento = new EstacionamientoAPP(app, patente, horaInicio);
+//		String notificacion = "Estacionamiento iniciado a las " + nuevoEstacionamiento.getHoraInicio() +
+//				" valido hasta las " + this.getHoraMaxima(nuevoEstacionamiento) + " hs.";
+//		
+//		this.registrarEstacionamiento(nuevoEstacionamiento);
+//		app.notificarAlUsuario(notificacion);
+//	}
 
-	LocalTime getHoraMaxima(Estacionamiento estacionamiento) {
-		Integer horasQuePuedeComprar = getHorasQuePuedeComprar(estacionamiento.getApp());
-		LocalTime potencialHoraFin = estacionamiento.getHoraInicio().plusHours(horasQuePuedeComprar); 
-		
-		return (potencialHoraFin.isAfter(this.horaCierre)) ? this.horaCierre : potencialHoraFin;
-	}
+//	LocalTime getHoraMaxima(Estacionamiento estacionamiento) {
+//		Integer horasQuePuedeComprar = getHorasQuePuedeComprar(estacionamiento.getApp());
+//		LocalTime potencialHoraFin = estacionamiento.getHoraInicio().plusHours(horasQuePuedeComprar); 
+//		
+//		return (potencialHoraFin.isAfter(this.horaCierre)) ? this.horaCierre : potencialHoraFin;
+//	}
 
 	private Integer getHorasQuePuedeComprar(APP app) {
 		return (int) (this.getSaldo(app) / 
@@ -202,14 +202,14 @@ public class SEM implements GestorAPP, GestorEstacionamiento, GestorInfracciones
 		this.registros.add(registro);
 	}
 
-	public void generarEstacionamiento(RegistroDeCompraPuntual registroDeCompraPuntual) {
-		LocalTime horaInicio = registroDeCompraPuntual.getHora();
-		LocalTime horaFin = horaInicio.plusHours(registroDeCompraPuntual.getHorasCompradas());
-		Estacionamiento estacionamiento = new EstacionamientoPuntual(horaInicio, horaFin, registroDeCompraPuntual);
-		
-		this.registrarEstacionamiento(estacionamiento);
-		registroDeCompraPuntual.notificarCompraExitosa();
-	}
+//	public void generarEstacionamiento(RegistroDeCompraPuntual registroDeCompraPuntual) {
+//		LocalTime horaInicio = registroDeCompraPuntual.getHora();
+//		LocalTime horaFin = horaInicio.plusHours(registroDeCompraPuntual.getHorasCompradas());
+//		Estacionamiento estacionamiento = new EstacionamientoPuntual(horaInicio, horaFin, registroDeCompraPuntual);
+//		
+//		this.registrarEstacionamiento(estacionamiento);
+//		registroDeCompraPuntual.notificarCompraExitosa();
+//	}
 
 	void setRegistros(List<RegistroDeCompra> registros) {
 		this.registros = registros;		
@@ -264,6 +264,30 @@ public class SEM implements GestorAPP, GestorEstacionamiento, GestorInfracciones
 	public void finalizarEstacionamiento(APP app) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void generarEstacionamiento(RegistroDeCompraPuntual registroDeCompraPuntual) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void iniciarEstacionamiento(String patente, APP app) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Infraccion> getInfracciones() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean tieneInfracciones(String patente) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

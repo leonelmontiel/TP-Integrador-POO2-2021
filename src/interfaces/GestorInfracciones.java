@@ -1,13 +1,19 @@
 package interfaces;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import infraccion.Infraccion;
 import inspector.Inspector;
 
 public interface GestorInfracciones {
 
-	Boolean tieneEstacionamientoVigente(String patente, LocalDateTime tiempoConsulta);
+	public List<Infraccion> getInfracciones();	
+	
+	public Boolean tieneInfracciones(String patente);
+	
+	public Boolean tieneEstacionamientoVigente(String patente, LocalDateTime tiempoConsulta);
 
-	void altaInfraccion(String patente, Inspector inspector);
+	public void altaInfraccion(String patente, Inspector inspector);
 
 }
