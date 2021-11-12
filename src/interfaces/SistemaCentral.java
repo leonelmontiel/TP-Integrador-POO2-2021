@@ -62,6 +62,7 @@ public class SistemaCentral {
 	
 	public void generarRecarga(RegistroDeRecargaCelular registroDeRecargaCelular) {
 		this.gestorAPP.recargarSaldo(registroDeRecargaCelular);
+		this.notificarRecargaDeCredito(registroDeRecargaCelular);
 	}
 	
 	public void generarCompraPuntual(RegistroDeCompraPuntual registroDeCompraPuntual) {

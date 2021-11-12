@@ -5,14 +5,14 @@ import registroDeCompra.RegistroDeRecargaCelular;
 
 public interface GestorAPP {
 
-	Float getSaldo(APP app);
+	public Float getSaldo(APP app);
 
-	Boolean tieneSaldoSuficiente(APP app);
+	public Boolean tieneSaldoSuficiente(APP app);
+
+	public void recargarSaldo(RegistroDeRecargaCelular registroDeRecargaCelular);
 	
-	void recargarSaldo(RegistroDeRecargaCelular registroDeRecargaCelular);
+	public void iniciarEstacionamiento(String patente, APP app);
 	
-	void iniciarEstacionamiento(String patente, APP app);
-	
-	void finalizarEstacionamiento(APP app);
+	public void finalizarEstacionamiento(APP app);
 
 }

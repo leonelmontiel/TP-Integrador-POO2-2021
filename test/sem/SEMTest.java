@@ -75,7 +75,7 @@ class SEMTest {
 		
 		assertEquals(precioEsperado, this.sem.getPrecioPorHora());
 	}
-
+/*
 	@Test
 	void testIniciarEstacionamientoYNotificarAlUsuario() {
 		//configuracion de mocks
@@ -219,7 +219,7 @@ class SEMTest {
 		this.sem.recargarSaldo(this.app, montoRecarga2);
 		
 		assertEquals(saldoEsperado2, saldoEsperado2);
-	}*/
+
 	
 	@Test
 	void testRegistrarEstacionamiento() {
@@ -420,4 +420,5 @@ class SEMTest {
 		//Verify
 		((RegistroDeCompraPuntual) verify(this.registro)).notificarCompraExitosa();
 	}
+	*/
 }

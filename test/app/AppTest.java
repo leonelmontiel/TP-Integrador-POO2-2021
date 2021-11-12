@@ -5,14 +5,15 @@ import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import sem.SEM;
+
+import interfaces.GestorAPP;
 
 class AppTest {
 
 	private APP app;
 	private Integer numero;
 	private String patente;
-	private SEM sistema;
+	private GestorAPP sistema;
 	private Pantalla pantalla;
 
 	@BeforeEach
@@ -21,13 +22,10 @@ class AppTest {
 		this.numero = 1150625347;
 		this.patente = "A13F45";
 		
-		this.sistema = mock(SEM.class);
+		this.sistema = mock(GestorAPP.class);
 		this.pantalla = mock(Pantalla.class);
 		this.app = new APP(this.numero, this.sistema);
-		
-		// config mock
-		Float precioXHora = 40f;
-		when(this.sistema.getPrecioPorHora()).thenReturn(precioXHora);
+
 	}
 
 	@Test
@@ -41,11 +39,16 @@ class AppTest {
 	@Test
 	void testIniciarEstacionamientoOK() {
 		//setUp
-		Float saldoDisponible = 180f;
-		when(this.sistema.getSaldo(this.app)).thenReturn(saldoDisponible);
+		this.pantalla = mock(Pantalla.class);
+		when(this.sistema.tieneSaldoSuficiente(this.app)).thenReturn(true);
+
+		//setup
+		this.app.setPantalla(this.pantalla);
+		
 		//Excercise
 		this.app.iniciarEstacionamiento(this.patente);
 		//Verify
+		verify(this.sistema).tieneSaldoSuficiente(this.app);
 		verify(this.sistema, times(1)).iniciarEstacionamiento(this.patente, this.app);
 	}
 
@@ -82,8 +85,12 @@ class AppTest {
 	@Test
 	void testTieneEstacioamientoIniciado() {
 		//Config Mock
-		Float saldoDisponible = 80F;
-		when(this.sistema.getSaldo(this.app)).thenReturn(saldoDisponible);
+		this.pantalla = mock(Pantalla.class);
+		when(this.sistema.tieneSaldoSuficiente(this.app)).thenReturn(true);
+		
+		//setup
+		this.app.setPantalla(this.pantalla);
+		
 		//Excercise
 		this.app.iniciarEstacionamiento(this.patente);
 		//Verify
@@ -101,24 +108,33 @@ class AppTest {
 	@Test
 	void testAPPConEstacionamientoLoFinaliza() {
 		//Config Mock
-		Float saldoDisponible = 80F;
-		when(this.sistema.getSaldo(this.app)).thenReturn(saldoDisponible);
+		this.pantalla = mock(Pantalla.class);
+		when(this.sistema.tieneSaldoSuficiente(this.app)).thenReturn(true);
+		//setup
+		this.app.setPantalla(this.pantalla);
+		
 		//Excercise
 		this.app.iniciarEstacionamiento(this.patente);
 		this.app.finalizarEstacionamiento();
 		//Verify
+		verify(this.sistema).tieneSaldoSuficiente(this.app);
 		verify(this.sistema, times(1)).finalizarEstacionamiento(this.app);
 	}
 	
 	@Test
 	void testAPPConEstacionamientoNoLoInicia() {
 		//Config Mock
-		Float saldoDisponible = 80F;
-		when(this.sistema.getSaldo(this.app)).thenReturn(saldoDisponible);
+		this.pantalla = mock(Pantalla.class);
+		when(this.sistema.tieneSaldoSuficiente(this.app)).thenReturn(true);
+
+		//setup
+		this.app.setPantalla(this.pantalla);
+		
 		//Excercise
 		this.app.iniciarEstacionamiento(this.patente);
 		this.app.iniciarEstacionamiento(this.patente);
 		//Verify
+		verify(this.sistema).tieneSaldoSuficiente(this.app);
 		verify(this.sistema, times(1)).iniciarEstacionamiento(this.patente, this.app);
 	}
 
@@ -151,7 +167,7 @@ class AppTest {
 	@Test
 	void testAPPConAsistenciaAlUsuarioActivadaAlertaCambioDeMovimiento() {
 		//setup
-		when(this.sistema.getSaldo(this.app)).thenReturn(80f);
+		when(this.sistema.tieneSaldoSuficiente(this.app)).thenReturn(true);
 		this.app.activarAsistenciaAlUsuario();
 		this.app.setPantalla(this.pantalla);
 		
@@ -161,6 +177,7 @@ class AppTest {
 		this.app.driving();
 		
 		//verify
+		verify(this.sistema).tieneSaldoSuficiente(this.app);
 		verify(this.pantalla).mostrar("Alerta debe iniciar estacionamiento");
 		verify(this.pantalla).mostrar("Alerta debe finalizar estacionamiento");
 	}
@@ -168,7 +185,7 @@ class AppTest {
 	@Test
 	void testAPPConAsistenciaAlUsuarioActivadaAlertaSoloElCambioDeMovimiento() {
 		//setup
-		when(this.sistema.getSaldo(this.app)).thenReturn(80f);
+		when(this.sistema.tieneSaldoSuficiente(this.app)).thenReturn(true);
 		this.app.activarAsistenciaAlUsuario();
 		this.app.setPantalla(this.pantalla);
 		
@@ -178,6 +195,7 @@ class AppTest {
 		this.app.walking();
 		
 		//verify
+		verify(this.sistema).tieneSaldoSuficiente(this.app);
 		verify(this.pantalla, times(1)).mostrar("Alerta debe iniciar estacionamiento");
 	}
 	
@@ -195,7 +213,7 @@ class AppTest {
 	@Test
 	void testAppEnModoAutomaticoIniciaSolaUnEstacionamiento() {
 		//setup
-		when(this.sistema.getSaldo(this.app)).thenReturn(80f);
+		when(this.sistema.tieneSaldoSuficiente(this.app)).thenReturn(true);
 		this.app.setPantalla(this.pantalla);
 		
 		//se presupone que al activar el modo automatico se debe configurar la patente que utiliza para
@@ -205,6 +223,7 @@ class AppTest {
 		this.app.walking();
 
 		//verify
+		verify(this.sistema).tieneSaldoSuficiente(this.app);
 		verify(this.sistema).iniciarEstacionamiento(this.patente, this.app);	
 		verify(this.pantalla).mostrar("Se inicio un estacionamiento en forma automatica");
 	}
@@ -212,7 +231,7 @@ class AppTest {
 	@Test
 	void testAppEnModoAutomaticoFinalizaSolaUnEstacionamiento() {
 		//setup
-		when(this.sistema.getSaldo(this.app)).thenReturn(80f);
+		when(this.sistema.tieneSaldoSuficiente(this.app)).thenReturn(true);
 		this.app.setPantalla(this.pantalla);
 		
 		//se presupone que al activar el modo automatico se debe configurar la patente que utiliza para
@@ -224,6 +243,7 @@ class AppTest {
 		this.app.driving();
 		
 		//verify
+		verify(this.sistema).tieneSaldoSuficiente(this.app);
 		verify(this.sistema).finalizarEstacionamiento(this.app);
 		verify(this.pantalla).mostrar("Se finalizo el estacionamiento en forma automatica");
 	}

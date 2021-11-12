@@ -1,6 +1,7 @@
 package interfaces;
 
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.Map;
 
 import app.APP;
@@ -14,14 +15,31 @@ public class GestorAppImpl implements GestorAPP {
 	private Map<APP, EstacionamientoAPP> estacionamientoAPP;
 	private SistemaCentral sistema;
 
-	@Override
-	public void recargarSaldo(RegistroDeRecargaCelular registroDeRecargaCelular) {
-		Float nuevoSaldo = getNuevoSaldo(registroDeRecargaCelular); 
-		this.usuariosAPP.replace(registroDeRecargaCelular.getApp(), nuevoSaldo);
-		this.sistema.notificarRecargaDeCredito(registroDeRecargaCelular);
+	public GestorAppImpl() {
+		this.usuariosAPP = new HashMap<APP, Float>();
+	}
+	
+	void setUsuariosAPP(Map<APP, Float> usuariosAPP) {
+		this.usuariosAPP = usuariosAPP;
+	}
+	
+	public void regitrarAPP(APP app) {
+		if(!this.tieneRegistradoApp(app)) {			
+			this.usuariosAPP.put(app, 0f);
+		}
 	}
 
-	private float getNuevoSaldo(RegistroDeRecargaCelular registroDeRecargaCelular) {
+	private Boolean tieneRegistradoApp(APP app) {
+		return this.usuariosAPP.containsKey(app);
+	}
+	
+	@Override
+	public void recargarSaldo(RegistroDeRecargaCelular registroDeRecargaCelular) {
+		Float nuevoSaldo = this.getNuevoSaldo(registroDeRecargaCelular); 
+		this.usuariosAPP.replace(registroDeRecargaCelular.getApp(), nuevoSaldo);
+	}
+
+	private Float getNuevoSaldo(RegistroDeRecargaCelular registroDeRecargaCelular) {
 		return this.getSaldo(registroDeRecargaCelular.getApp()) + registroDeRecargaCelular.getMontoRecarga();
 	}
 
@@ -91,4 +109,5 @@ public class GestorAppImpl implements GestorAPP {
 	public Boolean tieneSaldoSuficiente(APP app) {
 		return this.getSaldo(app) >= this.sistema.getPrecioPorHora();
 	}
+
 }

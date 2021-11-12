@@ -89,22 +89,22 @@ public class SEM implements GestorAPP, GestorEstacionamiento, GestorInfracciones
 				this.precioPorHora);
 	}
 	
-	public void finalizarEstacionamiento(APP app) {
-		Estacionamiento estacionamientoAFinalizar = this.getEstacionamientosActivos(app).get(0);
-		
-		estacionamientoAFinalizar.finalizar();
-		Float costo = this.getCosto(estacionamientoAFinalizar);
-		
-		String notificacion = "Iniciado " + estacionamientoAFinalizar.getHoraInicio() + 
-				" Finalizado " + estacionamientoAFinalizar.getHoraFin() + " con una duracion de " +
-				estacionamientoAFinalizar.getDuracion() + " y un costo de " + 
-				costo;
-		
-		this.decrementarSaldo(app, costo);
-		app.notificarAlUsuario(notificacion);
-		
-		this.notificarEstacionamientoFinalizado(this, estacionamientoAFinalizar);
-	}
+//	public void finalizarEstacionamiento(APP app) {
+//		Estacionamiento estacionamientoAFinalizar = this.getEstacionamientosActivos(app).get(0);
+//		
+//		estacionamientoAFinalizar.finalizar();
+//		Float costo = this.getCosto(estacionamientoAFinalizar);
+//		
+//		String notificacion = "Iniciado " + estacionamientoAFinalizar.getHoraInicio() + 
+//				" Finalizado " + estacionamientoAFinalizar.getHoraFin() + " con una duracion de " +
+//				estacionamientoAFinalizar.getDuracion() + " y un costo de " + 
+//				costo;
+//		
+//		this.decrementarSaldo(app, costo);
+//		app.notificarAlUsuario(notificacion);
+//		
+//		this.notificarEstacionamientoFinalizado(this, estacionamientoAFinalizar);
+//	}
 
 	private void decrementarSaldo(APP app, Float costo) {
 		Float nuevoSaldo = this.usuariosAPP.get(app) - costo;
@@ -117,13 +117,13 @@ public class SEM implements GestorAPP, GestorEstacionamiento, GestorInfracciones
 						estacionamiento.getApp().equals(app)).toList();
 	}
 
-	private Float getCosto(Estacionamiento estacionamiento) {
-		return estacionamiento.getDuracion() * this.precioPorHora;
-	}
+//	private Float getCosto(Estacionamiento estacionamiento) {
+//		return estacionamiento.getDuracion() * this.precioPorHora;
+//	}
 
-	private void notificarEstacionamientoFinalizado(SEM sem, Estacionamiento estacionamiento) {
-		this.entidades.stream().forEach(entidad -> entidad.actualizarEstacionamientoFinalizado(this, estacionamiento));		
-	}
+//	private void notificarEstacionamientoFinalizado(SEM sem, Estacionamiento estacionamiento) {
+//		this.entidades.stream().forEach(entidad -> entidad.actualizarEstacionamientoFinalizado(this, estacionamiento));		
+//	}
 
 	public void regitrarAPP(APP app) {
 		this.usuariosAPP.put(app, 0f);
@@ -137,24 +137,24 @@ public class SEM implements GestorAPP, GestorEstacionamiento, GestorInfracciones
 		return this.usuariosAPP.get(app);
 	}
 
-	public void recargarSaldo(RegistroDeRecargaCelular registro) {
-		Float nuevoSaldo = this.getSaldo(registro.getApp()) + registro.getMontoRecarga(); 
-		this.usuariosAPP.replace(registro.getApp(), nuevoSaldo);
-		notificarRecargaDeCredito(registro);
-	}
+//	public void recargarSaldo(RegistroDeRecargaCelular registro) {
+//		Float nuevoSaldo = this.getSaldo(registro.getApp()) + registro.getMontoRecarga(); 
+//		this.usuariosAPP.replace(registro.getApp(), nuevoSaldo);
+//		notificarRecargaDeCredito(registro);
+//	}
 
-	private void notificarRecargaDeCredito(RegistroDeRecargaCelular registro) {
-		this.entidades.stream().forEach(ent -> ent.actualizarRecargaDeCredito(this, registro));
-	}
+//	private void notificarRecargaDeCredito(RegistroDeRecargaCelular registro) {
+//		this.entidades.stream().forEach(ent -> ent.actualizarRecargaDeCredito(this, registro));
+//	}
 
-	public void registrarEstacionamiento(Estacionamiento estacionamiento) {
-		this.estacionamientos.add(estacionamiento);
-		notificarEstacionamientoIniciado(estacionamiento);
-	}
+//	public void registrarEstacionamiento(Estacionamiento estacionamiento) {
+//		this.estacionamientos.add(estacionamiento);
+//		notificarEstacionamientoIniciado(estacionamiento);
+//	}
 
-	private void notificarEstacionamientoIniciado(Estacionamiento estacionamiento) {
-		this.entidades.stream().forEach(entidad -> entidad.actualizarEstacionamientoIniciado(this, estacionamiento));
-	}
+//	private void notificarEstacionamientoIniciado(Estacionamiento estacionamiento) {
+//		this.entidades.stream().forEach(entidad -> entidad.actualizarEstacionamientoIniciado(this, estacionamiento));
+//	}
 
 	public Boolean tieneEstacionamientoVigente(String patente, LocalDateTime momentoConsulta) {
 		return this.estacionamientos.stream()
@@ -234,6 +234,36 @@ public class SEM implements GestorAPP, GestorEstacionamiento, GestorInfracciones
 				hoy, ahora, app, monto);
  		
 		this.almacenar(registro);		
+	}
+
+	@Override
+	public Float getCosto(Estacionamiento estacionamiento) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean tieneSaldoSuficiente(APP app) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void registrarEstacionamiento(Estacionamiento estacionamiento) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void recargarSaldo(RegistroDeRecargaCelular registroDeRecargaCelular) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void finalizarEstacionamiento(APP app) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
