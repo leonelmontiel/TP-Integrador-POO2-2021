@@ -65,7 +65,7 @@ public class SistemaCentral {
 		this.notificarRecargaDeCredito(registroDeRecargaCelular);
 	}
 	
-	public void generarCompraPuntual(RegistroDeCompraPuntual registroDeCompraPuntual) {
+	public void generarEstacionamientoPuntual(RegistroDeCompraPuntual registroDeCompraPuntual) {
 		this.gestorEstacionamientos.generarEstacionamiento(registroDeCompraPuntual);
 	}
 	

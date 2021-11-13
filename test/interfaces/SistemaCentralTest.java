@@ -106,7 +106,7 @@ class SistemaCentralTest {
 		this.sistema.setGestorEstacionamientos(this.gestorEstacionamiento);
 		
 		//exercise
-		this.sistema.generarCompraPuntual((RegistroDeCompraPuntual) this.registro);
+		this.sistema.generarEstacionamientoPuntual((RegistroDeCompraPuntual) this.registro);
 		
 		//verify
 		verify(this.gestorEstacionamiento).generarEstacionamiento((RegistroDeCompraPuntual) this.registro);

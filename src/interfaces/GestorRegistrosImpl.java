@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import app.APP;
 import puntoDeVenta.PuntoDeVenta;
 import registroDeCompra.RegistroDeCompra;
@@ -21,9 +20,17 @@ public class GestorRegistrosImpl implements GestorRegistros {
 		this.registros = new ArrayList<RegistroDeCompra>();
 	}
 
+	void setRegistros(List<RegistroDeCompra> registros) {
+		this.registros = registros;
+	}
+	
 	@Override
 	public void almacenar(RegistroDeCompra registro) {
 		this.registros.add(registro);
+	}
+	
+	public Boolean tieneAlmacenadoRegistro(Integer nroControl) {
+		return this.registros.stream().anyMatch(registro -> registro.getNroControl().equals(nroControl));
 	}
 
 	@Override
@@ -35,7 +42,7 @@ public class GestorRegistrosImpl implements GestorRegistros {
 				nroControlRegistro, hoy, ahora, patente, horasCompradas);
 
 		this.almacenar(registroCompraPuntual);
-		this.sistema.generarCompraPuntual(registroCompraPuntual);
+		this.sistema.generarEstacionamientoPuntual(registroCompraPuntual);
 	}
 
 	@Override
