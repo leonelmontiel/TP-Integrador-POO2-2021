@@ -1,10 +1,9 @@
-package interfaces;
+package sem;
 
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 import app.APP;
-import estacionamiento.Estacionamiento;
 import estacionamiento.EstacionamientoAPP;
 import registroDeCompra.RegistroDeRecargaCelular;
 
@@ -55,7 +54,7 @@ public class GestorAppImpl implements GestorAPP {
 
 	@Override
 	public void finalizarEstacionamiento(APP app) {
-		Estacionamiento estacionamientoAFinalizar = this.popEstacionamiento(app);
+		EstacionamientoAPP estacionamientoAFinalizar = this.popEstacionamiento(app);
 		
 		Float costo = this.sistema.getCosto(estacionamientoAFinalizar);
 		String notificacion = "Iniciado " + estacionamientoAFinalizar.getHoraInicio() + 
@@ -65,8 +64,7 @@ public class GestorAppImpl implements GestorAPP {
 		
 		this.decrementarSaldo(app, costo);
 		this.sistema.finalizarEstacionamiento(estacionamientoAFinalizar);
-		app.notificarAlUsuario(notificacion);
-		
+		app.notificarAlUsuario(notificacion);	
 	}
 
 	private void decrementarSaldo(APP app, Float costo) {
@@ -74,8 +72,8 @@ public class GestorAppImpl implements GestorAPP {
 		this.usuariosAPP.replace(app, nuevoSaldo);
 	}
 
-	private Estacionamiento popEstacionamiento(APP app) {
-		Estacionamiento estacionamiento = this.estacionamientoAPP.get(app);
+	private EstacionamientoAPP popEstacionamiento(APP app) {
+		EstacionamientoAPP estacionamiento = this.estacionamientoAPP.get(app);
 		this.estacionamientoAPP.remove(app);
 		return estacionamiento;
 	}
@@ -123,6 +121,12 @@ public class GestorAppImpl implements GestorAPP {
 
 	public Boolean tieneEstacionamientoIniciado(APP app) {
 		return this.estacionamientoAPP.containsKey(app);
+	}
+
+	@Override
+	public void finalizarTodosLosEstacionamientos() {
+		this.estacionamientoAPP.keySet().stream().forEach(app -> this.finalizarEstacionamiento(app));
+		this.estacionamientoAPP.clear();
 	}
 
 }

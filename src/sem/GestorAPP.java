@@ -1,4 +1,4 @@
-package interfaces;
+package sem;
 
 import app.APP;
 import registroDeCompra.RegistroDeRecargaCelular;
@@ -14,5 +14,7 @@ public interface GestorAPP {
 	public void iniciarEstacionamiento(String patente, APP app);
 	
 	public void finalizarEstacionamiento(APP app);
+
+	public void finalizarTodosLosEstacionamientos();
 
 }

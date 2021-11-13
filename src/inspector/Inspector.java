@@ -2,7 +2,7 @@ package inspector;
 
 import java.time.LocalDateTime;
 
-import interfaces.GestorInfracciones;
+import sem.GestorInfracciones;
 import zona.Zona;
 
 public class Inspector {

@@ -1,4 +1,4 @@
-package interfaces;
+package sem;
 
 import app.APP;
 import puntoDeVenta.PuntoDeVenta;

@@ -1,4 +1,4 @@
-package interfaces;
+package sem;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -20,7 +20,7 @@ import zona.Zona;
 
 class SistemaCentralTest {
 
-	private SistemaCentral sistema;
+	private SistemaCentralImpl sistema;
 	private LocalTime horaInicio;
 	private LocalTime horaCierre;
 	private Float precioPorHora;
@@ -39,7 +39,7 @@ class SistemaCentralTest {
 		this.horaCierre = LocalTime.of(20, 0);
 		this.precioPorHora = 40f;
 		this.zonas = new ArrayList<Zona>();
-		this.sistema = new SistemaCentral(this.horaInicio, this.horaCierre, this.precioPorHora, this.zonas);
+		this.sistema = new SistemaCentralImpl(this.horaInicio, this.horaCierre, this.precioPorHora, this.zonas);
 	}
 
 	@Test
@@ -241,6 +241,21 @@ class SistemaCentralTest {
 		//verify
 		verify(this.entidad).actualizarRecargaDeCredito(this.sistema, (RegistroDeRecargaCelular) this.registro);
 		verify(this.otraEntidad).actualizarRecargaDeCredito(this.sistema, (RegistroDeRecargaCelular) this.registro);
+	}
+	
+	@Test 
+	void testFinalizarTodosLosEstacionamientos() {
+		//configuracion de mocks
+		this.gestorAPP = mock(GestorAPP.class);
+		
+		//setup
+		this.sistema.setGestorAPP(this.gestorAPP);
+		
+		//exercise
+		this.sistema.finalizarTodosLosEstacionamientos();
+		
+		//verify
+		verify(this.gestorAPP).finalizarTodosLosEstacionamientos();
 	}
 
 }

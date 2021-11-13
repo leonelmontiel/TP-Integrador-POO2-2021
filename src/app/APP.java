@@ -1,6 +1,6 @@
 package app;
 
-import interfaces.GestorAPP;
+import sem.GestorAPP;
 
 public class APP implements MovementSensor {
 

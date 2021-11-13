@@ -1,4 +1,4 @@
-package interfaces;
+package sem;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -49,7 +49,7 @@ public class GestorEstacionamientoImpl implements GestorEstacionamiento {
 		LocalTime horaInicio = registroDeCompraPuntual.getHora();
 		LocalTime horaFin = horaInicio.plusHours(registroDeCompraPuntual.getHorasCompradas());
 		String patente = registroDeCompraPuntual.getPatente();
-		Estacionamiento estacionamiento = new EstacionamientoPuntual(horaInicio, horaFin, patente,
+		EstacionamientoPuntual estacionamiento = new EstacionamientoPuntual(horaInicio, horaFin, patente,
 				registroDeCompraPuntual);
 		
 		this.sistema.iniciarEstacionamiento(estacionamiento);

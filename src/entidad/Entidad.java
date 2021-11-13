@@ -1,8 +1,8 @@
 package entidad;
 
 import estacionamiento.Estacionamiento;
-import interfaces.SistemaCentral;
 import registroDeCompra.RegistroDeRecargaCelular;
+import sem.SistemaCentral;
 
 public interface Entidad {
 

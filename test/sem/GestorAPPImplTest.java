@@ -1,4 +1,4 @@
-package interfaces;
+package sem;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -19,9 +19,11 @@ class GestorAPPImplTest {
 	private GestorAppImpl gestor;
 	private SistemaCentral sistema;
 	private APP app;
+	private APP otraApp;
 	private RegistroDeRecargaCelular registro;
 	private RegistroDeRecargaCelular otroRegistro;
 	private EstacionamientoAPP estacionamiento;
+	private EstacionamientoAPP otroEstacionamiento;
 	private String patente;
 	
 	@BeforeEach
@@ -224,6 +226,27 @@ class GestorAPPImplTest {
 		verify(this.sistema, atLeast(1)).getPrecioPorHora();
 		verify(this.app).notificarAlUsuario("No dispone de saldo suficiente");
 		verify(usuarios, atLeast(1)).get(this.app);
+	}
+	
+	@Test
+	void testFinalizarEstacionamientos() {
+		//mocks 
+		this.app = mock(APP.class);
+		this.otraApp = mock(APP.class);
+		this.estacionamiento = mock(EstacionamientoAPP.class);
+		this.otroEstacionamiento = mock(EstacionamientoAPP.class);
+		
+		//setup
+		Map<APP, EstacionamientoAPP> estacionamientos = new HashMap<APP, EstacionamientoAPP>();
+		estacionamientos.put(this.app, this.estacionamiento);
+		estacionamientos.put(this.otraApp, this.otroEstacionamiento);
+		this.gestor.setEstacionamientos(estacionamientos);
+		
+		//exercise
+		this.gestor.finalizarTodosLosEstacionamientos();
+		//verify
+		verify(this.estacionamiento).finalizar();
+		verify(this.otroEstacionamiento).finalizar();
 	}
 
 }

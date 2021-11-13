@@ -2,7 +2,7 @@ package puntoDeVenta;
 
 import app.APP;
 import app.Pantalla;
-import interfaces.GestorRegistros;
+import sem.GestorRegistros;
 
 public class PuntoDeVenta {
 

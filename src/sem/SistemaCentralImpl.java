@@ -1,4 +1,4 @@
-package interfaces;
+package sem;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import registroDeCompra.RegistroDeCompraPuntual;
 import registroDeCompra.RegistroDeRecargaCelular;
 import zona.Zona;
 
-public class SistemaCentral {
+public class SistemaCentralImpl implements SistemaCentral {
 
 	private LocalTime horaInicio;
 	private LocalTime horaCierre;
@@ -20,7 +20,7 @@ public class SistemaCentral {
 	private GestorEstacionamiento gestorEstacionamientos;
 	private GestorAPP gestorAPP;
 	
-	public SistemaCentral(LocalTime horaInicio, LocalTime horaCierre, Float precioPorHora, List<Zona> zonas) {
+	public SistemaCentralImpl(LocalTime horaInicio, LocalTime horaCierre, Float precioPorHora, List<Zona> zonas) {
 		this.horaInicio = horaInicio;
 		this.horaCierre = horaCierre;
 		this.precioPorHora = precioPorHora;
@@ -106,6 +106,10 @@ public class SistemaCentral {
 
 	private void notificarRecargaDeCredito(RegistroDeRecargaCelular registroDeRecargaCelular) {
 		this.entidades.stream().forEach(entidad -> entidad.actualizarRecargaDeCredito(this, registroDeRecargaCelular));
+	}
+	
+	public void finalizarTodosLosEstacionamientos() {
+		this.gestorAPP.finalizarTodosLosEstacionamientos();
 	}
 	
 }

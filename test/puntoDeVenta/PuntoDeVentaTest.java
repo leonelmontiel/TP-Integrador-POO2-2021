@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import app.APP;
 import app.Pantalla;
-import interfaces.GestorRegistros;
+import sem.GestorRegistros;
 
 class PuntoDeVentaTest {
 	
