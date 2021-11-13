@@ -113,5 +113,10 @@ class EstacionamientoPuntualTest extends EstacionamientoTest {
 		//verify
 		verify(this.compraPuntual, atLeast(1)).getFecha();
 	}
+	
+	@Test
+	void testGetDuracion() {
+		assertEquals(3, this.estacionamiento.getDuracion());
+	}
 
 }

@@ -75,6 +75,26 @@ class GestorAPPImplTest {
 	}
 	
 	@Test
+	void testGetHoraMaximaRetornaHoraCierre() {
+		//configuracion de mocks
+		LocalTime diecinueveHoras = LocalTime.of(19, 0);
+		@SuppressWarnings("unchecked")
+		Map<APP, Float> usuarios = mock(Map.class);
+		this.app = mock(APP.class);
+		when(this.sistema.getHoraCierre()).thenReturn(LocalTime.of(20, 0));
+		when(this.sistema.getPrecioPorHora()).thenReturn(40f);
+		when(usuarios.get(this.app)).thenReturn(120f);
+		
+		this.gestor.setUsuariosAPP(usuarios);
+		
+		//verify
+		assertEquals(this.sistema.getHoraCierre(), this.gestor.getHoraMaxima(this.app, diecinueveHoras));
+		verify(this.sistema).getHoraCierre();
+		verify(this.sistema).getPrecioPorHora();
+		verify(usuarios).get(this.app);
+	}
+	
+	@Test
 	void testRecargaDeSaldo() {
 		//configuracion de mocks
 		Float montoRecarga = 80f;
@@ -138,6 +158,7 @@ class GestorAPPImplTest {
 		when(this.registro.getApp()).thenReturn(this.app);
 		when(this.registro.getMontoRecarga()).thenReturn(saldoInicial);
 		
+		@SuppressWarnings("unchecked")
 		Map<APP, EstacionamientoAPP> estacionamientosMock = mock(Map.class);
 		when(estacionamientosMock.get(this.app)).thenReturn(this.estacionamiento);
 		
@@ -163,6 +184,7 @@ class GestorAPPImplTest {
 	void testIniciarEstacionamiento() {
 		this.patente = "ABC 123";
 		this.app = mock(APP.class);
+		@SuppressWarnings("unchecked")
 		Map<APP, Float> usuarios = mock(Map.class);
 		
 		when(this.sistema.getHoraCierre()).thenReturn(LocalTime.of(20, 0));
@@ -178,6 +200,29 @@ class GestorAPPImplTest {
 		
 		verify(this.sistema, atLeast(1)).getHoraCierre();
 		verify(this.sistema, atLeast(1)).getPrecioPorHora();
+		verify(usuarios, atLeast(1)).get(this.app);
+	}
+
+	@Test
+	void testIniciarEstacionamientoSinSaldo() {
+		this.patente = "ABC 123";
+		this.app = mock(APP.class);
+		@SuppressWarnings("unchecked")
+		Map<APP, Float> usuarios = mock(Map.class);
+		
+		when(this.sistema.getHoraCierre()).thenReturn(LocalTime.of(20, 0));
+		when(this.sistema.getPrecioPorHora()).thenReturn(40f);
+		when(usuarios.get(this.app)).thenReturn(20f);
+		
+		//setup
+		this.gestor.setUsuariosAPP(usuarios);
+		
+		this.gestor.iniciarEstacionamiento(this.patente, this.app);
+		
+		assertFalse(this.gestor.tieneEstacionamientoIniciado(this.app));
+		
+		verify(this.sistema, atLeast(1)).getPrecioPorHora();
+		verify(this.app).notificarAlUsuario("No dispone de saldo suficiente");
 		verify(usuarios, atLeast(1)).get(this.app);
 	}
 

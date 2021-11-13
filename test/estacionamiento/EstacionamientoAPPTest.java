@@ -21,6 +21,7 @@ class EstacionamientoAPPTest extends EstacionamientoTest {
 		this.aplicacion = mock(APP.class);
 		this.patente = "AA 325 AA";
 		this.horaInicio = LocalTime.of(18, 0);
+		this.horaFin = LocalTime.of(20, 0);
 		this.estacionamiento = new EstacionamientoAPP(this.aplicacion, this.patente, this.horaInicio);
 		
 	}
@@ -48,5 +49,18 @@ class EstacionamientoAPPTest extends EstacionamientoTest {
 		
 		assertFalse(this.estacionamiento.estaVigente(hoy));		
 	}
+	
+	@Test
+	void testGetDuracionEstacionamientoAppFinalizado() {
+		//setup
+		this.estacionamiento.setHoraFin(this.horaFin);
 
+		assertEquals(2, ((EstacionamientoAPP) this.estacionamiento).getDuracion());
+	}
+
+	@Test
+	void testGetDuracionEstacionamientoNoFinalizadoLanzaError() {
+		//este test se realizo para alcanzar el 100% de testing
+		assertThrows(RuntimeException.class, ()-> this.estacionamiento.getDuracion());
+	}
 }

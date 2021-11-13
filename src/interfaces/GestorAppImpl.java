@@ -24,7 +24,7 @@ public class GestorAppImpl implements GestorAPP {
 		this.usuariosAPP = usuariosAPP;
 	}
 
-	public void setEstacionamientos(Map<APP, EstacionamientoAPP> estacionamientos) {
+	void setEstacionamientos(Map<APP, EstacionamientoAPP> estacionamientos) {
 		this.estacionamientoAPP = estacionamientos;
 	}
 	
@@ -90,7 +90,11 @@ public class GestorAppImpl implements GestorAPP {
 			
 			this.registrarEstacionamiento(app, nuevoEstacionamiento);
 			app.notificarAlUsuario(notificacion);			
+		} else {
+			String notificacionSinCredito = "No dispone de saldo suficiente";
+			app.notificarAlUsuario(notificacionSinCredito);
 		}
+		
 	}
 
 	private void registrarEstacionamiento(APP app, EstacionamientoAPP nuevoEstacionamiento) {

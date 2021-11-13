@@ -7,6 +7,7 @@ import app.APP;
 
 public class EstacionamientoAPP extends Estacionamiento {
 
+	private static final String ESTACIONAMIENTO_VIGENTE = "El estacionamiento se encuentra vigente";
 	private APP app;
 
 	public EstacionamientoAPP(APP aplicacion, String patente, LocalTime horaInicio) {
@@ -24,7 +25,20 @@ public class EstacionamientoAPP extends Estacionamiento {
 	
 	@Override
 	public Boolean estaVigente(LocalDateTime momentoConsulta) {
+		return this.estaVigente();
+	}
+
+	private Boolean estaVigente() {
 		return (this.getHoraFin() == null) ? true : false;
 	}
 
+	@Override
+	public Integer getDuracion() {
+		this.asegurarFinalizado();
+		return	this.getHoraFin().getHour() - this.getHoraInicio().getHour();
+	}
+
+	private void asegurarFinalizado() {
+		if(this.estaVigente()) throw new RuntimeException(ESTACIONAMIENTO_VIGENTE);
+	}
 }

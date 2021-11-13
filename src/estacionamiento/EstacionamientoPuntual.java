@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import app.APP;
 import registroDeCompra.RegistroDeCompraPuntual;
 
 public class EstacionamientoPuntual extends Estacionamiento {
@@ -37,13 +36,8 @@ public class EstacionamientoPuntual extends Estacionamiento {
 	}
 
 	@Override
-	public APP getApp() {
-		return null;
-	}
-
-	@Override
-	public void finalizar() {
-		
+	public Integer getDuracion() {
+		return	this.getHoraFin().getHour() - this.getHoraInicio().getHour();
 	}
 
 }
