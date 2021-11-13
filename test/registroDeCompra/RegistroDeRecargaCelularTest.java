@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import app.APP;
-import sem.SEM;
 
 class RegistroDeRecargaCelularTest extends RegistroDeCompraTest{
 
@@ -23,7 +22,6 @@ class RegistroDeRecargaCelularTest extends RegistroDeCompraTest{
 		this.monto = 800f;
 		this.celular = mock(APP.class);
 		this.registroDeCompra = new RegistroDeRecargaCelular(this.puntoDeVenta, this.nroControl, this.fecha, this.hora, this.celular, this.monto);
-		mock(SEM.class);
 	}
 
 	@Test

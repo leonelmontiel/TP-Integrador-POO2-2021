@@ -8,8 +8,6 @@ import java.time.LocalTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import sem.SEM;
-
 class RegistroDeCompraPuntualTest extends RegistroDeCompraTest{
 
 	private Integer horasCompradas;
@@ -22,7 +20,6 @@ class RegistroDeCompraPuntualTest extends RegistroDeCompraTest{
 		this.hora = LocalTime.of(15, 00);
 		this.patente = "ABC 123";
 		this.registroDeCompra = new RegistroDeCompraPuntual(this.puntoDeVenta, this.nroControl, this.fecha, this.hora, this.patente, this.horasCompradas);
-		mock(SEM.class);
 	}
 
 	@Test

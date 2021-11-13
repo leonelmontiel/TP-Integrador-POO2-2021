@@ -3,7 +3,6 @@ package interfaces;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
-
 import app.APP;
 import estacionamiento.Estacionamiento;
 import estacionamiento.EstacionamientoAPP;
@@ -15,12 +14,18 @@ public class GestorAppImpl implements GestorAPP {
 	private Map<APP, EstacionamientoAPP> estacionamientoAPP;
 	private SistemaCentral sistema;
 
-	public GestorAppImpl() {
+	public GestorAppImpl(SistemaCentral sistema) {
 		this.usuariosAPP = new HashMap<APP, Float>();
+		this.estacionamientoAPP = new HashMap<APP, EstacionamientoAPP>();
+		this.sistema = sistema;
 	}
 	
 	void setUsuariosAPP(Map<APP, Float> usuariosAPP) {
 		this.usuariosAPP = usuariosAPP;
+	}
+
+	public void setEstacionamientos(Map<APP, EstacionamientoAPP> estacionamientos) {
+		this.estacionamientoAPP = estacionamientos;
 	}
 	
 	public void regitrarAPP(APP app) {
@@ -52,8 +57,6 @@ public class GestorAppImpl implements GestorAPP {
 	public void finalizarEstacionamiento(APP app) {
 		Estacionamiento estacionamientoAFinalizar = this.popEstacionamiento(app);
 		
-		estacionamientoAFinalizar.finalizar();
-		
 		Float costo = this.sistema.getCosto(estacionamientoAFinalizar);
 		String notificacion = "Iniciado " + estacionamientoAFinalizar.getHoraInicio() + 
 				" Finalizado " + estacionamientoAFinalizar.getHoraFin() + " con una duracion de " +
@@ -61,7 +64,7 @@ public class GestorAppImpl implements GestorAPP {
 				costo;
 		
 		this.decrementarSaldo(app, costo);
-		this.sistema.notificarEstacionamientoFinalizado(estacionamientoAFinalizar);
+		this.sistema.finalizarEstacionamientoAPP(estacionamientoAFinalizar);
 		app.notificarAlUsuario(notificacion);
 		
 	}
@@ -79,20 +82,22 @@ public class GestorAppImpl implements GestorAPP {
 
 	@Override
 	public void iniciarEstacionamiento(String patente, APP app) {
-		LocalTime horaInicio = LocalTime.now();
-		EstacionamientoAPP nuevoEstacionamiento = new EstacionamientoAPP(app, patente, horaInicio);
-		String notificacion = "Estacionamiento iniciado a las " + nuevoEstacionamiento.getHoraInicio() +
-				" valido hasta las " + this.getHoraMaxima(app, horaInicio) + " hs.";
-		
-		this.registrarEstacionamiento(app, nuevoEstacionamiento);
-		app.notificarAlUsuario(notificacion);
+		if(this.tieneSaldoSuficiente(app)) {
+			LocalTime horaInicio = LocalTime.now();
+			EstacionamientoAPP nuevoEstacionamiento = new EstacionamientoAPP(app, patente, horaInicio);
+			String notificacion = "Estacionamiento iniciado a las " + nuevoEstacionamiento.getHoraInicio() +
+					" valido hasta las " + this.getHoraMaxima(app, horaInicio) + " hs.";
+			
+			this.registrarEstacionamiento(app, nuevoEstacionamiento);
+			app.notificarAlUsuario(notificacion);			
+		}
 	}
 
 	private void registrarEstacionamiento(APP app, EstacionamientoAPP nuevoEstacionamiento) {
 		this.estacionamientoAPP.put(app, nuevoEstacionamiento);
 	}
 
-	private LocalTime getHoraMaxima(APP app, LocalTime hora) {
+	public LocalTime getHoraMaxima(APP app, LocalTime hora) {
 		Integer horasQuePuedeComprar = this.getHorasQuePuedeComprar(app);
 		LocalTime potencialHoraFin = hora.plusHours(horasQuePuedeComprar); 
 		
@@ -108,6 +113,10 @@ public class GestorAppImpl implements GestorAPP {
 	@Override
 	public Boolean tieneSaldoSuficiente(APP app) {
 		return this.getSaldo(app) >= this.sistema.getPrecioPorHora();
+	}
+
+	public Boolean tieneEstacionamientoIniciado(APP app) {
+		return this.estacionamientoAPP.containsKey(app);
 	}
 
 }

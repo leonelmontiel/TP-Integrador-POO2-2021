@@ -65,6 +65,10 @@ public class SistemaCentral {
 		this.notificarRecargaDeCredito(registroDeRecargaCelular);
 	}
 	
+	public void finalizarEstacionamientoAPP(Estacionamiento estacionamiento) {
+		//TODO: implementar lo que realiza con el gestor de estacionamientos y la notificacion
+	}
+	
 	public void generarEstacionamientoPuntual(RegistroDeCompraPuntual registroDeCompraPuntual) {
 		this.gestorEstacionamientos.generarEstacionamiento(registroDeCompraPuntual);
 	}

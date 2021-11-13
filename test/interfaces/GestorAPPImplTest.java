@@ -3,6 +3,7 @@ package interfaces;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,18 +11,25 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import app.APP;
+import estacionamiento.EstacionamientoAPP;
 import registroDeCompra.RegistroDeRecargaCelular;
 
 class GestorAPPImplTest {
 
 	private GestorAppImpl gestor;
+	private SistemaCentral sistema;
 	private APP app;
 	private RegistroDeRecargaCelular registro;
 	private RegistroDeRecargaCelular otroRegistro;
+	private EstacionamientoAPP estacionamiento;
+	private String patente;
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		this.gestor = new GestorAppImpl();
+		//mock
+		this.sistema = mock(SistemaCentral.class);
+		
+		this.gestor = new GestorAppImpl(this.sistema);
 		
 	}
 
@@ -56,6 +64,14 @@ class GestorAPPImplTest {
 		
 		//verify
 		verify(usuariosAPPSpy, times(1)).put(this.app, 0f);
+	}
+	
+	@Test
+	void testGetSaldo() {
+		//setup
+		this.gestor.regitrarAPP(this.app);
+		
+		assertEquals(0f, this.gestor.getSaldo(this.app));
 	}
 	
 	@Test
@@ -105,6 +121,64 @@ class GestorAPPImplTest {
 		verify(this.otroRegistro).getMontoRecarga();
 	}
 	
+	@Test
+	void testFinalizarUnEstacionamientoDecrementaElSaldoDeLaAPPAsociada() {
+		Float saldoInicial = 120f;
+		Float saldoEsperado = 80f;
+		//configuracion de mocks
+		this.estacionamiento = mock(EstacionamientoAPP.class);
+		this.registro = mock(RegistroDeRecargaCelular.class);
+		this.app = mock(APP.class);
 	
+		when(this.estacionamiento.getApp()).thenReturn(this.app);
+		when(this.estacionamiento.getHoraInicio()).thenReturn(LocalTime.of(12, 0));
+		when(this.estacionamiento.getHoraFin()).thenReturn(LocalTime.of(13, 0));
+		when(this.estacionamiento.getDuracion()).thenReturn(1);
+		when(this.sistema.getCosto(this.estacionamiento)).thenReturn(40f);
+		when(this.registro.getApp()).thenReturn(this.app);
+		when(this.registro.getMontoRecarga()).thenReturn(saldoInicial);
+		
+		Map<APP, EstacionamientoAPP> estacionamientosMock = mock(Map.class);
+		when(estacionamientosMock.get(this.app)).thenReturn(this.estacionamiento);
+		
+		//setup
+		this.gestor.regitrarAPP(this.app);
+		this.gestor.recargarSaldo(this.registro);
+		this.gestor.setEstacionamientos(estacionamientosMock);
+		
+		//exercise
+		this.gestor.finalizarEstacionamiento(this.app);
+		
+		//verify
+		assertEquals(saldoEsperado, this.gestor.getSaldo(this.app));
+		verify(this.estacionamiento, atLeast(1)).getHoraInicio();
+		verify(this.estacionamiento, atLeast(1)).getHoraFin();
+		verify(this.estacionamiento).getDuracion();
+		verify(this.sistema).getCosto(this.estacionamiento);
+		verify(this.registro, atLeast(1)).getApp();
+		verify(this.registro).getMontoRecarga();
+	}
+	
+	@Test
+	void testIniciarEstacionamiento() {
+		this.patente = "ABC 123";
+		this.app = mock(APP.class);
+		Map<APP, Float> usuarios = mock(Map.class);
+		
+		when(this.sistema.getHoraCierre()).thenReturn(LocalTime.of(20, 0));
+		when(this.sistema.getPrecioPorHora()).thenReturn(40f);
+		when(usuarios.get(this.app)).thenReturn(80f);
+		
+		//setup
+		this.gestor.setUsuariosAPP(usuarios);
+		
+		this.gestor.iniciarEstacionamiento(this.patente, this.app);
+		
+		assertTrue(this.gestor.tieneEstacionamientoIniciado(this.app));
+		
+		verify(this.sistema, atLeast(1)).getHoraCierre();
+		verify(this.sistema, atLeast(1)).getPrecioPorHora();
+		verify(usuarios, atLeast(1)).get(this.app);
+	}
 
 }
