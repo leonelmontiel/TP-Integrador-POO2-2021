@@ -51,13 +51,13 @@ public class SistemaCentral {
 	void setEntidades(List<Entidad> listaEntidades) {
 		this.entidades = listaEntidades;
 	}
-
-	public Float getCosto(Estacionamiento estacionamiento) {
-		return estacionamiento.getDuracion() * this.precioPorHora;
-	}
 	
 	public List<Zona> getZonas() {
 		return this.zonas;
+	}
+
+	public Float getCosto(Estacionamiento estacionamiento) {
+		return estacionamiento.getDuracion() * this.precioPorHora;
 	}
 	
 	public void generarRecarga(RegistroDeRecargaCelular registroDeRecargaCelular) {
@@ -65,8 +65,15 @@ public class SistemaCentral {
 		this.notificarRecargaDeCredito(registroDeRecargaCelular);
 	}
 	
-	public void finalizarEstacionamientoAPP(Estacionamiento estacionamiento) {
-		//TODO: implementar lo que realiza con el gestor de estacionamientos y la notificacion
+	public void iniciarEstacionamiento(Estacionamiento estacionamiento) {
+		//este mensaje se recibe por parte de ambos gestores (app y estacionamientos)
+		this.gestorEstacionamientos.registrarEstacionamiento(estacionamiento);
+		this.notificarEstacionamientoIniciado(estacionamiento);
+	}
+	
+	public void finalizarEstacionamiento(Estacionamiento estacionamiento) {
+		//mismo caso que iniciar estacionamiento
+		this.notificarEstacionamientoFinalizado(estacionamiento);
 	}
 	
 	public void generarEstacionamientoPuntual(RegistroDeCompraPuntual registroDeCompraPuntual) {
@@ -89,15 +96,15 @@ public class SistemaCentral {
 		}				
 	}
 	
-	void notificarEstacionamientoIniciado(Estacionamiento estacionamiento) {
+	private void notificarEstacionamientoIniciado(Estacionamiento estacionamiento) {
 		this.entidades.stream().forEach(entidad -> entidad.actualizarEstacionamientoIniciado(this, estacionamiento));
 	}
 
-	void notificarEstacionamientoFinalizado(Estacionamiento estacionamiento) {
+	private void notificarEstacionamientoFinalizado(Estacionamiento estacionamiento) {
 		this.entidades.stream().forEach(entidad -> entidad.actualizarEstacionamientoFinalizado(this, estacionamiento));
 	}
 
-	void notificarRecargaDeCredito(RegistroDeRecargaCelular registroDeRecargaCelular) {
+	private void notificarRecargaDeCredito(RegistroDeRecargaCelular registroDeRecargaCelular) {
 		this.entidades.stream().forEach(entidad -> entidad.actualizarRecargaDeCredito(this, registroDeRecargaCelular));
 	}
 	

@@ -64,7 +64,7 @@ public class GestorAppImpl implements GestorAPP {
 				costo;
 		
 		this.decrementarSaldo(app, costo);
-		this.sistema.finalizarEstacionamientoAPP(estacionamientoAFinalizar);
+		this.sistema.finalizarEstacionamiento(estacionamientoAFinalizar);
 		app.notificarAlUsuario(notificacion);
 		
 	}
@@ -88,8 +88,10 @@ public class GestorAppImpl implements GestorAPP {
 			String notificacion = "Estacionamiento iniciado a las " + nuevoEstacionamiento.getHoraInicio() +
 					" valido hasta las " + this.getHoraMaxima(app, horaInicio) + " hs.";
 			
+			this.sistema.iniciarEstacionamiento(nuevoEstacionamiento);
 			this.registrarEstacionamiento(app, nuevoEstacionamiento);
-			app.notificarAlUsuario(notificacion);			
+			app.notificarAlUsuario(notificacion);
+			
 		} else {
 			String notificacionSinCredito = "No dispone de saldo suficiente";
 			app.notificarAlUsuario(notificacionSinCredito);

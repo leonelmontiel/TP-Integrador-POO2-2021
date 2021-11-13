@@ -52,7 +52,8 @@ public class GestorEstacionamientoImpl implements GestorEstacionamiento {
 		Estacionamiento estacionamiento = new EstacionamientoPuntual(horaInicio, horaFin, patente,
 				registroDeCompraPuntual);
 		
-		this.registrarEstacionamiento(estacionamiento);
+		this.sistema.iniciarEstacionamiento(estacionamiento);
+		
 		registroDeCompraPuntual.notificarCompraExitosa();
 	}
 

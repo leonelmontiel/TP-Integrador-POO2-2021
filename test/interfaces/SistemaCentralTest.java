@@ -180,19 +180,21 @@ class SistemaCentralTest {
 	}
 	
 	@Test
-	void testNotificarEstacionamientoIniciado() {
+	void testIniciarEstacionamientoNotificaEstacionamientoIniciado() {
 		//configuracion de mocks
 		this.entidad = mock(Entidad.class);
 		this.otraEntidad = mock(Entidad.class);
+		this.gestorEstacionamiento = mock(GestorEstacionamiento.class);
 		//dummy
 		this.estacionamiento = mock(Estacionamiento.class);
 
 		//setup
 		List<Entidad> entidades = Arrays.asList(this.entidad, this.otraEntidad);
 		this.sistema.setEntidades(entidades);
+		this.sistema.setGestorEstacionamientos(this.gestorEstacionamiento);
 		
 		//exercise
-		this.sistema.notificarEstacionamientoIniciado(this.estacionamiento);
+		this.sistema.iniciarEstacionamiento(this.estacionamiento);
 		
 		//verify
 		verify(this.entidad).actualizarEstacionamientoIniciado(this.sistema, this.estacionamiento);
@@ -200,7 +202,7 @@ class SistemaCentralTest {
 	}
 	
 	@Test
-	void testNotificarEstacionamientoFinalizado() {
+	void testFinalizarEstacionamientoNotificaEstacionamientoFinalizado() {
 		//configuracion de mocks
 		this.entidad = mock(Entidad.class);
 		this.otraEntidad = mock(Entidad.class);
@@ -212,7 +214,7 @@ class SistemaCentralTest {
 		this.sistema.setEntidades(entidades);
 		
 		//exercise
-		this.sistema.notificarEstacionamientoFinalizado(this.estacionamiento);
+		this.sistema.finalizarEstacionamiento(this.estacionamiento);
 		
 		//verify
 		verify(this.entidad).actualizarEstacionamientoFinalizado(this.sistema, this.estacionamiento);
@@ -220,19 +222,21 @@ class SistemaCentralTest {
 	}
 
 	@Test
-	void testNotificarRecargaDeCredito() {
+	void testGenerarRecargaNotificaRecargaDeCredito() {
 		//configuracion de mocks
 		this.entidad = mock(Entidad.class);
 		this.otraEntidad = mock(Entidad.class);
+		this.gestorAPP = mock(GestorAPP.class);
 		//dummy
 		this.registro = mock(RegistroDeRecargaCelular.class); 
 		
 		//setup
 		List<Entidad> entidades = Arrays.asList(this.entidad, this.otraEntidad);
 		this.sistema.setEntidades(entidades);
+		this.sistema.setGestorAPP(this.gestorAPP);
 		
 		//exercise
-		this.sistema.notificarRecargaDeCredito((RegistroDeRecargaCelular) this.registro);
+		this.sistema.generarRecarga((RegistroDeRecargaCelular) this.registro);
 		
 		//verify
 		verify(this.entidad).actualizarRecargaDeCredito(this.sistema, (RegistroDeRecargaCelular) this.registro);

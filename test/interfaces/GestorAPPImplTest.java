@@ -89,7 +89,7 @@ class GestorAPPImplTest {
 		
 		//verify
 		assertEquals(this.sistema.getHoraCierre(), this.gestor.getHoraMaxima(this.app, diecinueveHoras));
-		verify(this.sistema).getHoraCierre();
+		verify(this.sistema, atLeast(1)).getHoraCierre();
 		verify(this.sistema).getPrecioPorHora();
 		verify(usuarios).get(this.app);
 	}

@@ -105,11 +105,10 @@ class GestorEstacionamientoImplTest {
 	}
 
 	@Test
-	void testGenerarEstacionamiento() {
+	void testGenerarEstacionamientoNotificaCompraExitosa() {
 		//configuracion de mocks
 		LocalTime horaCompra = LocalTime.of(12, 0);
-		LocalDate fechaCompra = LocalDate.of(2021, 12, 10);
-		LocalDateTime momentoConsulta = LocalDateTime.of(2021, 12, 10, 13, 0); 
+		LocalDate fechaCompra = LocalDate.of(2021, 12, 10); 
 		this.patente = "ABC 123";
 		this.registro = mock(RegistroDeCompraPuntual.class); 
 		when(this.registro.getHora()).thenReturn(horaCompra);
@@ -121,10 +120,9 @@ class GestorEstacionamientoImplTest {
 		this.gestor.generarEstacionamiento(this.registro);
 		
 		//verify
-		assertTrue(this.gestor.tieneEstacionamientoVigente(this.patente, momentoConsulta));
 		verify(this.registro).getHora();
-		verify(this.registro).getFecha();
 		verify(this.registro).getHorasCompradas();
 		verify(this.registro).getPatente();
+		verify(this.registro).notificarCompraExitosa();
 	}
 }
