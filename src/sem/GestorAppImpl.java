@@ -10,12 +10,12 @@ import registroDeCompra.RegistroDeRecargaCelular;
 public class GestorAppImpl implements GestorAPP {
 
 	private Map<APP, Float> usuariosAPP;
-	private Map<APP, EstacionamientoAPP> estacionamientoAPP;
+	private Map<APP, EstacionamientoAPP> estacionamientosActivos;
 	private SistemaCentral sistema;
 
 	public GestorAppImpl(SistemaCentral sistema) {
 		this.usuariosAPP = new HashMap<APP, Float>();
-		this.estacionamientoAPP = new HashMap<APP, EstacionamientoAPP>();
+		this.estacionamientosActivos = new HashMap<APP, EstacionamientoAPP>();
 		this.sistema = sistema;
 	}
 	
@@ -24,7 +24,7 @@ public class GestorAppImpl implements GestorAPP {
 	}
 
 	void setEstacionamientos(Map<APP, EstacionamientoAPP> estacionamientos) {
-		this.estacionamientoAPP = estacionamientos;
+		this.estacionamientosActivos = estacionamientos;
 	}
 	
 	public void registrarAPP(APP app) {
@@ -73,8 +73,8 @@ public class GestorAppImpl implements GestorAPP {
 	}
 
 	private EstacionamientoAPP popEstacionamiento(APP app) {
-		EstacionamientoAPP estacionamiento = this.estacionamientoAPP.get(app);
-		this.estacionamientoAPP.remove(app);
+		EstacionamientoAPP estacionamiento = this.estacionamientosActivos.get(app);
+		this.estacionamientosActivos.remove(app);
 		return estacionamiento;
 	}
 
@@ -98,7 +98,7 @@ public class GestorAppImpl implements GestorAPP {
 	}
 
 	private void registrarEstacionamiento(APP app, EstacionamientoAPP nuevoEstacionamiento) {
-		this.estacionamientoAPP.put(app, nuevoEstacionamiento);
+		this.estacionamientosActivos.put(app, nuevoEstacionamiento);
 	}
 
 	public LocalTime getHoraMaxima(APP app, LocalTime hora) {
@@ -120,17 +120,17 @@ public class GestorAppImpl implements GestorAPP {
 	}
 
 	public Boolean tieneEstacionamientoIniciado(APP app) {
-		return this.estacionamientoAPP.containsKey(app);
+		return this.estacionamientosActivos.containsKey(app);
 	}
 
 	@Override
 	public void finalizarTodosLosEstacionamientos() {
 		this.enviarFinalizar();
-		this.estacionamientoAPP.clear();
+		this.estacionamientosActivos.clear();
 	}
 
 	private void enviarFinalizar() {
-		this.estacionamientoAPP.keySet().stream().forEach(app -> this.finalizarEstacionamiento(app));
+		this.estacionamientosActivos.keySet().stream().forEach(app -> this.finalizarEstacionamiento(app));
 	}
 
 }
