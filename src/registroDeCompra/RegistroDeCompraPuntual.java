@@ -10,7 +10,8 @@ public class RegistroDeCompraPuntual extends RegistroDeCompra {
 	private String patente;
 	private Integer horasCompradas;
 
-	public RegistroDeCompraPuntual(PuntoDeVenta punto, Integer nroControl, LocalDate fecha, LocalTime hora, String patente, Integer horasCompradas) {
+	public RegistroDeCompraPuntual(PuntoDeVenta punto, Integer nroControl, LocalDate fecha, 
+			LocalTime hora, String patente, Integer horasCompradas) {
 		super(punto, nroControl, fecha, hora);
 		this.patente = patente;
 		this.horasCompradas = horasCompradas;

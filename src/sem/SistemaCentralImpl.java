@@ -10,7 +10,7 @@ import registroDeCompra.RegistroDeCompraPuntual;
 import registroDeCompra.RegistroDeRecargaCelular;
 import zona.Zona;
 
-public class SistemaCentralImpl implements SistemaCentral {
+public class SistemaCentralImpl implements SistemaCentral, SistemaObservable, Administrable {
 
 	private LocalTime horaInicio;
 	private LocalTime horaCierre;
@@ -20,17 +20,30 @@ public class SistemaCentralImpl implements SistemaCentral {
 	private GestorEstacionamiento gestorEstacionamientos;
 	private GestorAPP gestorAPP;
 	
-	public SistemaCentralImpl(LocalTime horaInicio, LocalTime horaCierre, Float precioPorHora, List<Zona> zonas) {
-		this.horaInicio = horaInicio;
-		this.horaCierre = horaCierre;
-		this.precioPorHora = precioPorHora;
+	public SistemaCentralImpl(LocalTime horaInicio, LocalTime horaCierre, Float precioPorHora, 
+			List<Zona> zonas, GestorEstacionamiento gestorEstacionamientos, GestorAPP gestorAPP) {
+		this.setHoraInicio(horaInicio);
+		this.setHoraCierre(horaCierre);
+		this.setPrecioPorHora(precioPorHora);
 		this.zonas = zonas;
 		this.entidades = new ArrayList<Entidad>();
+		this.gestorEstacionamientos = gestorEstacionamientos;
+		this.gestorAPP = gestorAPP;
 	}
 
 	@Override
 	public LocalTime getHoraInicio() {
 		return this.horaInicio;
+	}
+	
+	@Override
+	public void setHoraInicio(LocalTime horaInicio) {
+		this.horaInicio = horaInicio;	
+	}
+	
+	@Override
+	public void setHoraCierre(LocalTime horaCierre) {
+		this.horaCierre = horaCierre;
 	}
 	
 	@Override
@@ -42,20 +55,16 @@ public class SistemaCentralImpl implements SistemaCentral {
 	public Float getPrecioPorHora() {
 		return this.precioPorHora;
 	}
-
-	void setGestorAPP(GestorAPP gestorAPP) {
-		this.gestorAPP = gestorAPP;		
-	}
 	
-	void setGestorEstacionamientos(GestorEstacionamiento gestorEstacionamientos) {
-		this.gestorEstacionamientos = gestorEstacionamientos;		
+	@Override
+	public void setPrecioPorHora(Float nuevoPrecio) {
+		this.precioPorHora = nuevoPrecio;
 	}
 	
 	void setEntidades(List<Entidad> listaEntidades) {
 		this.entidades = listaEntidades;
 	}
 
-	@Override
 	public List<Zona> getZonas() {
 		return this.zonas;
 	}
@@ -107,6 +116,11 @@ public class SistemaCentralImpl implements SistemaCentral {
 		}				
 	}
 	
+	/**
+	 * @implNote
+	 * si bien los mensajes de notificar son publicos siempre son llamados por el mismo sistema central
+	 * dado que es su responsabilidad realizar la notificacion en cada caso
+	 */
 	@Override
 	public void notificarEstacionamientoIniciado(Estacionamiento estacionamiento) {
 		this.entidades.stream().forEach(entidad -> entidad.actualizarEstacionamientoIniciado(this, estacionamiento));

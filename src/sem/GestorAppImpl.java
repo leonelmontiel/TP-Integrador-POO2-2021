@@ -125,8 +125,12 @@ public class GestorAppImpl implements GestorAPP {
 
 	@Override
 	public void finalizarTodosLosEstacionamientos() {
-		this.estacionamientoAPP.keySet().stream().forEach(app -> this.finalizarEstacionamiento(app));
+		this.enviarFinalizar();
 		this.estacionamientoAPP.clear();
+	}
+
+	private void enviarFinalizar() {
+		this.estacionamientoAPP.keySet().stream().forEach(app -> this.finalizarEstacionamiento(app));
 	}
 
 }

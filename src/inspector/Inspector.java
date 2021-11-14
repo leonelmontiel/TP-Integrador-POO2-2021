@@ -23,9 +23,10 @@ public class Inspector {
 		return this.zona;
 	}
 
+	/**@implNote 
+	 * recibe el momento en el que se realiza la consulta como colaborador externo, porque es necesario para determinar si
+	 * el estacionamiento está vigente*/
 	public Boolean verificarVigencia(String patente, LocalDateTime tiempoConsulta) {
-		// recibe el momento en el que se realiza la consulta como colaborador externo, porque es necesario para determinar si
-		// el estacionamiento está vigente
 		return this.sistema.tieneEstacionamientoVigente(patente, tiempoConsulta);		
 	}
 

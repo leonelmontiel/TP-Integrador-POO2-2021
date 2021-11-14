@@ -35,11 +35,16 @@ class SistemaCentralTest {
 	
 	@BeforeEach
 	void setUp() throws Exception {
+		//mocks
+		this.gestorEstacionamiento = mock(GestorEstacionamiento.class);
+		this.gestorAPP = mock(GestorAPP.class);
+		
 		this.horaInicio = LocalTime.of(7, 0);
 		this.horaCierre = LocalTime.of(20, 0);
 		this.precioPorHora = 40f;
 		this.zonas = new ArrayList<Zona>();
-		this.sistema = new SistemaCentralImpl(this.horaInicio, this.horaCierre, this.precioPorHora, this.zonas);
+		this.sistema = new SistemaCentralImpl(this.horaInicio, this.horaCierre, this.precioPorHora, 
+				this.zonas, this.gestorEstacionamiento, this.gestorAPP);
 	}
 
 	@Test
@@ -83,11 +88,7 @@ class SistemaCentralTest {
 	@Test
 	void testGenerarRecarga() {
 		//configuracion de mocks
-		this.gestorAPP = mock(GestorAPP.class);
 		this.registro = mock(RegistroDeRecargaCelular.class);
-
-		//setup
-		this.sistema.setGestorAPP(this.gestorAPP);
 		
 		//exercise
 		this.sistema.generarRecarga((RegistroDeRecargaCelular) this.registro);
@@ -100,10 +101,6 @@ class SistemaCentralTest {
 	void testGenerarCompraPuntual() {
 		//configuracion de mocks
 		this.registro = mock(RegistroDeCompraPuntual.class);
-		this.gestorEstacionamiento = mock(GestorEstacionamiento.class);
-		
-		//setup
-		this.sistema.setGestorEstacionamientos(this.gestorEstacionamiento);
 		
 		//exercise
 		this.sistema.generarEstacionamientoPuntual((RegistroDeCompraPuntual) this.registro);
@@ -184,14 +181,12 @@ class SistemaCentralTest {
 		//configuracion de mocks
 		this.entidad = mock(Entidad.class);
 		this.otraEntidad = mock(Entidad.class);
-		this.gestorEstacionamiento = mock(GestorEstacionamiento.class);
 		//dummy
 		this.estacionamiento = mock(Estacionamiento.class);
 
 		//setup
 		List<Entidad> entidades = Arrays.asList(this.entidad, this.otraEntidad);
 		this.sistema.setEntidades(entidades);
-		this.sistema.setGestorEstacionamientos(this.gestorEstacionamiento);
 		
 		//exercise
 		this.sistema.iniciarEstacionamiento(this.estacionamiento);
@@ -226,14 +221,12 @@ class SistemaCentralTest {
 		//configuracion de mocks
 		this.entidad = mock(Entidad.class);
 		this.otraEntidad = mock(Entidad.class);
-		this.gestorAPP = mock(GestorAPP.class);
 		//dummy
 		this.registro = mock(RegistroDeRecargaCelular.class); 
 		
 		//setup
 		List<Entidad> entidades = Arrays.asList(this.entidad, this.otraEntidad);
 		this.sistema.setEntidades(entidades);
-		this.sistema.setGestorAPP(this.gestorAPP);
 		
 		//exercise
 		this.sistema.generarRecarga((RegistroDeRecargaCelular) this.registro);
@@ -245,12 +238,6 @@ class SistemaCentralTest {
 	
 	@Test 
 	void testFinalizarTodosLosEstacionamientos() {
-		//configuracion de mocks
-		this.gestorAPP = mock(GestorAPP.class);
-		
-		//setup
-		this.sistema.setGestorAPP(this.gestorAPP);
-		
 		//exercise
 		this.sistema.finalizarTodosLosEstacionamientos();
 		

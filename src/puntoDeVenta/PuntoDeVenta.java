@@ -30,7 +30,9 @@ public class PuntoDeVenta {
 				horasCompradas);
 	}
 
-	//este metodo tiene por fin emular la interaccion con el usuario del punto de venta
+	/**@implNote
+	 * este metodo tiene por fin emular la interaccion con el usuario del punto de venta
+	 */
 	public void notificarCompraExitosa() {
 		this.pantalla.mostrar("Compra realizada con éxito");		
 	}

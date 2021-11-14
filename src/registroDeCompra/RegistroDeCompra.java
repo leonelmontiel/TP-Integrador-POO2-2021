@@ -27,7 +27,10 @@ public abstract class RegistroDeCompra {
 		return this.fecha;
 	}
 
-	// se asume que en el momento de compra se realiza tanto la recarga de celular como el inicio del estacionamiento comprado
+	/**
+	 * @implNote
+	 *  se asume que en el momento de compra se realiza tanto la recarga de celular como el inicio del estacionamiento comprado
+	 */
 	public LocalTime getHora() {
 		return this.hora;
 	}
