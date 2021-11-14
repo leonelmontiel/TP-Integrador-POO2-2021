@@ -5,8 +5,6 @@ import registroDeCompra.RegistroDeCompraPuntual;
 import registroDeCompra.RegistroDeRecargaCelular;
 
 public interface SistemaCentral extends Consultable{
-
-	public Float getCosto(Estacionamiento estacionamiento);
 	
 	public void iniciarEstacionamiento(Estacionamiento estacionamiento);
 	
