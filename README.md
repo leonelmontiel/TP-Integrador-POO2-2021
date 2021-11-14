@@ -2,5 +2,5 @@
     --  Programación Orientada a Objetos II  --
 
 Este repositorio pertenece al grupo integrado por:
-    • Leonel Axel Stambul: leoquilmes88@gmail.com
-    • Leonel Elias Montiel: leonel.montiel@outlook.com
+    - Leonel Axel Stambul: leoquilmes88@gmail.com
+    - Leonel Elias Montiel: leonel.montiel@outlook.com
