@@ -1,5 +1,5 @@
 # Trabajo Final: Sistema de Estacionamiento Medido #
-    --  Programación Orientada a Objetos II  --
+    ## Programación Orientada a Objetos II ##
 
 Este repositorio pertenece al grupo integrado por:
 
