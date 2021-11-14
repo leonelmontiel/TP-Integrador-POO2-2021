@@ -1,49 +1,38 @@
 package puntoDeVenta;
 
-import java.time.LocalTime;
-
-import java.time.LocalDate;
-
 import app.APP;
 import app.Pantalla;
-import registroDeCompra.RegistroDeCompra;
-import registroDeCompra.RegistroDeCompraPuntual;
-import registroDeCompra.RegistroDeRecargaCelular;
-import sem.SEM;
+import sem.GestorRegistros;
 
 public class PuntoDeVenta {
 
 	private Integer nroControlRegistro;
-	private SEM sistema;
+	private GestorRegistros sistema;
 	private Pantalla pantalla;
 
-	public PuntoDeVenta(SEM sem) {
-		this.sistema = sem;
+	public PuntoDeVenta(GestorRegistros sistema) {
+		this.sistema = sistema;
 		this.nroControlRegistro = 0;
 	}
-
-	public RegistroDeCompra generarRecarga(APP app, Float monto) {
-		LocalDate hoy = LocalDate.now();
-		LocalTime ahora = LocalTime.now();
-		this.incrementarNroControl();
-		RegistroDeRecargaCelular registro = new RegistroDeRecargaCelular(this, this.nroControlRegistro, hoy, ahora, app, monto);
-		this.sistema.almacenar(registro);
-		return registro;
-	}
-
+	
 	private void incrementarNroControl() {
 		this.nroControlRegistro += 1;		
 	}
 
-	public RegistroDeCompra generarCompraPuntual(String patente, Integer horasCompradas) {
-		LocalDate hoy = LocalDate.now();
-		LocalTime ahora = LocalTime.now();
-		this.incrementarNroControl();
-		RegistroDeCompraPuntual registro = new RegistroDeCompraPuntual(this, this.nroControlRegistro, hoy, ahora, patente, horasCompradas);
-		this.sistema.almacenar(registro);
-		return registro;
+	public void generarRecarga(APP app, Float monto) {
+		this.incrementarNroControl(); 
+		this.sistema.generarRecarga(this, nroControlRegistro, app, monto);
 	}
 
+	public void generarCompraPuntual(String patente, Integer horasCompradas) {
+		this.incrementarNroControl(); 
+			this.sistema.generarCompraPuntual(this, nroControlRegistro, patente,
+				horasCompradas);
+	}
+
+	/**@implNote
+	 * este metodo tiene por fin emular la interaccion con el usuario del punto de venta
+	 */
 	public void notificarCompraExitosa() {
 		this.pantalla.mostrar("Compra realizada con éxito");		
 	}

@@ -4,15 +4,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import app.APP;
 import registroDeCompra.RegistroDeCompraPuntual;
 
 public class EstacionamientoPuntual extends Estacionamiento {
 
 	private RegistroDeCompraPuntual registroCompraPuntual;
 
-	public EstacionamientoPuntual(LocalTime horaInicio, LocalTime horaFin, RegistroDeCompraPuntual compraPuntual) {
-		super(horaInicio, horaFin);
+	public EstacionamientoPuntual(LocalTime horaInicio, LocalTime horaFin, String patente,
+			RegistroDeCompraPuntual compraPuntual) {
+		super(horaInicio, horaFin, patente);
 		this.registroCompraPuntual = compraPuntual;
 	}
 
@@ -36,17 +36,8 @@ public class EstacionamientoPuntual extends Estacionamiento {
 	}
 
 	@Override
-	public APP getApp() {
-		return null;
+	public Integer getDuracion() {
+		return	this.getHoraFin().getHour() - this.getHoraInicio().getHour();
 	}
 
-	@Override
-	public void finalizar() {
-		
-	}
-
-	@Override
-	public String getPatente() {
-		return this.getRegistroCompraPuntual().getPatente();
-	}
 }

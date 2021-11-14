@@ -1,7 +1,20 @@
 package app;
 
 public class ConEstacionamiento extends EstadoAPP {
+	
+	public static EstadoAPP conEstacionamiento;
 
+	public static EstadoAPP getInstance() {
+		if(conEstacionamiento == null) {
+			conEstacionamiento = new ConEstacionamiento();
+		}
+		return conEstacionamiento;
+	}
+
+	private ConEstacionamiento() {
+		
+	}
+	
 	@Override
 	public Boolean tieneEstacionamiento() {
 		return true;
@@ -9,7 +22,7 @@ public class ConEstacionamiento extends EstadoAPP {
 
 	@Override
 	public void finalizarEstacionamiento(APP app) {
-		EstadoAPP nuevoEstado = new SinEstacionamiento();
+		EstadoAPP nuevoEstado = SinEstacionamiento.getInstance();
 		app.getSistema().finalizarEstacionamiento(app);
 		app.setEstado(nuevoEstado);
 	}

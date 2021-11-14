@@ -3,16 +3,16 @@ package estacionamiento;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import app.APP;
-
 public abstract class Estacionamiento {
 
 	private LocalTime horaInicio;
 	private LocalTime horaFin;
+	private String patente; 
 
-	public Estacionamiento(LocalTime horaInicio, LocalTime horaFin) {
+	public Estacionamiento(LocalTime horaInicio, LocalTime horaFin, String patente) {
 		this.horaInicio = horaInicio;
 		this.horaFin = horaFin;
+		this.patente = patente;
 	}
 	
 	public LocalTime getHoraInicio() {
@@ -27,16 +27,12 @@ public abstract class Estacionamiento {
 		this.horaFin = horaFin;
 	}
 	
-	public abstract String getPatente();
+	public String getPatente() {
+		return this.patente;
+	}
 	
 	public abstract Boolean estaVigente(LocalDateTime momentoConsulta);
 
-	public abstract APP getApp();
-
-	public abstract void finalizar();
-
-	public Integer getDuracion() {
-		return this.getHoraFin().getHour() - this.getHoraInicio().getHour();
-	}
+	public abstract Integer getDuracion();
 
 }

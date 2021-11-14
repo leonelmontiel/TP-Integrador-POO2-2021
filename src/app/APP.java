@@ -1,23 +1,26 @@
 package app;
 
-import sem.SEM;
+import sem.GestorAPP;
 
 public class APP implements MovementSensor {
 
 	private int numero;
-	private SEM sistema;
-	private Pantalla pantanlla;
+	private GestorAPP sistema;
+	private Pantalla pantalla;
 	private EstadoAPP estado;
 	private AsistenciaAlUsuario asistenciaAlUsuario;
 	private ModoAPP modo;
-	//esta patente se inicializa en null porque el modo inicial de la app es manual, se configura al
-	//cambiar de modo o setear una nueva patente
+	/**@implNote
+	 * esta patente se inicializa en null porque el modo inicial de la app es manual, se configura al
+	   cambiar de modo o setear una nueva patente
+	 */
 	private String patente;
 
-	public APP(int numero, SEM sistema) {
+	public APP(int numero, GestorAPP sistema, Pantalla pantalla) {
 		this.numero = numero;
 		this.sistema = sistema;
-		this.estado = new SinEstacionamiento();
+		this.pantalla = pantalla;
+		this.estado = SinEstacionamiento.getInstance();
 		this.asistenciaAlUsuario = AsistenciaAlUsuario.DESACTIVADA;
 		this.modo = ModoAPP.MANUAL;
 	}
@@ -26,17 +29,16 @@ public class APP implements MovementSensor {
 		return this.numero;
 	}
 	
-	public SEM getSistema() {
+	public GestorAPP getSistema() {
 		return this.sistema;
 	}
 
+	/**@implNote
+	 * se delega la consulta de saldo al sistema por lo que se envia a si misma para consultar 
+	 * en el registro del SEM cuanto saldo tiene disponible
+	 */
 	public Float getSaldo() {
-		// se env�a a s� misma para consultar en el registro del SEM cu�nto saldo tiene disponible
 		return this.sistema.getSaldo(this);
-	}
-	
-	void setPantalla(Pantalla pantalla) {
-		this.pantanlla = pantalla;
 	}
 	
 	void setEstado(EstadoAPP nuevoEstado) {
@@ -47,11 +49,31 @@ public class APP implements MovementSensor {
 		return this.asistenciaAlUsuario;
 	}
 	
+	public void activarAsistenciaAlUsuario() {
+		this.asistenciaAlUsuario = AsistenciaAlUsuario.ACTIVADA;
+	}
+	
+	public void desactivarAsistenciaAlUsuario() {
+		this.asistenciaAlUsuario = AsistenciaAlUsuario.DESACTIVADA;
+	}
+	
+	public ModoAPP getModo() {
+		return this.modo;
+	}
+	
 	public void activarModoAutomatico(String patente) {
 		this.modo = ModoAPP.AUTOMATICO;
 		this.setPatente(patente);
 	}
 	
+	public void desactivarModoAutomatico() {
+		this.modo = ModoAPP.MANUAL;
+	}
+		
+	/** @implNote
+	 * se deja publico el seter de patente para que pueda ser configurado por el usuario en caso de estar
+	 * utilizando un vehiculo distinto del que configuro al activar el modo automatico 
+	 */
 	public void setPatente(String patente) {
 		this.patente = patente;
 	}
@@ -61,7 +83,7 @@ public class APP implements MovementSensor {
 	}
 	
 	public void notificarAlUsuario(String mensaje) {
-		this.pantanlla.mostrar(mensaje);
+		this.pantalla.mostrar(mensaje);
 	}
 	
 	public void iniciarEstacionamiento(String patente) {
@@ -69,14 +91,11 @@ public class APP implements MovementSensor {
 	}
 	
 	public void finalizarEstacionamiento() {
-		// SI NO TIENE SALDO SUFICIENTE, FINALIZA EL ESTACIONAMIENTO PERO QUEDA SALDO NEGATIVO
-		// SI NO LO FINALIZA, SIGUE ABIERTO HASTA QUE SE CIERRA SOLO A LAS 20H
-		// se env�a a s� misma para que el sistema la vincule con la patente y as� finalice el estacionamiento registrado
 		this.estado.finalizarEstacionamiento(this);
 	}
 
-	Boolean saldoEsMayorOIgualAPrecioPorHora() {
-		return this.sistema.getSaldo(this) >= this.sistema.getPrecioPorHora();
+	Boolean tieneSaldoSuficiente() {
+		return this.sistema.tieneSaldoSuficiente(this);
 	}
 
 	public Boolean tieneEstacionamiento() {
@@ -95,14 +114,6 @@ public class APP implements MovementSensor {
 		this.modo.ejecutarIniciacion(this);
 	}
 
-	public void activarAsistenciaAlUsuario() {
-		this.asistenciaAlUsuario = AsistenciaAlUsuario.ACTIVADA;
-	}
-
-	public void desactivarAsistenciaAlUsuario() {
-		this.asistenciaAlUsuario = AsistenciaAlUsuario.DESACTIVADA;
-	}
-
 	void alertaInicioEstacionamiento() {
 		this.asistenciaAlUsuario.alertaInicioEstacionamiento(this);
 	}
@@ -110,4 +121,5 @@ public class APP implements MovementSensor {
 	void alertaFinEstacionamiento() {
 		this.asistenciaAlUsuario.alertaFinEstacionamiento(this);
 	}
+	
 }
