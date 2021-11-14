@@ -47,11 +47,25 @@ public class APP implements MovementSensor {
 		return this.asistenciaAlUsuario;
 	}
 	
+	public void activarAsistenciaAlUsuario() {
+		this.asistenciaAlUsuario = AsistenciaAlUsuario.ACTIVADA;
+	}
+	
+	public void desactivarAsistenciaAlUsuario() {
+		this.asistenciaAlUsuario = AsistenciaAlUsuario.DESACTIVADA;
+	}
+	
 	public void activarModoAutomatico(String patente) {
 		this.modo = ModoAPP.AUTOMATICO;
 		this.setPatente(patente);
 	}
 	
+	public void desactivarModoAutomatico() {
+		this.modo = ModoAPP.MANUAL;
+	}
+	
+	//se deja publico el seter de patente para que pueda ser configurado por el usuario en caso de estar
+	//utilizando un vehiculo distinto del que configuro al activar el modo automatico
 	public void setPatente(String patente) {
 		this.patente = patente;
 	}
@@ -93,14 +107,6 @@ public class APP implements MovementSensor {
 	public void walking() {
 		this.estado.alertaInicioEstacionamiento(this);
 		this.modo.ejecutarIniciacion(this);
-	}
-
-	public void activarAsistenciaAlUsuario() {
-		this.asistenciaAlUsuario = AsistenciaAlUsuario.ACTIVADA;
-	}
-
-	public void desactivarAsistenciaAlUsuario() {
-		this.asistenciaAlUsuario = AsistenciaAlUsuario.DESACTIVADA;
 	}
 
 	void alertaInicioEstacionamiento() {

@@ -14,14 +14,14 @@ public class PuntoDeVenta {
 		this.sistema = sistema;
 		this.nroControlRegistro = 0;
 	}
+	
+	private void incrementarNroControl() {
+		this.nroControlRegistro += 1;		
+	}
 
 	public void generarRecarga(APP app, Float monto) {
 		this.incrementarNroControl(); 
 		this.sistema.generarRecarga(this, nroControlRegistro, app, monto);
-	}
-
-	private void incrementarNroControl() {
-		this.nroControlRegistro += 1;		
 	}
 
 	public void generarCompraPuntual(String patente, Integer horasCompradas) {
@@ -30,6 +30,7 @@ public class PuntoDeVenta {
 				horasCompradas);
 	}
 
+	//este metodo tiene por fin emular la interaccion con el usuario del punto de venta
 	public void notificarCompraExitosa() {
 		this.pantalla.mostrar("Compra realizada con éxito");		
 	}

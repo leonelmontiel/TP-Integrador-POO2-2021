@@ -19,6 +19,7 @@ public class GestorInfraccionesImpl implements GestorInfracciones {
 		this.infracciones = new ArrayList<Infraccion>();
 	}
 	
+	@Override
 	public List<Infraccion> getInfracciones(){
 		return this.infracciones;
 	}
@@ -27,6 +28,7 @@ public class GestorInfraccionesImpl implements GestorInfracciones {
 		this.infracciones = infracciones;
 	}
 	
+	@Override
 	public Boolean tieneInfracciones(String patente) {
 		return !this.infracciones.stream()
 				.filter(infraccion -> infraccion.getPatente().equals(patente)).toList().isEmpty();

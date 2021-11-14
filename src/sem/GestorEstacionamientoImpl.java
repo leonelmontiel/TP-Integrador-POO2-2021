@@ -34,7 +34,7 @@ public class GestorEstacionamientoImpl implements GestorEstacionamiento {
 				.anyMatch(estacionamiento -> estacionamiento.getPatente().equals(patente));
 	}
 
-	List<Estacionamiento> getEstacionamientosActivos(LocalDateTime momentoConsulta) {
+	private List<Estacionamiento> getEstacionamientosActivos(LocalDateTime momentoConsulta) {
 		return this.estacionamientos.stream()
 				.filter(estacionamiento -> estacionamiento.estaVigente(momentoConsulta)).toList();
 	}

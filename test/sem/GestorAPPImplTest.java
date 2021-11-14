@@ -45,7 +45,7 @@ class GestorAPPImplTest {
 		this.gestor.setUsuariosAPP(usuariosAPPSpy);
 		
 		//exercise
-		this.gestor.regitrarAPP(this.app);
+		this.gestor.registrarAPP(this.app);
 		
 		//verify
 		verify(usuariosAPPSpy).put(this.app, 0f);
@@ -61,8 +61,8 @@ class GestorAPPImplTest {
 		this.gestor.setUsuariosAPP(usuariosAPPSpy);
 		
 		//exercise
-		this.gestor.regitrarAPP(this.app);
-		this.gestor.regitrarAPP(this.app);
+		this.gestor.registrarAPP(this.app);
+		this.gestor.registrarAPP(this.app);
 		
 		//verify
 		verify(usuariosAPPSpy, times(1)).put(this.app, 0f);
@@ -71,7 +71,7 @@ class GestorAPPImplTest {
 	@Test
 	void testGetSaldo() {
 		//setup
-		this.gestor.regitrarAPP(this.app);
+		this.gestor.registrarAPP(this.app);
 		
 		assertEquals(0f, this.gestor.getSaldo(this.app));
 	}
@@ -106,7 +106,7 @@ class GestorAPPImplTest {
 		when(registro.getMontoRecarga()).thenReturn(montoRecarga);
 		
 		//exercise
-		this.gestor.regitrarAPP(this.app);
+		this.gestor.registrarAPP(this.app);
 		this.gestor.recargarSaldo(this.registro);
 		
 		//verify
@@ -131,7 +131,7 @@ class GestorAPPImplTest {
 		
 		
 		//exercise
-		this.gestor.regitrarAPP(this.app);
+		this.gestor.registrarAPP(this.app);
 		this.gestor.recargarSaldo(this.registro);
 		this.gestor.recargarSaldo(this.otroRegistro);
 		
@@ -165,7 +165,7 @@ class GestorAPPImplTest {
 		when(estacionamientosMock.get(this.app)).thenReturn(this.estacionamiento);
 		
 		//setup
-		this.gestor.regitrarAPP(this.app);
+		this.gestor.registrarAPP(this.app);
 		this.gestor.recargarSaldo(this.registro);
 		this.gestor.setEstacionamientos(estacionamientosMock);
 		

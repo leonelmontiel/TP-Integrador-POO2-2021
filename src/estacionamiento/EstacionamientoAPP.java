@@ -15,12 +15,12 @@ public class EstacionamientoAPP extends Estacionamiento {
 		this.app = aplicacion;
 	}
 	
-	public void finalizar() {
-		this.setHoraFin(LocalTime.now());
-	}
-
 	public APP getApp() {
 		return this.app;
+	}
+	
+	public void finalizar() {
+		this.setHoraFin(LocalTime.now());
 	}
 	
 	@Override
@@ -38,6 +38,8 @@ public class EstacionamientoAPP extends Estacionamiento {
 		return	this.getHoraFin().getHour() - this.getHoraInicio().getHour();
 	}
 
+	//el sistema no admite que se le solicite la duracion a un estacionamiento no finalizado.
+	//En caso de que se fuerse dicha situacion debe lanzar error
 	private void asegurarFinalizado() {
 		if(this.estaVigente()) throw new RuntimeException(ESTACIONAMIENTO_VIGENTE);
 	}

@@ -27,7 +27,7 @@ public class GestorAppImpl implements GestorAPP {
 		this.estacionamientoAPP = estacionamientos;
 	}
 	
-	public void regitrarAPP(APP app) {
+	public void registrarAPP(APP app) {
 		if(!this.tieneRegistradoApp(app)) {			
 			this.usuariosAPP.put(app, 0f);
 		}
