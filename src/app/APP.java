@@ -17,7 +17,7 @@ public class APP implements MovementSensor {
 	public APP(int numero, GestorAPP sistema) {
 		this.numero = numero;
 		this.sistema = sistema;
-		this.estado = new SinEstacionamiento();
+		this.estado = SinEstacionamiento.getInstance();
 		this.asistenciaAlUsuario = AsistenciaAlUsuario.DESACTIVADA;
 		this.modo = ModoAPP.MANUAL;
 	}

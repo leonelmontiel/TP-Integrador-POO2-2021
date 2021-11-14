@@ -11,6 +11,10 @@ public class ConEstacionamiento extends EstadoAPP {
 		return conEstacionamiento;
 	}
 
+	private ConEstacionamiento() {
+		
+	}
+	
 	@Override
 	public Boolean tieneEstacionamiento() {
 		return true;
